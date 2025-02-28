@@ -1,0 +1,61 @@
+.overlay-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .login-overlay {
+    background: white;
+    border: 1px solid #ccc;
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .overlay-header {
+    background-color: green;
+    padding: 10px;
+    color: white;
+    text-align: center;
+  }
+  
+  .overlay-body {
+    background-color: gray;
+    padding: 10px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+  }
+  
+  .checkbox-container {
+    margin: 10px 0;
+  }
+  
+  .login-submit-button,
+  .signup-button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    cursor: pointer;
+  }
+  
+  .forgot-password {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .forgot-password a {
+    text-decoration: none;
+    color: white;
+  }
+  
