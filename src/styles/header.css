@@ -1,3 +1,9 @@
+:root {
+  --text-color: white;
+  --side-margin-size: 5vw;
+  --navbar-margin-size: 3vw;
+}
+
 .header {
     display: flex;
     position: fixed;
@@ -5,76 +11,196 @@
     align-items: center;
     justify-content: space-between;
     background-color: #3B5425;
-    color:#3B5425;
+    color: white;
     overflow-x: hidden;
     top: 0;
     left: 0;
   }
-  
-  .logo {
-    display: flex;
-    margin-left: 5rem;
-    text-decoration: none;
-    align-items: center;
-    padding: 5px;
-  }
-  
-  .logo-image {
-    width: 3.5rem;
-    height: 3.5rem;
-  }
-  
-  .website-name {
-    margin-left: 10px;
-    font-size: 2.5rem;
-    font-family: 'K2D', sans-serif;
+
+.logo {
+  display: flex;
+  margin-left: var(--side-margin-size);
+  text-decoration: none;
+  align-items: center;
+  padding: 5px;
+}
+
+.logo-image {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.website-name {
+  margin-left: 10px;
+  font-size: 2.5rem;
+  font-family: 'K2D', sans-serif;
+  color: white;
+  padding: 5px;
+}
+
+.navbar {
+  display: flex;
+  margin-left: auto;
+  gap: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
+  font-family: 'K2D', sans-serif;
+  margin-left: var(--navbar-margin-size);
+  text-decoration: underline;
+}
+
+.user-controls {
+  position: relative;
+  margin-left: 5rem;
+  margin-right: var(--side-margin-size);
+  font-size: 1.5rem;
+  font-family: 'K2D', sans-serif;
+  padding: 5px;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.username {
+  margin-left: 5px;
+  color: white;
+}
+
+.login-button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+
+/* Hamburger Button (hidden on desktop) */
+.hamburger-button {
+  display: none;
+}
+
+/* Mobile Menu Overlay and Adjustments */
+@media (max-width: 920px) {
+  .hamburger-button {
+    display: block;
+    background: none;
+    border: none;
     color: white;
-    padding: 5px;
+    font-size: 2rem;
+    margin-right: var(--side-margin-size);
   }
-  
-  .navbar {
-    display: flex;
-    margin-left: auto;
-    gap: 15px;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    color: white;
-    font-size: 1.5rem;
-    font-family: 'K2D', sans-serif;
-    margin-left: 3rem;
-    text-decoration: underline;
-  }
-  
+
+  /* Hide desktop-only navbar and user-controls in header when on mobile */
+  .navbar,
   .user-controls {
-    position: relative;
-    margin-left: 5rem;
-    margin-right: 5rem;
-    font-size: 1.5rem;
-    font-family: 'K2D', sans-serif;
-    padding: 5px;
+    display: none;
   }
-  
-  .profile-button {
+
+  /* Mobile Menu Overlay */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    color: black;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    cursor: pointer;
+    z-index: 999;
+    overflow-y: auto;
+
+    /* Initial state (hidden) */
+    transform: translateX(100%);
+    opacity: 0;
+
+    /* Smooth transition effect for both opacity and transform */
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
   }
-  
-  .profile-pic {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+
+  /* When the mobile menu is open, slide it into view */
+  .mobile-menu.open {
+    transform: translateX(0);
+    opacity: 1;
   }
-  
-  .username {
-    margin-left: 5px;
-    color: white;
+
+
+  .mobile-menu-header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
   }
-  
-  .login-button {
-    padding: 5px 10px;
-    cursor: pointer;
+
+  .mobile-menu-close {
+    background: none;
+    border: none;
+    margin-right: var(--side-margin-size);
+    color: rgb(77, 77, 77);
+    font-size: 2rem;
   }
-  
+
+  .mobile-menu-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  /* Ensure the navbar inside mobile-menu is visible and vertical */
+  .mobile-menu .navbar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .mobile-menu .nav-link {
+    margin: 0;
+    font-size: 1.8rem;
+    color: black;
+  }
+
+  /* Mobile Account Submenu Styling */
+  .mobile-account {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mobile-account-button {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-account-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 80%;
+  }
+
+  .mobile-account-option {
+    color: black;
+    text-decoration: none;
+    font-size: 1.6rem;
+    text-align: center;
+  }
+}
