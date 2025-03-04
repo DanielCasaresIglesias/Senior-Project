@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home.jsx';
-import Search from './pages/Search.jsx';
+import Search from './pages/SearchPage.jsx';
 import About from './pages/About';
 import './styles/styles.css';
 
@@ -37,6 +37,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
+            {/* <Route path="/search/results" element={<Search />} /> */}
             <Route path="/about" element={<About />} />
           </Routes>
         </div>

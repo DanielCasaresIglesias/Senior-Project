@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterBar from './FilterBar';
+import SearchButton from './SearchButton';
 import '../styles/findAPark.css';
 
 const FindAPark = () => {
@@ -48,7 +49,7 @@ const FindAPark = () => {
   return (
     <div className="find-a-park">
       Find a Park
-      <button onClick={handleSearch}>Search</button>
+      <SearchButton onClick={handleSearch} />
       <FilterBar onFiltersChange={handleFiltersChange} />
     </div>
   );

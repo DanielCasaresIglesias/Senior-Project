@@ -1,0 +1,119 @@
+.park-popup {
+  width: 20%;
+  position: relative;
+  right: 0;
+  /* top: 8rem; Adjust based on your filter bar height */
+  bottom: 0;
+  background: #fff;
+  border-left: 1px solid #ccc;
+  overflow-y: auto;
+  z-index: 150;
+}
+
+.popup-header {
+  position: relative;
+}
+
+.popup-image {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+}
+
+.popup-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.popup-park-info {
+  background: #3B5425;
+  color: white;
+  padding: 1rem;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+}
+
+.park-info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.park-name {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.park-details {
+  font-size: 0.8rem;
+}
+
+.park-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.stars {
+  color: gold;
+}
+
+.review-count {
+  font-size: 0.8rem;
+  color: lightgray;
+}
+
+.popup-tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background: #D9D9D9;
+  border: none;
+  cursor: pointer;
+}
+
+.tab-button.selected {
+  background: #638A40;
+  color: white;
+}
+
+.popup-content {
+  padding: 1rem;
+}
+
+.overview-section,
+.reviews-section,
+.more-info-section {
+  background: white;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.trails-icons,
+.scrollable-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.trail-icon {
+  width: 2rem;
+  height: 2rem;
+  background: #D9D9D9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}

@@ -1,4 +1,4 @@
-// CustomButton.jsx
+// FilterButton.jsx
 import React from 'react';
 import '../../styles/filterButton.css';
 

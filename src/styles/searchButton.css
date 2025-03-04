@@ -1,0 +1,55 @@
+/* searchButton.css */
+.search-button {
+    width: 10rem;
+    height: 4rem;
+    padding: 0.4rem;
+    border: 6px solid #3B5425;
+    border-radius: 2rem; /* More rounded corners */
+    font-size: 1.5rem;
+    cursor: pointer;
+    gap: 0.5rem; /* Space between icon and text */
+    outline: none;
+  }
+    
+  /* Primary button style */
+  .search-button.primary {
+    background-color: white;
+    color: black;
+  }
+  
+  .search-button.primary:hover {
+    background-color: #dddddd;
+    color: black;
+    transform: scale(1.05);
+  }
+  
+  .search-button.primary:active {
+    background-color: #517531;
+    color: white;
+    transform: scale(1.05);
+  }
+  
+  /* Secondary button style (example) */
+  .search-button.secondary {
+    background-color: #ccc;
+    color: #333;
+  }
+  
+  .search-button.secondary:hover {
+    background-color: #aaa;
+  }
+  
+  
+  /* Icon Styles */
+  .button-icon {
+    display: flex;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  /* Text Styles */
+  .button-text {
+    flex: 1; /* Allow text to take up remaining space */
+    text-align: left;
+  }
