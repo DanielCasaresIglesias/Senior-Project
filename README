@@ -1,0 +1,10 @@
+This project uses npm versin 10.9.2
+
+
+To run this, first you need to run this command in the project root folder:
+npm start
+
+Then you run:
+npm start
+
+And check out the project at http://localhost:3000
