@@ -1,9 +1,12 @@
-// App.jsx
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
+import Home from './pages/Home.jsx';
+import Search from './pages/Search.jsx';
+import About from './pages/About';
+import './styles/styles.css';
 
 const App = () => {
-  // You can simulate a logged-in user or leave it null for the login version
   const [user, setUser] = useState({
     username: 'JohnDoe',
     profilePic: '/images/ProfilePhotoPlaceholder.png'
@@ -22,15 +25,23 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <Header 
-        user={user}
-        onLogin={handleLogin}
-        onLogout={handleLogout}
-        onSignup={handleSignup}
-      />
-      {/* Other components can go here */}
-    </div>
+    <Router>
+      <div className="App">
+        <Header 
+          user={user}
+          onLogin={handleLogin}
+          onLogout={handleLogout}
+          onSignup={handleSignup}
+        />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 };
 

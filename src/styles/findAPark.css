@@ -1,0 +1,7 @@
+.find-a-park {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 3rem;
+}
