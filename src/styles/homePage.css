@@ -23,3 +23,8 @@
     font-family: 'K2D', sans-serif;
     z-index: 10;
 }
+
+.parks-near-you {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}

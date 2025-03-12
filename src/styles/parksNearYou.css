@@ -1,0 +1,75 @@
+.carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Needed for absolutely positioned children */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.nav-button {
+  position: absolute; /* Make sure it's active */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  border-radius: 50%;
+}
+
+.nav-button:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.parks-row {
+  display: flex;
+  gap: 24px;
+  transition: transform 0.4s ease-in-out;
+  justify-content: center; /* Ensures cards are centered */
+}
+
+
+/* Mobile View: Horizontal Scrolling Instead */
+@media (max-width: 1380px) {
+  .carousel-container {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .parks-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    justify-content: flex-start; /* Align cards to the left */
+  }
+
+  .nav-button {
+    display: none; /* Remove arrows */
+  }
+}
+
+/* Make sure this targets the show more card within .park-card */
+.park-card.show-more {
+  background-color: cadetblue;
+  border-radius: 2rem;
+  height: 300px;
+  width: 300px;
+  /* Ensure it doesn't shrink to fit its content */
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

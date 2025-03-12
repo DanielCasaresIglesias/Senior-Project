@@ -50,7 +50,11 @@ const FindAPark = () => {
     <div className="find-a-park">
       Find a Park
       <SearchButton onClick={handleSearch} />
-      <FilterBar onFiltersChange={handleFiltersChange} />
+      <div className="filter-bar-container">
+        <FilterBar
+          onFiltersChange={handleFiltersChange}
+        />
+      </div>
     </div>
   );
 };
