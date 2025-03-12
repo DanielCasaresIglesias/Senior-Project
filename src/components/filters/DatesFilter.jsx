@@ -1,35 +1,62 @@
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 import FilterButton from './FilterButton';
+import ApplyButton from './buttons/ApplyButton';
+import ClearButton from './buttons/ClearButton';
 import '../../styles/filters/datesFilter.css';
 
 const DatesFilter = ({ onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [appliedStartDate, setAppliedStartDate] = useState('');
+  const [appliedEndDate, setAppliedEndDate] = useState('');
+  const [tempStartDate, setTempStartDate] = useState('');
+  const [tempEndDate, setTempEndDate] = useState('');
   const wrapperRef = useRef(null);
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false)); // Close when clicking outside
 
   const today = new Date().toISOString().split("T")[0];
 
+  // Open popup and initialize temporary state
+  const togglePopup = () => {
+    if (!isOpen) {
+      setTempStartDate(appliedStartDate);
+      setTempEndDate(appliedEndDate);
+    }
+    setIsOpen(!isOpen);
+  };
+
   const handleDateChange = (type, value) => {
     if (type === 'start') {
-      setStartDate(value);
-      if (endDate && value > endDate) {
-        setEndDate(value); // Ensure end date is not before start date
+      setTempStartDate(value);
+      if (tempEndDate && value > tempEndDate) {
+        setTempEndDate(value); // Ensure end date is not before start date
       }
-      onChange({ start: value, end: endDate });
     } else {
-      setEndDate(value);
-      onChange({ start: startDate, end: value });
+      setTempEndDate(value);
     }
+  };
+
+  const applySelection = () => {
+    setAppliedStartDate(tempStartDate);
+    setAppliedEndDate(tempEndDate);
+    onChange({ start: tempStartDate, end: tempEndDate });
+    setIsOpen(false);
+  };
+
+  const clearSelection = () => {
+    setTempStartDate('');
+    setTempEndDate('');
+    setAppliedStartDate('');
+    setAppliedEndDate('');
+    onChange({ start: '', end: '' });
+    setIsOpen(false);
   };
 
   return (
     <div className="filter dates-filter" ref={wrapperRef}>
       <FilterButton
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={togglePopup}
         variant="primary"
         iconSrc="images/filter-icons/date-icon.png"
         iconAlt="Calendar Icon"
@@ -37,21 +64,30 @@ const DatesFilter = ({ onChange }) => {
         Dates
       </FilterButton>
       {isOpen && (
-        <div className="filter-popup">
+        <div className="dates-filter-popup">
+          <p className="title">Dates</p>
+          <div className="start-date">
           <label>Start Date:</label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => handleDateChange('start', e.target.value)}
-            min={today}
-          />
-          <label>End Date:</label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => handleDateChange('end', e.target.value)}
-            min={startDate || today}
-          />
+            <input
+              type="date"
+              value={tempStartDate}
+              onChange={(e) => handleDateChange('start', e.target.value)}
+              min={today}
+            />
+          </div>
+          <div className="end-date">
+            <label>End Date:</label>
+            <input
+              type="date"
+              value={tempEndDate}
+              onChange={(e) => handleDateChange('end', e.target.value)}
+              min={tempStartDate || today}
+            />
+          </div>
+          <div className="buttons">
+            <ApplyButton onClick={applySelection} />
+            <ClearButton onClick={clearSelection} />
+          </div>
         </div>
       )}
     </div>

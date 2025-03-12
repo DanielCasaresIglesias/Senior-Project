@@ -1,24 +1,37 @@
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
 import FilterButton from '../FilterButton';
+import ApplyButton from '../buttons/ApplyButton';
+import ClearButton from '../buttons/ClearButton';
 import '../../../styles/filters/checklistFilter.css';
 
 const ChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [tempSelected, setTempSelected] = useState([]); // Temporary selection state
+  const [appliedSelected, setAppliedSelected] = useState([]); // Applied selection state
   const wrapperRef = useRef(null);
 
-  useOutsideAlerter(wrapperRef, () => setIsOpen(false)); // Close when clicking outside
+  useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
   const handleCheckboxChange = (option) => {
-    setSelectedOptions((prevSelected) => {
-      const updatedSelected = prevSelected.includes(option)
+    setTempSelected((prevSelected) =>
+      prevSelected.includes(option)
         ? prevSelected.filter((item) => item !== option)
-        : [...prevSelected, option];
+        : [...prevSelected, option]
+    );
+  };
 
-      onChange(updatedSelected);
-      return updatedSelected;
-    });
+  const applySelection = () => {
+    setAppliedSelected(tempSelected);
+    onChange(appliedSelected);
+    setIsOpen(false);
+  };
+
+  const clearSelection = () => {
+    setTempSelected([]);
+    setAppliedSelected([]);
+    onChange([])
+    setIsOpen(false);
   };
 
   return (
@@ -32,20 +45,32 @@ const ChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
         {label}
       </FilterButton>
       {isOpen && (
-        <div className="filter-popup">
-          {label}
-          {options.map((option) => (
-            <label key={option} className="option">
-              <input
-                type="checkbox"
-                checked={selectedOptions.includes(option)}
-                onChange={() => handleCheckboxChange(option)}
-              />
-              {option}
-            </label>
-          ))}
+        <div className="checklist-filter-popup">
+          {/* Fixed Header */}
+          <p className="title">{label}</p>
+
+          {/* Scrollable Options */}
+          <div className="options">
+            {options.map((option) => (
+              <label key={option} className="option">
+                <input
+                  type="checkbox"
+                  checked={tempSelected.includes(option)}
+                  onChange={() => handleCheckboxChange(option)}
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+
+          {/* Fixed Footer */}
+          <div className="buttons">
+            <ApplyButton onClick={applySelection} />
+            <ClearButton onClick={clearSelection} />
+          </div>
         </div>
       )}
+
     </div>
   );
 };

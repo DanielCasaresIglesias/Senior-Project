@@ -1,25 +1,48 @@
-import React, { useState, useRef } from 'react';
-import FilterButton from '../FilterButton';
+import React, { useState, useRef, useEffect } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
+import FilterButton from '../FilterButton';
+import ApplyButton from '../buttons/ApplyButton';
+import ClearButton from '../buttons/ClearButton';
 import '../../../styles/filters/searchableChecklistFilter.css';
 
 const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [tempSelected, setTempSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const wrapperRef = useRef(null);
 
-  useOutsideAlerter(wrapperRef, () => setIsOpen(false)); // Close when clicking outside
+  // Close the popup and clear temporary selections when clicking outside.
+  useOutsideAlerter(wrapperRef, () => setIsOpen(false));
+
+  // Whenever the popup is closed, clear the temporary selections.
+  useEffect(() => {
+    if (!isOpen) {
+      setTempSelected([]);
+      setSearchTerm('');
+    }
+  }, [isOpen]);
 
   const handleCheckboxChange = (option) => {
-    setSelectedOptions((prevSelected) => {
-      const updatedSelected = prevSelected.includes(option)
-        ? prevSelected.filter((item) => item !== option)
-        : [...prevSelected, option];
-
-      onChange(updatedSelected);
-      return updatedSelected;
+    setTempSelected((prevSelected) => {
+      if (prevSelected.includes(option)) {
+        return prevSelected.filter((item) => item !== option);
+      } else {
+        return [...prevSelected, option];
+      }
     });
+  };
+
+  const applySelection = () => {
+    setAppliedSelected(tempSelected);
+    onChange(tempSelected);
+    setIsOpen(false);
+  };
+
+  const clearSelection = () => {
+    setTempSelected([]);
+    setAppliedSelected([]);
+    onChange([]);
+    setIsOpen(false);
   };
 
   const filteredOptions = options.filter((option) =>
@@ -37,8 +60,9 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
         {label}
       </FilterButton>
       {isOpen && (
-        <div className="filter-popup">
-          {label}
+        <div className="searchable-checklist-filter-popup">
+          {/* Fixed header */}
+          <p className="title">{label}</p>
           <input
             type="text"
             className="search-input"
@@ -46,13 +70,14 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="options-list">
+          {/* Scrollable options list */}
+          <div className="options">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <label key={option} className="option">
                   <input
                     type="checkbox"
-                    checked={selectedOptions.includes(option)}
+                    checked={tempSelected.includes(option)}
                     onChange={() => handleCheckboxChange(option)}
                   />
                   {option}
@@ -61,6 +86,11 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
             ) : (
               <p className="no-results">No results found</p>
             )}
+          </div>
+          {/* Fixed footer with Apply and Clear buttons */}
+          <div className="buttons">
+            <ApplyButton onClick={applySelection} />
+            <ClearButton onClick={clearSelection} />
           </div>
         </div>
       )}

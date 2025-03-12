@@ -28,8 +28,8 @@ const FindAPark = () => {
     if (filters.features && filters.features.length)
       queryParams.append('features', filters.features.join(','));
     if (filters.rating) queryParams.append('rating', filters.rating);
-    if (filters.parkState) queryParams.append('parkState', filters.parkState);
-    if (filters.region) queryParams.append('region', filters.region);
+    if (filters.parkState && filters.parkState.length) queryParams.append('parkState', filters.parkState);
+    if (filters.region && filters.region.length) queryParams.append('region', filters.region);
     if (filters.accessibility && filters.accessibility.length)
       queryParams.append('accessibility', filters.accessibility.join(','));
     if (filters.permits && filters.permits.length)

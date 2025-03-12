@@ -1,7 +1,7 @@
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 
-const ParkStateFilter = ({ onChange }) => {
+const StateFilter = ({ onChange }) => {
   return (
     <ChecklistFilter
       label="Park State"
@@ -27,4 +27,4 @@ const ParkStateFilter = ({ onChange }) => {
   );
 };
 
-export default ParkStateFilter;
+export default StateFilter;

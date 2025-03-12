@@ -1,0 +1,20 @@
+.apply-button {
+    flex: 1;
+    padding: 8px;
+    background: #3B5425;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    /* transition: background 0.2s, transform 0.1s; */
+  }
+  
+  .apply-button:hover {
+    background: #2c3d1a;
+  }
+  
+  .apply-button:active {
+    background: #1e2911;
+    transform: scale(0.95);
+  }
+  

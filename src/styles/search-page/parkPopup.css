@@ -28,6 +28,11 @@
   border: none;
   font-size: 1.2rem;
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.25);
+  color: white;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
 }
 
 .popup-park-info {
@@ -35,6 +40,8 @@
   color: white;
   padding: 1rem;
   overflow-y: hidden;
+  overflow-x: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 

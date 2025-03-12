@@ -5,7 +5,7 @@ import ActivitiesFilter from './filters/ActivitiesFilter';
 import FacilitiesFilter from './filters/FacilitiesFilter';
 import FeaturesFilter from './filters/FeaturesFilter';
 import RatingFilter from './filters/RatingFilter';
-import ParkStateFilter from './filters/ParkStateFilter';
+import StateFilter from './filters/StateFilter';
 import RegionFilter from './filters/RegionFilter';
 import AccessibilityFilter from './filters/AccessibilityFilter';
 import PermitsFilter from './filters/PermitsFilter';
@@ -26,8 +26,8 @@ const FilterBar = ({ onFiltersChange }) => {
     facilities: [],
     features: [],
     rating: null,
-    parkState: null,
-    region: null,
+    parkState: [],
+    region: [],
     accessibility: [],
     permits: [],
     petPolicy: null,
@@ -57,7 +57,7 @@ const FilterBar = ({ onFiltersChange }) => {
 
   // Define your extra filters (the rest)
   const extraFilters = [
-    <ParkStateFilter key="parkState" onChange={(val) => updateFilter('parkState', val)} />,
+    <StateFilter key="parkState" onChange={(val) => updateFilter('parkState', val)} />,
     <RegionFilter key="region" onChange={(val) => updateFilter('region', val)} />,
     <AccessibilityFilter key="accessibility" onChange={(val) => updateFilter('accessibility', val)} />,
     <PermitsFilter key="permits" onChange={(val) => updateFilter('permits', val)} />,

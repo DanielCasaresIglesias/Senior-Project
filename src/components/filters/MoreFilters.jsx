@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ParkStateFilter from './ParkStateFilter';
+import StateFilter from './StateFilter';
 import RegionFilter from './RegionFilter';
 import AccessibilityFilter from './AccessibilityFilter';
 import PermitsFilter from './PermitsFilter';
@@ -17,7 +17,7 @@ const MoreFilters = ({ filters, updateFilter }) => {
       <button onClick={() => setIsOpen(!isOpen)}>More Filters</button>
       {isOpen && (
         <div className="more-filters-popup">
-          <ParkStateFilter onChange={(val) => updateFilter('parkState', val)} />
+          <StateFilter onChange={(val) => updateFilter('parkState', val)} />
           <RegionFilter onChange={(val) => updateFilter('region', val)} stateSelected={filters.parkState} />
           <AccessibilityFilter onChange={(val) => updateFilter('accessibility', val)} />
           <PermitsFilter onChange={(val) => updateFilter('permits', val)} />
