@@ -1,33 +1,50 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, forwardRef } from 'react';
 import '../../styles/search-page/mapContainer.css';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapContainer = () => {
+const MapContainer = forwardRef((props, ref) => {
+  const mapInstance = useRef(null);
+
   useEffect(() => {
-    // Ensure the map initializes only once
-    const map = L.map('map').setView([37.7749, -122.4194], 13); // San Francisco
+    // Initialize the map only once
+    mapInstance.current = L.map('map', {
+      zoomControl: false
+    }).setView([37.7749, -122.4194], 13); // San Francisco
 
     // Add a tile layer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    }).addTo(mapInstance.current);
 
     // Add a marker
-    L.marker([37.7749, -122.4194]).addTo(map)
+    L.marker([37.7749, -122.4194]).addTo(mapInstance.current)
       .bindPopup("San Francisco, CA")
       .openPopup();
 
+    L.control.zoom({
+      position: 'topright'
+    }).addTo(mapInstance.current);
+
+    // Forward the map instance via ref
+    if (ref) {
+      if (typeof ref === 'function') {
+        ref(mapInstance.current);
+      } else {
+        ref.current = mapInstance.current;
+      }
+    }
+
     return () => {
-      map.remove(); // Cleanup on unmount
+      mapInstance.current.remove();
     };
-  }, []); // Empty dependency array ensures it runs only once
+  }, [ref]);
 
   return (
     <div className="map-container">
       <div id="map"></div>
     </div>
   );
-};
+});
 
 export default MapContainer;

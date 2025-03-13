@@ -1,27 +1,84 @@
 .search-page {
-  display: flex;
-  flex-direction: column;
+  position: relative;
   height: 100vh;
-}
-
-.filter-bar-container {
-  flex: 0 0 auto;
-}
-
-.content {
-  display: flex;
-  flex: 1;
   overflow: hidden;
 }
 
-.results-column {
-  flex: 0 0 25%;
+.filter-bar-container {
+  position: relative;
+  z-index: 20; /* Stays above the map */
 }
 
+.content {
+  position: relative;
+  height: calc(100% - 50px); /* Adjust if needed */
+}
+
+/* The map fills the entire background */
 .map-container {
-  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
 }
 
+/* Overlay for the results column as a grid with 2 columns */
+.search-results {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 40rem;
+  z-index: 10;
+  overflow-y: auto;
+  display: grid;
+  height: 100%;
+  grid-template-columns: calc(100% - 40px) 40px;
+  transition: width 0.3s ease;
+}
+
+/* When minimized, hide the left column (results) */
+.search-results.minimized {
+  width: 40px;
+}
+
+.results-content {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Style for the toggle button – now inside the grid */
+.results-toggle {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  /* The toggle cell is 40px wide, so center its content */
+  width: 40px;
+  height: 40px;
+  background: white;
+}
+
+/* Park popup overlay */
 .park-popup {
-  /* ParkPopup is positioned fixed in its own CSS */
+  position: absolute;
+  top: 0%;
+  left: 51.25rem;
+  align-self:flex-start;
+  transform: translateX(-50%);
+  z-index: 15;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+  width: 25rem;
+  height: 100%;
 }

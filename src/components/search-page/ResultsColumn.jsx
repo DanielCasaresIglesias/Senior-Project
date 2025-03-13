@@ -1,13 +1,12 @@
 import React from 'react';
 import '../../styles/search-page/resultsColumn.css';
 
-const ResultsColumn = ({ results, onParkSelect, onMinimize, minimized }) => {
+const ResultsColumn = ({ results, onParkSelect, minimized }) => {
   return (
     <div className={`results-column ${minimized ? 'minimized' : ''}`}>
       <div className="results-header">
         <button className="sort-button">Sort</button>
         <button className="view-button">View</button>
-        <button className="minimize-button" onClick={onMinimize}>←</button>
       </div>
       <div className="results-list">
         {results.map((park) => (
