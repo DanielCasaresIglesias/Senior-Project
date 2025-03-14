@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import FindAPark from '../components/FindAPark';
 import ParksNearYou from '../components/ParksNearYou';
-import ParkCard from '../components/ParkCard';
 import '../styles/homePage.css';
 
 const Home = () => {
