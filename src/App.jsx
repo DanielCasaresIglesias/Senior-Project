@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Home from './pages/HomePage.jsx';
 import Search from './pages/SearchPage.jsx';
 import About from './pages/AboutPage.jsx';
+import PlanTrip from './pages/PlanTripPage/PlanTripPage.jsx';
 import './styles/styles.css';
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/search" element={<Search />} />
             {/* <Route path="/search/results" element={<Search />} /> */}
             <Route path="/about" element={<About />} />
+            <Route path="/plan-trip" element={<PlanTrip />} />
           </Routes>
         </div>
       </div>

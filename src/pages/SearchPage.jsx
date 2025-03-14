@@ -26,7 +26,7 @@ const mockParks = [
     activities: ["Rock Climbing", "Hiking", "Photography"],
     facilities: ["Visitor Center", "Campground", "Picnic Area"],
     features: ["Waterfalls", "Granite Cliffs"],
-    coordinates: [37.92868935688991, -119.30087451080387]
+    coordinates: [37.84829990889492, -119.89946781411888]
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ const mockParks = [
     activities: ["Wildlife Viewing", "Camping"],
     facilities: ["Visitor Center", "Restrooms"],
     features: ["Geysers", "Hot Springs"],
-    coordinates: [44.61474735500912, -110.43115829312174]
+    coordinates: [44.599072069249665, -111.01394802525812]
   }
   // ... add more mock parks as needed
 ];
@@ -81,7 +81,7 @@ const SearchPage = () => {
     // Move map view focus to the park's coordinates.
     // Assumes mapRef.current is a Leaflet map instance.
     if (mapRef.current && mapRef.current.setView) {
-      mapRef.current.setView(park.coordinates, 13); // Adjust zoom level as needed.
+      mapRef.current.setView(park.coordinates, 10); // Adjust zoom level as needed.
     }
   };
 

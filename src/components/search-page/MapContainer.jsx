@@ -10,7 +10,7 @@ const MapContainer = forwardRef((props, ref) => {
     // Initialize the map only once
     mapInstance.current = L.map('map', {
       zoomControl: false
-    }).setView([37.7749, -122.4194], 13); // San Francisco
+    }).setView([37.7749, -122.4194], 8); // San Francisco
 
     // Add a tile layer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
