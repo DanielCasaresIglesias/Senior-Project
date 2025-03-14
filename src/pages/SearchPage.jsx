@@ -5,6 +5,10 @@ import ResultsColumn from '../components/search-page/ResultsColumn';
 import ParkPopup from '../components/search-page/ParkPopup';
 import MapContainer from '../components/search-page/MapContainer';
 import '../styles/searchPage.css';
+const activities = [
+  'Rock Climbing', 'Surfing', 'Kayaking', 'Hiking', 'Archery', 'Fishing',
+  'Winter Sports', 'Guided Tours', 'Canoeing', 'Skiing', 'Snowboarding'
+];
 
 // Mock park data
 const mockParks = [
@@ -122,6 +126,7 @@ const SearchPage = () => {
           <ParkPopup
             className="park-popup"
             park={selectedPark}
+            activities={activities}
             onClose={() => setShowPopup(false)}
           />
         )}

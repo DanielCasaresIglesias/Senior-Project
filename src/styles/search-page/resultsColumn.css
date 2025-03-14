@@ -14,8 +14,15 @@
 .results-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
   gap: 10px;
   padding: 0.5rem;
+}
+
+.left-controls {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .sort-button,
@@ -36,12 +43,17 @@
   padding: 1rem;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
+  
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .result-image img {
-  width: 100%;
+  width: 100px;
   height: 80px;
   object-fit: cover;
+  border-radius: 15%;
 }
 
 .result-info .park-name {

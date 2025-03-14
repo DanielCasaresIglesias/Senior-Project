@@ -4,7 +4,7 @@ import ChecklistFilter from './base-filters/ChecklistFilter';
 const StateFilter = ({ onChange }) => {
   return (
     <ChecklistFilter
-      label="Park State"
+      label="State"
       iconSrc="images/filter-icons/state-icon.png"
       iconAlt="State Icon"
       options={[

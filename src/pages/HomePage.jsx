@@ -23,7 +23,7 @@ const Home = () => {
       </div>
       <ParksNearYou location="San Luis Obispo" parks={parks} className="parks-near-you"/>
       <p>
-        gpgopiawgpoaeghlgiuahugiahrguksbhrgubshkghskrgyakugahkeghakrugbvglaiub
+        {/* gpgopiawgpoaeghlgiuahugiahrguksbhrgubshkghskrgyakugahkeghakrugbvglaiub
         a;gjoarigjaorighoirhaorhgjao;ijg;aeoihnlaestbjnao;ijgn;oaiwhgoiaghoawhg
         gpgopiawgpoaeghlgiuahugiahrguksbhrgubshkghskrgyakugahkeghakrugbvglaiub
         a;gjoarigjaorighoirhaorhgjao;ijg;aeoihnlaestbjnao;ijgn;oaiwhgoiaghoawhg
@@ -64,7 +64,7 @@ const Home = () => {
         gpgopiawgpoaeghlgiuahugiahrguksbhrgubshkghskrgyakugahkeghakrugbvglaiub
         a;gjoarigjaorighoirhaorhgjao;ijg;aeoihnlaestbjnao;ijgn;oaiwhgoiaghoawhg
         gpgopiawgpoaeghlgiuahugiahrguksbhrgubshkghskrgyakugahkeghakrugbvglaiub
-        a;gjoarigjaorighoirhaorhgjao;ijg;aeoihnlaestbjnao;ijgn;oaiwhgoiaghoawhg
+        a;gjoarigjaorighoirhaorhgjao;ijg;aeoihnlaestbjnao;ijgn;oaiwhgoiaghoawhg */}
       </p>
     </div>
   );

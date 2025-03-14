@@ -1,8 +1,19 @@
 import React, { useState } from 'react';
 import '../../styles/search-page/parkPopup.css';
+import ReviewForm from '../ReviewForm';
 
-const ParkPopup = ({ park, onClose }) => {
+const ParkPopup = ({ park, activities, onClose }) => {
   const [activeTab, setActiveTab] = useState('Overview');
+
+  const [showReviewPopup, setShowReviewPopup] = useState(false);
+
+  const handleLeaveReview = () => {
+    setShowReviewPopup(true);
+  };
+
+  const handleCloseReviewPopup = () => {
+    setShowReviewPopup(false);
+  };
 
   return (
     <div className="park-popup">
@@ -49,7 +60,9 @@ const ParkPopup = ({ park, onClose }) => {
             </div>
             <div className="overview-buttons">
               <button className="trip-button">Plan a Trip</button>
-              <button className="review-button">Leave a Review</button>
+              <button className="review-button" onClick={handleLeaveReview}>
+                Leave a Review
+              </button>
             </div>
             <div className="trails-section">
               <h3 className="section-title">Trails</h3>
@@ -104,7 +117,9 @@ const ParkPopup = ({ park, onClose }) => {
               </div>
               <div className="review-total">{park.reviews} reviews</div>
             </div>
-            <button className="leave-review-button">Leave a Review</button>
+            <button className="leave-review-button" onClick={handleLeaveReview}>
+              Leave a Review
+            </button>
           </div>
         )}
         {activeTab === 'More Info' && (
@@ -113,6 +128,13 @@ const ParkPopup = ({ park, onClose }) => {
           </div>
         )}
       </div>
+      {showReviewPopup && (
+        <ReviewForm 
+          park={park} 
+          activities={activities} 
+          onClose={handleCloseReviewPopup} 
+        />
+      )}
     </div>
   );
 };

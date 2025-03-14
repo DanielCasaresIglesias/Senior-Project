@@ -1,12 +1,16 @@
 import React from 'react';
+import ExpandableSearch from './ExpandableSearch';
 import '../../styles/search-page/resultsColumn.css';
 
 const ResultsColumn = ({ results, onParkSelect, minimized }) => {
   return (
     <div className={`results-column ${minimized ? 'minimized' : ''}`}>
       <div className="results-header">
-        <button className="sort-button">Sort</button>
-        <button className="view-button">View</button>
+        <div className="left-controls">
+          <button className="sort-button">Sort</button>
+          <button className="view-button">View</button>
+        </div>
+        <ExpandableSearch />
       </div>
       <div className="results-list">
         {results.map((park) => (

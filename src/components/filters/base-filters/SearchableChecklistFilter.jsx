@@ -9,6 +9,7 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
   const [isOpen, setIsOpen] = useState(false);
   const [tempSelected, setTempSelected] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [appliedSelected, setAppliedSelected] = useState([]);
   const wrapperRef = useRef(null);
 
   // Close the popup and clear temporary selections when clicking outside.

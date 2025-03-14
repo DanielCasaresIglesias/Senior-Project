@@ -1,17 +1,20 @@
 .search-page {
   position: relative;
-  height: 100vh;
-  overflow: hidden;
+  height: calc(100vh - 70px);
+  overflow-y: hidden;
+  margin: 0px;
+  padding: 0px;
 }
 
 .filter-bar-container {
   position: relative;
   z-index: 20; /* Stays above the map */
+  padding-top: 5px;
 }
 
 .content {
   position: relative;
-  height: calc(100% - 50px); /* Adjust if needed */
+  height: calc(100% - 60px); /* Adjust if needed */
 }
 
 /* The map fills the entire background */
@@ -22,22 +25,22 @@
   right: 0;
   bottom: 0;
   z-index: 1;
+  height: 100%;
 }
 
 /* Overlay for the results column as a grid with 2 columns */
 .search-results {
-  grid-column-start: 1;
-  grid-column-end: 1;
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
-  width: 40rem;
+  width: 30rem;
   z-index: 10;
   overflow-y: auto;
+  overflow-x: hidden;
   display: grid;
   height: 100%;
-  grid-template-columns: calc(100% - 40px) 40px;
+  grid-template-columns: calc(100% - 60px) 60px;
   transition: width 0.3s ease;
 }
 
@@ -48,21 +51,20 @@
 
 .results-content {
   height: 100%;
+  width: 100%;
   background: rgba(255, 255, 255, 0.95);
 }
 
 /* Style for the toggle button – now inside the grid */
 .results-toggle {
-  grid-column-start: 2;
-  grid-column-end: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 3px solid #ccc;
+  border-radius: 0px 15% 15% 0px;
   cursor: pointer;
   /* The toggle cell is 40px wide, so center its content */
-  width: 40px;
+  width: 35px;
   height: 40px;
   background: white;
 }
@@ -71,14 +73,21 @@
 .park-popup {
   position: absolute;
   top: 0%;
-  left: 51.25rem;
+  left: 40rem;
   align-self:flex-start;
   transform: translateX(-50%);
   z-index: 15;
   background: white;
   padding: 20px;
+  padding-top: 0px;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
   width: 25rem;
   height: 100%;
+}
+
+@media (max-width: 1040px) {
+  .park-popup {
+    left: 13.5rem;
+  }
 }

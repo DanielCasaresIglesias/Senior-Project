@@ -117,7 +117,7 @@ const FilterBar = ({ onFiltersChange }) => {
           iconSrc="images/filter-icons/more-filters.png"
           iconAlt="More Filters"
         >
-          {showMore ? "Show Less" : "More Filters"}
+          {showMore ? "Show Less" : "Show More"}
         </FilterButton>
       </div>
       {/* Expanded Filters Section */}
