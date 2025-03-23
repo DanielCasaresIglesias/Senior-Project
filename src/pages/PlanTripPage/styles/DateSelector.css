@@ -1,0 +1,15 @@
+.date-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .date-separator {
+    font-size: 1.5rem;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+  }
+  

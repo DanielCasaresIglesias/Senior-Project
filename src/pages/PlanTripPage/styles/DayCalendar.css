@@ -1,0 +1,21 @@
+.day-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  
+  .hour-block {
+    position: relative;
+    padding: 10px;
+    border: 1px solid lightgray;
+    cursor: pointer;
+  }
+  
+  .add-event {
+    position: absolute;
+    right: 10px;
+    color: gray;
+  }
+  

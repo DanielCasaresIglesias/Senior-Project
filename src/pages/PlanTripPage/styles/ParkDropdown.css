@@ -1,0 +1,28 @@
+.park-dropdown {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .park-dropdown input {
+    padding: 8px;
+    margin-top: 5px;
+  }
+  
+  .dropdown-list {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background: white;
+  }
+  
+  .dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover,
+  .selected {
+    background: #007bff;
+    color: white;
+  }
+  
