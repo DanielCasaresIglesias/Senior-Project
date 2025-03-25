@@ -3,7 +3,7 @@ import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
 import FilterButton from '../FilterButton';
 import ApplyButton from '../buttons/ApplyButton';
 import ClearButton from '../buttons/ClearButton';
-import '../../../styles/filters/searchableChecklistFilter.css';
+import '../styles/searchableChecklistFilter.css';
 
 const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);

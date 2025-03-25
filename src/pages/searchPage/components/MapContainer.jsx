@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, forwardRef } from 'react';
-import '../../styles/search-page/mapContainer.css';
+import '../styles/mapContainer.css';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 

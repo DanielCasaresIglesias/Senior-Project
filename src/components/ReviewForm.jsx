@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import "../styles/reviewForm.css";
+import "./styles/reviewForm.css";
 
 const ReviewForm = ({ park, activities, onClose }) => {
   // Star rating state (minimum rating is 1)

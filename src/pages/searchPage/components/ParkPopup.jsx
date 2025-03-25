@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../../styles/search-page/parkPopup.css';
-import ReviewForm from '../ReviewForm';
+import '../styles/parkPopup.css';
+import ReviewForm from '../../../components/ReviewForm';
 
 const ParkPopup = ({ park, activities, onClose }) => {
   const [activeTab, setActiveTab] = useState('Overview');

@@ -1,6 +1,6 @@
 // FilterButton.jsx
 import React from 'react';
-import '../../styles/filterButton.css';
+import '../styles/filterButton.css';
 
 const FilterButton = ({ iconSrc, iconAlt = "icon", children, onClick, type = "button", variant = "primary" }) => {
   return (

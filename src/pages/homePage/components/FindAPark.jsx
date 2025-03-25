@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FilterBar from './FilterBar';
-import SearchButton from './SearchButton';
+import FilterBar from '../../../components/FilterBar';
+import SearchButton from '../../../components/SearchButton';
 import '../styles/findAPark.css';
 
 const FindAPark = () => {

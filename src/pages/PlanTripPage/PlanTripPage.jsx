@@ -3,7 +3,7 @@ import ParkDropdown from "./components/ParkDropdown";
 import DateSelector from "./components/DateSelector";
 import DaySelector from "./components/DaySelector";
 import DayCalendar from "./components/DayCalendar";
-import MapContainer from "../../components/search-page/MapContainer";
+import MapContainer from "../searchPage/components/MapContainer";
 import "./styles/PlanTripPage.css";
 
 const DEFAULT_PARK = {

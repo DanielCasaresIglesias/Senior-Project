@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
-import Home from './pages/HomePage.jsx';
-import Search from './pages/SearchPage.jsx';
-import About from './pages/AboutPage.jsx';
-import PlanTrip from './pages/PlanTripPage/PlanTripPage.jsx';
-import './styles/styles.css';
+import Header from './components/header/Header.jsx';
+import Home from './pages/homePage/HomePage.jsx'
+import Search from './pages/searchPage/SearchPage.jsx';
+import About from './pages/aboutPage/AboutPage.jsx';
+import PlanTrip from './pages/planTripPage/PlanTripPage.jsx';
+import './styles/globalStyles.css';
 
 const App = () => {
   const [user, setUser] = useState({

@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import FilterBar from '../components/FilterBar';
-import ResultsColumn from '../components/search-page/ResultsColumn';
-import ParkPopup from '../components/search-page/ParkPopup';
-import MapContainer from '../components/search-page/MapContainer';
-import '../styles/searchPage.css';
+import FilterBar from '../../components/FilterBar';
+import ResultsColumn from './components/ResultsColumn';
+import ParkPopup from './components/ParkPopup';
+import MapContainer from './components/MapContainer';
+import './styles/searchPage.css';
 const activities = [
   'Rock Climbing', 'Surfing', 'Kayaking', 'Hiking', 'Archery', 'Fishing',
   'Winter Sports', 'Guided Tours', 'Canoeing', 'Skiing', 'Snowboarding'

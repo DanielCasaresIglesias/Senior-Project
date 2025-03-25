@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/header.css';
-import ProfileOverlay from './ProfileOverlay';
-import LoginOverlay from './LoginOverlay';
-import UserControls from './UserControls';
-import Navbar from './Navbar';
+import './styles/header.css';
+import ProfileOverlay from './components/ProfileOverlay';
+import LoginOverlay from './components/LoginOverlay';
+import UserControls from './components/UserControls';
+import Navbar from './components/Navbar';
 
 const Header = ({ user, onLogin, onLogout, onSignup }) => {
   const [showProfileOverlay, setShowProfileOverlay] = useState(false);

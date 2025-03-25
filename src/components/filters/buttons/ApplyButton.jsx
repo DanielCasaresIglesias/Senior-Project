@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/buttons/applyButton.css';
+import '../styles/applyButton.css';
 
 const ApplyButton = ({ onClick }) => {
   return (

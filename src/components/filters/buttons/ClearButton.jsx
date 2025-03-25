@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/buttons/clearButton.css';
+import '../styles/clearButton.css';
 
 const ClearButton = ({ onClick }) => {
   return (

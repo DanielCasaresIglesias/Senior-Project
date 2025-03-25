@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import FindAPark from '../components/FindAPark';
-import ParksNearYou from '../components/ParksNearYou';
-import '../styles/homePage.css';
+import FindAPark from './components/FindAPark';
+import ParksNearYou from './components/ParksNearYou';
+import './styles/homePage.css';
 
 const Home = () => {
   const parks = [

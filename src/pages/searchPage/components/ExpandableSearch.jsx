@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import "../../styles/search-page/expandableSearch.css";
+import'../styles/expandableSearch.css';
 
 const ExpandableSearch = () => {
   const [isExpanded, setIsExpanded] = useState(false);

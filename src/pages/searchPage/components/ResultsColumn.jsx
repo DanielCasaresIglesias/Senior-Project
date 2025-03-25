@@ -1,6 +1,6 @@
 import React from 'react';
 import ExpandableSearch from './ExpandableSearch';
-import '../../styles/search-page/resultsColumn.css';
+import '../styles/resultsColumn.css';
 
 const ResultsColumn = ({ results, onParkSelect, minimized }) => {
   return (

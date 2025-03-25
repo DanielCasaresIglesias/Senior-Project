@@ -1,6 +1,6 @@
 // SearchButton.jsx
 import React from 'react';
-import '../styles/searchButton.css';
+import './styles/searchButton.css';
 
 const SearchButton = ({ onClick, type = "button", variant = "primary" }) => {
   return (

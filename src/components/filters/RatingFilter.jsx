@@ -4,7 +4,7 @@ import FilterButton from './FilterButton';
 import ApplyButton from './buttons/ApplyButton';
 import ClearButton from './buttons/ClearButton';
 import StarIcon from '../StarIcon';
-import '../../styles/filters/ratingFilter.css';
+import './styles/ratingFilter.css';
 
 const RatingFilter = ({ onChange }) => {
   // Applied rating is the confirmed value

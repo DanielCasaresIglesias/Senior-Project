@@ -3,7 +3,7 @@ import FilterButton from './FilterButton';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 import ApplyButton from './buttons/ApplyButton';
 import ClearButton from './buttons/ClearButton';
-import '../../styles/filters/distanceFilter.css';
+import './styles/distanceFilter.css';
 
 const DistanceFilter = ({ onChange }) => {
   const [isOpen, setIsOpen] = useState(false);

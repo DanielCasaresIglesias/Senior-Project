@@ -3,7 +3,7 @@ import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 import FilterButton from './FilterButton';
 import ApplyButton from './buttons/ApplyButton';
 import ClearButton from './buttons/ClearButton';
-import '../../styles/filters/datesFilter.css';
+import './styles/datesFilter.css';
 
 const DatesFilter = ({ onChange }) => {
   const [isOpen, setIsOpen] = useState(false);

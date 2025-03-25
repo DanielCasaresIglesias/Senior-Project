@@ -15,7 +15,7 @@ import WeatherFilter from './filters/WeatherFilter';
 import ParkingFilter from './filters/ParkingFilter';
 import CostFilter from './filters/CostFilter';
 import FilterButton from './filters/FilterButton';
-import '../styles/filterBar.css';
+import './styles/filterBar.css';
 
 const FilterBar = ({ onFiltersChange }) => {
   const [showMore, setShowMore] = useState(false);
