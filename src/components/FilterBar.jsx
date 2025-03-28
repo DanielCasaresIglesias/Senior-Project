@@ -114,7 +114,7 @@ const FilterBar = ({ onFiltersChange }) => {
         <FilterButton onClick={() => setShowMore(!showMore)}
           className="more-filters-button"
           variant="primary"
-          iconSrc="images/filter-icons/base-icons/more-filters.png"
+          iconSrc="images/filter-icons/base-icons/more-filters-icon.png"
           iconAlt="More Filters"
         >
           {showMore ? "Show Less" : "Show More"}
