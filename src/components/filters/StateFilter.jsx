@@ -5,7 +5,7 @@ const StateFilter = ({ onChange }) => {
   return (
     <ChecklistFilter
       label="State"
-      iconSrc="images/filter-icons/state-icon.png"
+      iconSrc="images/filter-icons/base-icons/state-icon.png"
       iconAlt="State Icon"
       options={[
         'Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas',

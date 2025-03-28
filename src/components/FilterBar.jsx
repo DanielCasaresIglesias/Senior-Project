@@ -13,7 +13,7 @@ import PetPolicyFilter from './filters/PetPolicyFilter';
 import DatesFilter from './filters/DatesFilter';
 import WeatherFilter from './filters/WeatherFilter';
 import ParkingFilter from './filters/ParkingFilter';
-import CostFilter from './filters/CostFilter';
+import FeesFilter from './filters/FeesFilter';
 import FilterButton from './filters/FilterButton';
 import './styles/filterBar.css';
 
@@ -65,7 +65,7 @@ const FilterBar = ({ onFiltersChange }) => {
     <DatesFilter key="dates" onChange={(val) => updateFilter('dates', val)} />,
     <WeatherFilter key="weather" onChange={(val) => updateFilter('weather', val)} />,
     <ParkingFilter key="parking" onChange={(val) => updateFilter('parking', val)} />,
-    <CostFilter key="cost" onChange={(val) => updateFilter('cost', val)} />,
+    <FeesFilter key="cost" onChange={(val) => updateFilter('cost', val)} />,
   ];
 
   // Reserve one slot for the "More Filters" button in the first row.
@@ -114,7 +114,7 @@ const FilterBar = ({ onFiltersChange }) => {
         <FilterButton onClick={() => setShowMore(!showMore)}
           className="more-filters-button"
           variant="primary"
-          iconSrc="images/filter-icons/more-filters.png"
+          iconSrc="images/filter-icons/base-icons/more-filters.png"
           iconAlt="More Filters"
         >
           {showMore ? "Show Less" : "Show More"}

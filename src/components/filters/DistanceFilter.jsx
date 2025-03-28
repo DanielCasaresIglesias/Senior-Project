@@ -63,7 +63,7 @@ const DistanceFilter = ({ onChange }) => {
       <FilterButton
         onClick={togglePopup}
         variant="primary"
-        iconSrc="images/filter-icons/distance-icon.png"
+        iconSrc="images/filter-icons/base-icons/distance-icon.png"
         iconAlt="Distance Icon"
       >
         Distance

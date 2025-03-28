@@ -5,7 +5,7 @@ const ParkingFilter = ({ onChange }) => {
   return (
     <RadioButtonFilter
       label="Parking"
-      iconSrc="images/filter-icons/parking-icon.png"
+      iconSrc="images/filter-icons/base-icons/parking-icon.png"
       iconAlt="Parking Icon"
       options={['None', 'Poor', 'Some', 'Plentiful']}
       onChange={onChange}

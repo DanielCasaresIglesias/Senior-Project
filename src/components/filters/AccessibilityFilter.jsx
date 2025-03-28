@@ -5,7 +5,7 @@ const AccessibilityFilter = ({ onChange }) => {
   return (
     <ChecklistFilter
       label="Accessibility"
-      iconSrc="images/filter-icons/accessibility-icon.png"
+      iconSrc="images/filter-icons/base-icons/accessibility-icon.png"
       iconAlt="Accessibility Icon"
       options={['Wheelchair', 'Visual', 'Hearing']}
       onChange={onChange}

@@ -5,7 +5,7 @@ const ActivitiesFilter = ({ onChange }) => {
   return (
     <SearchableChecklistFilter
       label="Activities"
-      iconSrc="images/filter-icons/activities-icon.png"
+      iconSrc="images/filter-icons/base-icons/activities-icon.png"
       iconAlt="Activities Icon"
       options={[
         'Rock Climbing', 'Surfing', 'Kayaking', 'Hiking', 'Archery', 'Fishing',

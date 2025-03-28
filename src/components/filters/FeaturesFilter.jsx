@@ -5,7 +5,7 @@ const FeaturesFilter = ({ onChange }) => {
   return (
     <SearchableChecklistFilter
       label="Features"
-      iconSrc="images/filter-icons/features-icon.png"
+      iconSrc="images/filter-icons/base-icons/features-icon.png"
       iconAlt="Features Icon"
       options={[
         'Waterfalls', 'Beaches', 'Oldgrowth Forests', 'Cliffs', 'Summits',

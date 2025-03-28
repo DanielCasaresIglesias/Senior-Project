@@ -5,7 +5,7 @@ const TrailsFilter = ({ onChange }) => {
   return (
     <ChecklistFilter
       label="Trails"
-      iconSrc="images/filter-icons/trails-icon.png"
+      iconSrc="images/filter-icons/base-icons/trails-icon.png"
       iconAlt="Trails Icon"
       options={['Hiking', 'Mountain Biking', 'Horseback Riding']}
       onChange={onChange}

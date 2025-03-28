@@ -58,7 +58,7 @@ const DatesFilter = ({ onChange }) => {
       <FilterButton
         onClick={togglePopup}
         variant="primary"
-        iconSrc="images/filter-icons/date-icon.png"
+        iconSrc="images/filter-icons/base-icons/date-icon.png"
         iconAlt="Calendar Icon"
       >
         Dates

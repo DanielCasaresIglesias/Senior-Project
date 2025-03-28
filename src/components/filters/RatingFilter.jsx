@@ -58,7 +58,7 @@ const RatingFilter = ({ onChange }) => {
       <FilterButton
         onClick={togglePopup}
         variant="primary"
-        iconSrc="images/filter-icons/rating-icon.png"
+        iconSrc="images/filter-icons/base-icons/rating-icon.png"
         iconAlt="Rating Icon"
       >
         Rating

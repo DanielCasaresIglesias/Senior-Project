@@ -43,7 +43,7 @@ const RegionFilter = ({ onChange, stateSelected }) => {
   return (
     <SearchableChecklistFilter
       label="Region"
-      iconSrc="images/filter-icons/region-icon.png"
+      iconSrc="images/filter-icons/base-icons/region-icon.png"
       iconAlt="Region Icon"
       options={options}
       onChange={onChange}
