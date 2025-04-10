@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
-import FilterButton from '../FilterButton';
+import FilterButton from './FilterButton';
 import ApplyButton from '../buttons/ApplyButton';
 import ClearButton from '../buttons/ClearButton';
 import '../styles/radioButtonFilter.css';
@@ -45,8 +45,8 @@ const RadioButtonFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
         variant="primary"
         iconSrc={iconSrc}
         iconAlt={iconAlt}
+        label={label}
       >
-        {label}
       </FilterButton>
       {isOpen && (
         <div className="radiolist-filter-popup">

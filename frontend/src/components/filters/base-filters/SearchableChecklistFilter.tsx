@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
-import FilterButton from '../FilterButton';
+import FilterButton from './FilterButton';
 import ApplyButton from '../buttons/ApplyButton';
 import ClearButton from '../buttons/ClearButton';
 import '../styles/searchableChecklistFilter.css';
@@ -57,8 +57,8 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
         variant="primary"
         iconSrc={iconSrc}
         iconAlt={iconAlt}
+        label={label}
       >
-        {label}
       </FilterButton>
       {isOpen && (
         <div className="searchable-checklist-filter-popup">

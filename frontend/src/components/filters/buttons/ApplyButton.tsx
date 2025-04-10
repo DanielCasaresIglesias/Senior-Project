@@ -1,7 +1,11 @@
 import React from 'react';
 import '../styles/applyButton.css';
 
-const ApplyButton = ({ onClick }) => {
+type ApplyButtonProps = {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+};
+
+const ApplyButton: React.FC<ApplyButtonProps> = ({ onClick }) => {
   return (
     <button className="apply-button" onClick={onClick}>
       Apply
