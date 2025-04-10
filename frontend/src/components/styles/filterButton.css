@@ -35,13 +35,23 @@
 }
 
 /* Secondary button style (example) */
-.filter-button.secondary {
-  background-color: #ccc;
-  color: #333;
+.filter-button.selected {
+  background-color: #638A40;
+  color: #FFFFFF;
 }
 
-.filter-button.secondary:hover {
-  background-color: #aaa;
+.filter-button.selected:hover {
+  background-color: hsl(94, 37%, 36%);
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+.filter-button.selected:active {
+  background-color: hsl(94, 37%, 32%);
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: scale(1.05);
 }
 
 

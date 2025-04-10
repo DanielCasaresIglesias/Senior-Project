@@ -48,7 +48,11 @@ const FilterBar = ({ onFiltersChange }) => {
   // Define your base filters (first row filters)
   const baseFilters = [
     <DistanceFilter key="distance" onChange={(val) => updateFilter('distance', val)} />,
-    <TrailsFilter key="trails" onChange={(val) => updateFilter('trails', val)} />,
+    <TrailsFilter 
+      key="trails" 
+      onChange={(val) => updateFilter('trails', val)} 
+      initialSelected={filters.trails} // Pass the pre-selected options here
+    />,
     <ActivitiesFilter key="activities" onChange={(val) => updateFilter('activities', val)} />,
     <FacilitiesFilter key="facilities" onChange={(val) => updateFilter('facilities', val)} />,
     <FeaturesFilter key="features" onChange={(val) => updateFilter('features', val)} />,
@@ -114,7 +118,7 @@ const FilterBar = ({ onFiltersChange }) => {
         <FilterButton onClick={() => setShowMore(!showMore)}
           className="more-filters-button"
           variant="primary"
-          iconSrc="images/filter-icons/base-icons/more-filters.png"
+          iconSrc="images/filter-icons/base-icons/more-filters-icon.png"
           iconAlt="More Filters"
         >
           {showMore ? "Show Less" : "Show More"}
