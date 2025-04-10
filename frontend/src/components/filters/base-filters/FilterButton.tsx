@@ -8,7 +8,7 @@ type FilterButtonProps = {
   label: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
-  variant?: string; // You could narrow this if you have known values like "primary" | "secondary"
+  variant?: 'primary' | 'selected';
 };
 
 const FilterButton: React.FC<FilterButtonProps> = ({

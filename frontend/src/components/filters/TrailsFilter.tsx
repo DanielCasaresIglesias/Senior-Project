@@ -1,7 +1,16 @@
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 
-const TrailsFilter = ({ onChange, initialSelected=[] }) => {
+
+type TrailsFilterProps = {
+  onChange: (selected: string[]) => void;
+  initialSelected: string[];
+};
+
+const TrailsFilter: React.FC<TrailsFilterProps> = ({
+  onChange,
+  initialSelected
+}) => {
   return (
     <ChecklistFilter
       label="Trails"

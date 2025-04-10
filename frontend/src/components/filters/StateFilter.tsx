@@ -1,11 +1,20 @@
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 
-const StateFilter = ({ onChange }) => {
+type StateFilterProps = {
+  onChange: (selected: string[]) => void;
+  initialSelected: string[];
+};
+
+const StateFilter: React.FC<StateFilterProps> = ({
+  onChange,
+  initialSelected
+}) => {
   return (
     <ChecklistFilter
       label="State"
       iconSrc="images/filter-icons/base-icons/state-icon.png"
+      selectedIconSrc="images/filter-icons/selected-icons/state-icon.png"
       iconAlt="State Icon"
       options={[
         'Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas',
@@ -23,6 +32,7 @@ const StateFilter = ({ onChange }) => {
         'Wyoming'
       ]}
       onChange={onChange}
+      initialSelected={initialSelected}
     />
   );
 };

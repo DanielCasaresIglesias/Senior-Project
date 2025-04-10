@@ -5,32 +5,53 @@ import ApplyButton from '../buttons/ApplyButton';
 import ClearButton from '../buttons/ClearButton';
 import '../styles/searchableChecklistFilter.css';
 
-const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [tempSelected, setTempSelected] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [appliedSelected, setAppliedSelected] = useState([]);
-  const wrapperRef = useRef(null);
+type SearchableChecklistFilterProps = {
+  label: string;
+  iconSrc: string;
+  selectedIconSrc: string;
+  iconAlt: string;
+  options: string[];
+  onChange: (selected: string[]) => void;
+  initialSelected?: string[];
+};
 
-  // Close the popup and clear temporary selections when clicking outside.
+const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
+  label,
+  iconSrc,
+  selectedIconSrc,
+  iconAlt,
+  options,
+  onChange,
+  initialSelected = [],
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [tempSelected, setTempSelected] = useState<string[]>(initialSelected);
+  const [appliedSelected, setAppliedSelected] = useState<string[]>(initialSelected);
+  const [searchTerm, setSearchTerm] = useState('');
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
-  // Whenever the popup is closed, clear the temporary selections.
   useEffect(() => {
     if (!isOpen) {
-      setTempSelected([]);
+      setTempSelected(appliedSelected);
       setSearchTerm('');
     }
-  }, [isOpen]);
+  }, [isOpen, appliedSelected]);
 
-  const handleCheckboxChange = (option) => {
-    setTempSelected((prevSelected) => {
-      if (prevSelected.includes(option)) {
-        return prevSelected.filter((item) => item !== option);
-      } else {
-        return [...prevSelected, option];
-      }
-    });
+  const togglePopup = () => {
+    if (!isOpen) {
+      setTempSelected(appliedSelected);
+    }
+    setIsOpen(!isOpen);
+  };
+
+  const handleCheckboxChange = (option: string) => {
+    setTempSelected((prev) =>
+      prev.includes(option)
+        ? prev.filter((item) => item !== option)
+        : [...prev, option]
+    );
   };
 
   const applySelection = () => {
@@ -40,8 +61,8 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
   };
 
   const clearSelection = () => {
-    setTempSelected([]);
     setAppliedSelected([]);
+    setTempSelected([]);
     onChange([]);
     setIsOpen(false);
   };
@@ -50,19 +71,19 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
     option.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const isFilterActive = appliedSelected.length > 0;
+
   return (
     <div className="filter searchable-checklist-filter" ref={wrapperRef}>
       <FilterButton
-        onClick={() => setIsOpen(!isOpen)}
-        variant="primary"
-        iconSrc={iconSrc}
+        onClick={togglePopup}
+        variant={isFilterActive ? 'selected' : 'primary'}
+        iconSrc={isFilterActive ? selectedIconSrc : iconSrc}
         iconAlt={iconAlt}
         label={label}
-      >
-      </FilterButton>
+      />
       {isOpen && (
         <div className="searchable-checklist-filter-popup">
-          {/* Fixed header */}
           <p className="title">{label}</p>
           <input
             type="text"
@@ -71,7 +92,6 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          {/* Scrollable options list */}
           <div className="options">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
@@ -88,7 +108,6 @@ const SearchableChecklistFilter = ({ label, iconSrc, iconAlt, options, onChange 
               <p className="no-results">No results found</p>
             )}
           </div>
-          {/* Fixed footer with Apply and Clear buttons */}
           <div className="buttons">
             <ApplyButton onClick={applySelection} />
             <ClearButton onClick={clearSelection} />

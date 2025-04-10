@@ -1,18 +1,37 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
 import FilterButton from './FilterButton';
 import ApplyButton from '../buttons/ApplyButton';
 import ClearButton from '../buttons/ClearButton';
 import '../styles/checklistFilter.css';
 
-const ChecklistFilter = ({ label, iconSrc, selectedIconSrc, iconAlt, options, onChange, initialSelected = [] }) => {
+type ChecklistFilterProps = {
+  label: string;
+  iconSrc: string;
+  selectedIconSrc: string;
+  iconAlt: string;
+  options: string[];
+  onChange: (selected: string[]) => void;
+  initialSelected?: string[];
+};
+
+const ChecklistFilter: React.FC<ChecklistFilterProps> = ({
+  label,
+  iconSrc,
+  selectedIconSrc,
+  iconAlt,
+  options,
+  onChange,
+  initialSelected = [],
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState(initialSelected); // Track selected filters
-  const wrapperRef = useRef(null);
+  const [appliedFilters, setAppliedFilters] = useState<string[]>(initialSelected);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(initialSelected);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
-  const handleCheckboxChange = (option) => {
+  const handleCheckboxChange = (option: string) => {
     setSelectedFilters((prevSelected) =>
       prevSelected.includes(option)
         ? prevSelected.filter((item) => item !== option)
@@ -21,18 +40,19 @@ const ChecklistFilter = ({ label, iconSrc, selectedIconSrc, iconAlt, options, on
   };
 
   const applySelection = () => {
-    onChange(selectedFilters); // Directly use selectedFilters
+    setAppliedFilters(selectedFilters);
+    onChange(selectedFilters);
     setIsOpen(false);
   };
 
   const clearSelection = () => {
     setSelectedFilters([]);
-    onChange([]); // Ensure the parent knows it's cleared
+    setAppliedFilters([]);
+    onChange([]);
     setIsOpen(false);
   };
 
-  // Determine if any filters are selected
-  const isFilterActive = selectedFilters.length > 0;
+  const isFilterActive = appliedFilters.length > 0;
 
   return (
     <div className="filter checklist-filter" ref={wrapperRef}>
@@ -42,8 +62,7 @@ const ChecklistFilter = ({ label, iconSrc, selectedIconSrc, iconAlt, options, on
         iconSrc={isFilterActive ? selectedIconSrc : iconSrc}
         iconAlt={iconAlt}
         label={label}
-      >
-      </FilterButton>
+      />
       {isOpen && (
         <div className="checklist-filter-popup">
           <p className="title">{label}</p>

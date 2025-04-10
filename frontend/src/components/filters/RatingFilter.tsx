@@ -1,18 +1,32 @@
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
-import FilterButton from './FilterButton';
+import FilterButton from './base-filters/FilterButton';
 import ApplyButton from './buttons/ApplyButton';
 import ClearButton from './buttons/ClearButton';
 import StarIcon from '../StarIcon';
 import './styles/ratingFilter.css';
 
-const RatingFilter = ({ onChange }) => {
-  // Applied rating is the confirmed value
-  const [appliedRating, setAppliedRating] = useState(0);
-  // Temp rating stores user changes until Apply is clicked
-  const [tempRating, setTempRating] = useState(0);
+type RatingFilterProps = {
+  label: string;
+  iconSrc: string;
+  selectedIconSrc: string;
+  iconAlt: string;
+  onChange: (selected: number) => void;
+  initialSelected?: number;
+};
+
+const RatingFilter: React.FC<RatingFilterProps> = ({
+  label,
+  iconSrc,
+  selectedIconSrc,
+  iconAlt,
+  onChange,
+  initialSelected = 0,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const wrapperRef = useRef(null);
+  const [appliedRating, setAppliedRating] = useState<number>(initialSelected);
+  const [tempRating, setTempRating] = useState<number>(initialSelected);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
@@ -34,7 +48,7 @@ const RatingFilter = ({ onChange }) => {
   };
 
   // Update temporary rating on star click (does not apply immediately)
-  const handleStarClick = (rating) => {
+  const handleStarClick = (rating: number) => {
     setTempRating(rating);
   };
 
@@ -53,23 +67,22 @@ const RatingFilter = ({ onChange }) => {
     setIsOpen(false);
   };
 
+  const isFilterActive = appliedRating > 0; // If applied rating is more than 0, the filter is active.
+
   return (
     <div className="filter rating-filter" ref={wrapperRef}>
       <FilterButton
         onClick={togglePopup}
-        variant="primary"
-        iconSrc="images/filter-icons/base-icons/rating-icon.png"
-        iconAlt="Rating Icon"
-      >
-        Rating
-      </FilterButton>
+        variant={isFilterActive ? "selected" : "primary"} // Toggle variant based on active state
+        iconSrc={isFilterActive ? selectedIconSrc : iconSrc} // Use selected icon when active
+        iconAlt={iconAlt}
+        label={label}
+      />
       {isOpen && (
         <div className="rating-filter-popup">
-          <p className="title">Rating</p>
+          <p className="title">{label}</p>
           <div className="star-container">
             {ratingOptions.map((option) => {
-              // If tempRating is 0, only the 0+ star is filled.
-              // Otherwise, fill all stars with option.value >= tempRating.
               const filled =
                 tempRating === 0 ? (option.value === 0) : (option.value >= tempRating);
               return (

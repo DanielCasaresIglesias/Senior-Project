@@ -1,7 +1,17 @@
 import React from 'react';
 import SearchableChecklistFilter from './base-filters/SearchableChecklistFilter';
 
-const RegionFilter = ({ onChange, stateSelected }) => {
+type RegionFilterProps = {
+  onChange: (selected: string[]) => void;
+  stateSelected: string | string[];
+  initialSelected: string[];
+};
+
+const RegionFilter: React.FC<RegionFilterProps> = ({
+  onChange,
+  stateSelected,
+  initialSelected
+}) => {
   // Master list of regions (for demonstration, includes California and a few New York regions)
   const allRegions = [
     { region: 'Central Coast', state: 'California' },
@@ -44,9 +54,11 @@ const RegionFilter = ({ onChange, stateSelected }) => {
     <SearchableChecklistFilter
       label="Region"
       iconSrc="images/filter-icons/base-icons/region-icon.png"
+      selectedIconSrc="images/filter-icons/selected-icons/region-icon.png"
       iconAlt="Region Icon"
       options={options}
       onChange={onChange}
+      initialSelected={initialSelected}
     />
   );
 };
