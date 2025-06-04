@@ -1,10 +1,11 @@
+// ExpandableSearch.tsx
 import React, { useState, useRef } from "react";
-import'../styles/expandableSearch.css';
+import '../styles/expandableSearch.css';
 
-const ExpandableSearch = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [query, setQuery] = useState("");
-  const inputRef = useRef(null);
+const ExpandableSearch: React.FC = () => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleExpand = () => {
     setIsExpanded(true);

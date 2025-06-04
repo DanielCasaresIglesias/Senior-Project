@@ -1,24 +1,23 @@
-import React, { useEffect, useRef, forwardRef } from 'react';
+// MapContainer.tsx
+import React, { useEffect, useRef, forwardRef, type MutableRefObject } from 'react';
 import '../styles/mapContainer.css';
-import L from 'leaflet';
+import L, { Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const MapContainer = forwardRef((props, ref) => {
-  const mapInstance = useRef(null);
+const MapContainer = forwardRef<LeafletMap | null, {}>((props, ref) => {
+  const mapInstance = useRef<LeafletMap | null>(null);
 
   useEffect(() => {
-    // Initialize the map only once
     mapInstance.current = L.map('map', {
       zoomControl: false
     }).setView([37.7749, -122.4194], 8); // San Francisco
 
-    // Add a tile layer (OpenStreetMap)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(mapInstance.current);
 
-    // Add a marker
-    L.marker([37.7749, -122.4194]).addTo(mapInstance.current)
+    L.marker([37.7749, -122.4194])
+      .addTo(mapInstance.current)
       .bindPopup("San Francisco, CA")
       .openPopup();
 
@@ -31,12 +30,12 @@ const MapContainer = forwardRef((props, ref) => {
       if (typeof ref === 'function') {
         ref(mapInstance.current);
       } else {
-        ref.current = mapInstance.current;
+        (ref as MutableRefObject<LeafletMap | null>).current = mapInstance.current;
       }
     }
 
     return () => {
-      mapInstance.current.remove();
+      mapInstance.current?.remove();
     };
   }, [ref]);
 

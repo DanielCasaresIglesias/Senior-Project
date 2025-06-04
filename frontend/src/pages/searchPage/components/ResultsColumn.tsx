@@ -1,8 +1,17 @@
+// ResultsColumn.tsx
 import React from 'react';
 import ExpandableSearch from './ExpandableSearch';
 import '../styles/resultsColumn.css';
+import { type Park } from '../../../types/park';
 
-const ResultsColumn = ({ results, onParkSelect, minimized }) => {
+
+type ResultsColumnProps = {
+  results: Park[];
+  onParkSelect: (park: Park) => void;
+  minimized: boolean;
+};
+
+const ResultsColumn: React.FC<ResultsColumnProps> = ({ results, onParkSelect, minimized }) => {
   return (
     <div className={`results-column ${minimized ? 'minimized' : ''}`}>
       <div className="results-header">
@@ -14,14 +23,20 @@ const ResultsColumn = ({ results, onParkSelect, minimized }) => {
       </div>
       <div className="results-list">
         {results.map((park) => (
-          <div className="park-result" key={park.id} onClick={() => onParkSelect(park)}>
+          <div
+            className="park-result"
+            key={park.id}
+            onClick={() => onParkSelect(park)}
+          >
             <div className="result-image">
               <img src={park.image} alt={park.name} />
             </div>
             <div className="result-info">
               <h2 className="park-name">{park.name}</h2>
               <p className="park-type">{park.type}</p>
-              <p className="park-location">{park.state} / {park.region}</p>
+              <p className="park-location">
+                {park.state} / {park.region}
+              </p>
             </div>
             <div className="result-rating">
               {Array.from({ length: 5 }, (_, index) => (

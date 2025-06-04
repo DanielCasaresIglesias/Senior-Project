@@ -1,7 +1,14 @@
+// StarIcon.tsx
 import React, { useState } from 'react';
 
-const StarIcon = ({ label, filled, onClick }) => {
-  const [hover, setHover] = useState(false);
+type StarIconProps = {
+  label: string;
+  filled: boolean;
+  onClick: (event: React.MouseEvent<SVGSVGElement>) => void;
+};
+
+const StarIcon: React.FC<StarIconProps> = ({ label, filled, onClick }) => {
+  const [hover, setHover] = useState<boolean>(false);
 
   // Colors for different states:
   // Default: stroke light gray (#ccc), fill white, text black.
@@ -37,7 +44,7 @@ const StarIcon = ({ label, filled, onClick }) => {
           fill: textColor,
           fontSize: '12px',
           fontWeight: 'bold',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
         {label}

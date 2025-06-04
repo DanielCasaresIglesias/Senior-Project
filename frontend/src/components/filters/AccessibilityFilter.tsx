@@ -3,9 +3,13 @@ import ChecklistFilter from './base-filters/ChecklistFilter';
 
 type AccessibilityFilterProps = {
   onChange: (selected: string[]) => void;
+  initialSelected: string[];
 };
 
-const AccessibilityFilter: React.FC<AccessibilityFilterProps> = ({ onChange }) => {
+const AccessibilityFilter: React.FC<AccessibilityFilterProps> = ({
+  onChange,
+  initialSelected,
+}) => {
   return (
     <ChecklistFilter
       label="Accessibility"
@@ -14,6 +18,7 @@ const AccessibilityFilter: React.FC<AccessibilityFilterProps> = ({ onChange }) =
       iconAlt="Accessibility Icon"
       options={['Wheelchair', 'Visual', 'Hearing']}
       onChange={onChange}
+      initialSelected={initialSelected}
     />
   );
 };

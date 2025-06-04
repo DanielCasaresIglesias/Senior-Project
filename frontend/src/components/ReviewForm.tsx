@@ -1,48 +1,67 @@
-import React, { useState } from "react";
+// ReviewForm.tsx
+import React, { useState, type ChangeEvent } from "react";
 import ReactDOM from "react-dom";
 import "./styles/reviewForm.css";
 
-const ReviewForm = ({ park, activities, onClose }) => {
+interface Park {
+  name: string;
+  type: string;
+  state: string;
+  // add other fields if needed
+}
+
+interface ReviewFormProps {
+  park: Park;
+  activities: string[];
+  onClose: () => void;
+}
+
+interface ReviewFormData {
+  activities: string[];
+  review: string;
+}
+
+const ReviewForm: React.FC<ReviewFormProps> = ({ park, activities, onClose }) => {
   // Star rating state (minimum rating is 1)
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState<number>(1);
   // Date states
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   // Activities search state
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   // Form data for review and activities
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ReviewFormData>({
     activities: [],
-    review: ""
+    review: "",
   });
 
   // Handle toggling checkboxes for activities
-  const handleCheckboxChange = (option) => {
+  const handleCheckboxChange = (option: string): void => {
     setFormData((prev) => {
       const isSelected = prev.activities.includes(option);
       return {
         ...prev,
         activities: isSelected
           ? prev.activities.filter((a) => a !== option)
-          : [...prev.activities, option]
+          : [...prev.activities, option],
       };
     });
   };
 
   // Handle text input changes (review)
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Handle star rating click
-  const handleStarClick = (star) => {
+  const handleStarClick = (star: number): void => {
     setRating(star);
   };
 
   const today = new Date().toISOString().split("T")[0];
 
-  const handleDateChange = (e) => {
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     if (name === "startDate") {
       setStartDate(value);
@@ -64,7 +83,9 @@ const ReviewForm = ({ park, activities, onClose }) => {
         <div className="header">
           <div className="header-left">
             <div className="title">{park.name}</div>
-            <div className="more-info">{park.type}, {park.state}</div>
+            <div className="more-info">
+              {park.type}, {park.state}
+            </div>
           </div>
           <div className="header-right">
             <div className="star-rating">
@@ -79,11 +100,27 @@ const ReviewForm = ({ park, activities, onClose }) => {
               ))}
             </div>
             <div className="dates">
-              <label>Start Date:
-                <input type="date" name="startDate" value={startDate} onChange={handleDateChange} max={today} required />
+              <label>
+                Start Date:
+                <input
+                  type="date"
+                  name="startDate"
+                  value={startDate}
+                  onChange={handleDateChange}
+                  max={today}
+                  required
+                />
               </label>
-              <label>End Date:
-                <input type="date" name="endDate" value={endDate} onChange={handleDateChange} max={today} required />
+              <label>
+                End Date:
+                <input
+                  type="date"
+                  name="endDate"
+                  value={endDate}
+                  onChange={handleDateChange}
+                  max={today}
+                  required
+                />
               </label>
             </div>
           </div>
@@ -135,12 +172,16 @@ const ReviewForm = ({ park, activities, onClose }) => {
 
         {/* BUTTONS */}
         <div className="action-buttons">
-          <button className="cancel-button" onClick={onClose}>Cancel</button>
-          <button className="post-button" onClick={onClose}>Post Review</button>
+          <button className="cancel-button" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="post-button" onClick={onClose}>
+            Post Review
+          </button>
         </div>
       </div>
     </div>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root")!
   );
 };
 

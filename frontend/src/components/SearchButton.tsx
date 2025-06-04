@@ -1,8 +1,18 @@
-// SearchButton.jsx
+// SearchButton.tsx
 import React from 'react';
 import './styles/searchButton.css';
 
-const SearchButton = ({ onClick, type = "button", variant = "primary" }) => {
+type SearchButtonProps = {
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
+  variant?: 'primary' | 'selected';
+};
+
+const SearchButton: React.FC<SearchButtonProps> = ({
+  onClick,
+  type = 'button',
+  variant = 'primary',
+}) => {
   return (
     <button type={type} className={`search-button ${variant}`} onClick={onClick}>
       Search

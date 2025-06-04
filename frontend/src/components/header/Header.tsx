@@ -4,13 +4,22 @@ import ProfileOverlay from './components/ProfileOverlay';
 import LoginOverlay from './components/LoginOverlay';
 import UserControls from './components/UserControls';
 import Navbar from './components/Navbar';
+import type { User } from '../../types/user';
+import type { LoginData } from '../../types/loginData';
 
-const Header = ({ user, onLogin, onLogout, onSignup }) => {
-  const [showProfileOverlay, setShowProfileOverlay] = useState(false);
-  const [showLoginOverlay, setShowLoginOverlay] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 920);
+type HeaderProps = {
+  user: User | null;
+  onLogin: (longData: LoginData) => void;
+  onLogout: () => void;
+  onSignup: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) => {
+  const [showProfileOverlay, setShowProfileOverlay] = useState<boolean>(false);
+  const [showLoginOverlay, setShowLoginOverlay] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 920);
 
   useEffect(() => {
     const handleResize = () => {
@@ -20,23 +29,23 @@ const Header = ({ user, onLogin, onLogout, onSignup }) => {
         setAccountMenuOpen(false);
       }
     };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleProfileOverlay = () => {
-    setShowProfileOverlay(!showProfileOverlay);
+    setShowProfileOverlay((prev) => !prev);
     setShowLoginOverlay(false);
   };
 
   const toggleLoginOverlay = () => {
-    setShowLoginOverlay(!showLoginOverlay);
+    setShowLoginOverlay((prev) => !prev);
     setShowProfileOverlay(false);
   };
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-    // When closing the menu, also close the account submenu.
+    setIsMenuOpen((prev) => !prev);
     if (isMenuOpen) setAccountMenuOpen(false);
   };
 
@@ -52,7 +61,6 @@ const Header = ({ user, onLogin, onLogout, onSignup }) => {
           {isMenuOpen ? '✕' : '☰'}
         </button>
       ) : (
-        // Desktop view: show Navbar and UserControls as usual.
         <>
           <Navbar />
           <div className="user-controls">
@@ -65,7 +73,6 @@ const Header = ({ user, onLogin, onLogout, onSignup }) => {
         </>
       )}
 
-      {/* Mobile Menu Overlay */}
       {isMobile && (
         <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
           <div className="mobile-menu-header">
@@ -81,7 +88,7 @@ const Header = ({ user, onLogin, onLogout, onSignup }) => {
               {user ? (
                 <div className="mobile-account">
                   <button
-                    onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                    onClick={() => setAccountMenuOpen((prev) => !prev)}
                     className="mobile-account-button"
                   >
                     Account
@@ -107,12 +114,20 @@ const Header = ({ user, onLogin, onLogout, onSignup }) => {
         </div>
       )}
 
-      {/* Desktop Profile Overlay (only for non-mobile) */}
       {showProfileOverlay && user && (
         <ProfileOverlay
           user={user}
           onClose={() => setShowProfileOverlay(false)}
           onLogout={onLogout}
+        />
+      )}
+
+      {/* Optional: LoginOverlay (if needed later) */}
+      {showLoginOverlay && !user && (
+        <LoginOverlay
+          onClose={() => setShowLoginOverlay(false)}
+          onLogin={onLogin}
+          onSignup={onSignup}
         />
       )}
     </header>

@@ -1,3 +1,4 @@
+// SearchPage.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FilterBar from '../../components/FilterBar';
@@ -5,13 +6,15 @@ import ResultsColumn from './components/ResultsColumn';
 import ParkPopup from './components/ParkPopup';
 import MapContainer from './components/MapContainer';
 import './styles/searchPage.css';
-const activities = [
+import { type Park } from '../../types/park'
+import { type Filters } from '../../types/filters';
+
+const activities: string[] = [
   'Rock Climbing', 'Surfing', 'Kayaking', 'Hiking', 'Archery', 'Fishing',
   'Winter Sports', 'Guided Tours', 'Canoeing', 'Skiing', 'Snowboarding'
 ];
 
-// Mock park data
-const mockParks = [
+const mockParks: Park[] = [
   {
     id: 1,
     name: "Yosemite",
@@ -44,48 +47,58 @@ const mockParks = [
     features: ["Geysers", "Hot Springs"],
     coordinates: [44.599072069249665, -111.01394802525812]
   }
-  // ... add more mock parks as needed
 ];
 
-const SearchPage = () => {
+const SearchPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [filters, setFilters] = useState({});
-  const [parks, setParks] = useState(mockParks);
-  const [selectedPark, setSelectedPark] = useState(null);
+  const [filters, setFilters] = useState<Filters>({
+      distance: null,
+      trails: [],
+      activities: [],
+      facilities: [],
+      features: [],
+      rating: null,
+      parkState: [],
+      region: [],
+      accessibility: [],
+      permits: [],
+      petPolicy: null,
+      dates: null,
+      weather: null,
+      parking: null,
+      cost: null,
+    });
+  const [parks, setParks] = useState<Park[]>(mockParks);
+  const [selectedPark, setSelectedPark] = useState<Park | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [resultsMinimized, setResultsMinimized] = useState(false);
-  // Create a ref for the MapContainer
-  const mapRef = useRef(null);
+  const mapRef = useRef<L.Map | null>(null);
 
-  // On page load, parse query parameters if needed
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    // Parse parameters to update filters state (omitted for brevity)
+    // Handle filters from query (optional)
   }, [location.search]);
 
-  const handleFiltersChange = (newFilters) => {
+  const handleFiltersChange = (newFilters: Filters) => {
     setFilters(newFilters);
   };
 
-  const handleFilterPopupClose = (updatedFilters) => {
+  const handleFilterPopupClose = (updatedFilters: Filters) => {
     const params = new URLSearchParams();
-    // (Convert updatedFilters into query params)
+    // Convert updatedFilters to params (example omitted)
     navigate(`/search/results?${params.toString()}`);
     window.location.reload();
   };
 
-  const handleParkSelect = (park) => {
+  const handleParkSelect = (park: Park) => {
     setSelectedPark(park);
     setShowPopup(true);
-    // Move map view focus to the park's coordinates.
-    // Assumes mapRef.current is a Leaflet map instance.
-    if (mapRef.current && mapRef.current.setView) {
-      mapRef.current.setView(park.coordinates, 10); // Adjust zoom level as needed.
+    if (mapRef.current?.setView) {
+      mapRef.current.setView(park.coordinates, 10);
     }
   };
 
-  // When toggling the results column, also close the popup immediately if we’re minimizing.
   const handleMinimizeResults = () => {
     const newMinimized = !resultsMinimized;
     setResultsMinimized(newMinimized);
@@ -96,7 +109,6 @@ const SearchPage = () => {
 
   return (
     <div className="search-page">
-      {/* Filter Bar at the Top */}
       <div className="filter-bar-container">
         <FilterBar
           onFiltersChange={handleFiltersChange}
@@ -105,9 +117,7 @@ const SearchPage = () => {
         />
       </div>
 
-      {/* Main content area */}
       <div className="content">
-        {/* Results Column Overlay */}
         <div className={`search-results ${resultsMinimized ? 'minimized' : ''}`}>
           <div className="results-content">
             <ResultsColumn
@@ -120,19 +130,16 @@ const SearchPage = () => {
             {resultsMinimized ? ">" : "<"}
           </div>
         </div>
-        
-        {/* Park Details Popup Overlay */}
+
         {showPopup && selectedPark && (
           <ParkPopup
-            className="park-popup"
             park={selectedPark}
             activities={activities}
             onClose={() => setShowPopup(false)}
           />
         )}
 
-        {/* Map Container fills the background */}
-        <MapContainer ref={mapRef} className="map-container" />
+        <MapContainer ref={mapRef}/>
       </div>
     </div>
   );

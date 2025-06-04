@@ -1,10 +1,31 @@
+// ParkPopup.tsx
 import React, { useState } from 'react';
 import '../styles/parkPopup.css';
 import ReviewForm from '../../../components/ReviewForm';
 
-const ParkPopup = ({ park, activities, onClose }) => {
-  const [activeTab, setActiveTab] = useState('Overview');
+type Park = {
+  name: string;
+  image: string;
+  type: string;
+  state: string;
+  region: string;
+  rating: number;
+  reviews: number;
+  description: string;
+  activities: string[];
+  facilities: string[];
+  features: string[];
+  averageScore?: number;
+};
 
+type ParkPopupProps = {
+  park: Park;
+  activities: string[];
+  onClose: () => void;
+};
+
+const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
+  const [activeTab, setActiveTab] = useState<'Overview' | 'Reviews' | 'More Info'>('Overview');
   const [showReviewPopup, setShowReviewPopup] = useState(false);
 
   const handleLeaveReview = () => {
@@ -41,15 +62,15 @@ const ParkPopup = ({ park, activities, onClose }) => {
         </div>
       </div>
       <div className="popup-tabs">
-        <button className={`tab-button ${activeTab === 'Overview' ? 'selected' : ''}`} onClick={() => setActiveTab('Overview')}>
-          Overview
-        </button>
-        <button className={`tab-button ${activeTab === 'Reviews' ? 'selected' : ''}`} onClick={() => setActiveTab('Reviews')}>
-          Reviews
-        </button>
-        <button className={`tab-button ${activeTab === 'More Info' ? 'selected' : ''}`} onClick={() => setActiveTab('More Info')}>
-          More Info
-        </button>
+        {['Overview', 'Reviews', 'More Info'].map(tab => (
+          <button
+            key={tab}
+            className={`tab-button ${activeTab === tab ? 'selected' : ''}`}
+            onClick={() => setActiveTab(tab as 'Overview' | 'Reviews' | 'More Info')}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
       <div className="popup-content">
         {activeTab === 'Overview' && (
@@ -67,7 +88,6 @@ const ParkPopup = ({ park, activities, onClose }) => {
             <div className="trails-section">
               <h3 className="section-title">Trails</h3>
               <div className="trails-icons">
-                {/* For demo, simple text icons */}
                 <div className="trail-icon">H</div>
                 <div className="trail-icon">MB</div>
                 <div className="trail-icon">HR</div>
@@ -103,7 +123,6 @@ const ParkPopup = ({ park, activities, onClose }) => {
         {activeTab === 'Reviews' && (
           <div className="reviews-section">
             <div className="reviews-bar-graph">
-              {/* Simplified bar graph placeholder */}
               <p>Bar graph goes here</p>
             </div>
             <div className="average-review">
@@ -124,15 +143,15 @@ const ParkPopup = ({ park, activities, onClose }) => {
         )}
         {activeTab === 'More Info' && (
           <div className="more-info-section">
-            {/* Blank for now */}
+            {/* Placeholder */}
           </div>
         )}
       </div>
       {showReviewPopup && (
-        <ReviewForm 
-          park={park} 
-          activities={activities} 
-          onClose={handleCloseReviewPopup} 
+        <ReviewForm
+          park={park}
+          activities={activities}
+          onClose={handleCloseReviewPopup}
         />
       )}
     </div>

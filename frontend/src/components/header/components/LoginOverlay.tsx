@@ -1,35 +1,51 @@
+// LoginOverlay.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import '../styles/loginOverlay.css';
+import type { LoginData } from '../../../types/loginData';
 
-const LoginOverlay = ({ onClose, onLogin, onSignup }) => {
-  const overlayRef = useRef(null);
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    remember: false
+type LoginOverlayProps = {
+  onClose: () => void;
+  onLogin: (data: LoginData) => void;
+  onSignup: () => void;
+};
+
+const LoginOverlay: React.FC<LoginOverlayProps> = ({ onClose, onLogin, onSignup }) => {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const [formData, setFormData] = useState<LoginData>({
+    username: "",
+    profilePic: "",
+    password: "",
+    remember: false,
   });
 
   // Close overlay when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (overlayRef.current && !overlayRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        overlayRef.current &&
+        !overlayRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, [onClose]);
 
-  const handleChange = (e) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     onLogin(formData);
   };
@@ -69,9 +85,13 @@ const LoginOverlay = ({ onClose, onLogin, onSignup }) => {
                 Remember Me
               </label>
             </div>
-            <button type="submit" className="login-submit-button">Login</button>
+            <button type="submit" className="login-submit-button">
+              Login
+            </button>
           </form>
-          <button className="signup-button" onClick={onSignup}>Sign Up</button>
+          <button className="signup-button" onClick={onSignup}>
+            Sign Up
+          </button>
           <div className="forgot-password">
             <a href="/forgot-password">Forgot your password?</a>
           </div>

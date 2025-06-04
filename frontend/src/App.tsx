@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './components/header/Header.jsx';
-import Home from './pages/homePage/HomePage.jsx'
-import Search from './pages/searchPage/SearchPage.jsx';
-import About from './pages/aboutPage/AboutPage.jsx';
-import PlanTrip from './pages/planTripPage/PlanTripPage.jsx';
+import Header from './components/header/Header';
+import Home from './pages/homePage/HomePage';
+import Search from './pages/searchPage/SearchPage';
+import About from './pages/aboutPage/AboutPage';
+// import PlanTrip from './pages/planTripPage/PlanTripPage';
+import type { User } from './types/user';
+import type { LoginData } from './types/loginData';
 import './styles/globalStyles.css';
 
-const App = () => {
-  const [user, setUser] = useState({
+
+const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>({
     username: 'JohnDoe',
     profilePic: '/images/ProfilePhotoPlaceholder.png'
   });
 
-  const handleLogin = (loginData) => {
-    // Your login logic here
+  const handleLogin = (loginData: LoginData) => {
+    // Replace with real logic
+    setUser({
+      username: loginData.username,
+      profilePic: loginData.profilePic
+    });
   };
 
   const handleLogout = () => {
@@ -28,7 +35,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        <Header 
+        <Header
           user={user}
           onLogin={handleLogin}
           onLogout={handleLogout}

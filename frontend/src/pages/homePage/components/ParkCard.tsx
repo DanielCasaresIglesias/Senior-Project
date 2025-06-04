@@ -1,7 +1,14 @@
 import React from "react";
 import '../styles/parkCard.css';
 
-const ParkCard = ({ imageSrc, parkName, parkType, rating }) => {
+type ParkCardProps = {
+  imageSrc: string;
+  parkName: string;
+  parkType: string;
+  rating: number;
+};
+
+const ParkCard: React.FC<ParkCardProps> = ({ imageSrc, parkName, parkType, rating }) => {
   return (
     <div className="park-card">
       <div className="image-container">
