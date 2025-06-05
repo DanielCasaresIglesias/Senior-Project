@@ -198,11 +198,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange }) => {
         ))}
         <FilterButton
           onClick={() => setShowMore((prev) => !prev)}
-          label="More Filters"
+          label={showMore ? 'Show Less' : 'Show More'}
           variant="primary"
           iconSrc="images/filter-icons/base-icons/more-filters-icon.png"
           iconAlt="More Filters"
-          children= {showMore ? 'Show Less' : 'Show More'}
+          // children= {showMore ? 'Show Less' : 'Show More'}
         >
         </FilterButton>
       </div>
