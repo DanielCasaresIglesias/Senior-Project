@@ -96,27 +96,32 @@ export function buildParksFilterQuery(
   }
 
   // ENTRY FEE
-  if (params.entryFeeMin !== null) {
-    conditions.push(`p.park_entry_fee >= $${idx}`);
-    values.push(params.entryFeeMin);
-    idx++;
-  }
-  if (params.entryFeeMax !== null) {
-    conditions.push(`p.park_entry_fee <= $${idx}`);
-    values.push(params.entryFeeMax);
-    idx++;
-  }
-
-  // PARKING FEE
-  if (params.parkingFeeMin !== null) {
-    conditions.push(`p.park_parking_fee >= $${idx}`);
-    values.push(params.parkingFeeMin);
-    idx++;
-  }
-  if (params.parkingFeeMax !== null) {
-    conditions.push(`p.park_parking_fee <= $${idx}`);
-    values.push(params.parkingFeeMax);
-    idx++;
+  if (
+    (params.entryFeeMin != null && params.entryFeeMax != null) &&
+    (params.groupSize    != null &&
+     params.numCars      != null &&
+     params.numMotorcycles != null &&
+     params.includeShuttle != null)
+  ) {
+    // compute total_cost = groupSize * park_entry_fee
+    //                    + (numCars + numMotorcycles) * park_parking_fee
+    //                    + (includeShuttle ? park_other_fee : 0)
+    conditions.push(`
+      (
+        ($${idx}::int     * p.park_entry_fee)
+        + (($${idx + 1}::int + $${idx + 2}::int) * p.park_parking_fee)
+        + (CASE WHEN $${idx + 3}::boolean THEN p.park_other_fee ELSE 0 END)
+      ) BETWEEN $${idx + 4}::numeric AND $${idx + 5}::numeric
+    `);
+    values.push(
+      params.groupSize,
+      params.numCars,
+      params.numMotorcycles,
+      params.includeShuttle,
+      params.entryFeeMin,
+      params.entryFeeMax
+    );
+    idx += 6;
   }
 
   // ACCESSIBILITY

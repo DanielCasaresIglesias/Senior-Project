@@ -8,7 +8,7 @@ CREATE TABLE parks (
   park_level VARCHAR(30) CHECK (park_level IN ('Federal', 'State', 'Regional', 'County', 'City/Municipal', 'Tribal', 'Private with Public Access', 'Uknown/Other')),
   park_type VARCHAR(30) CHECK (park_type IN ('Park', 'Recreation Area', 'Forest', 'Wilderness Area', 'Seashore', 'Beach', 'Historic Trail', 'Monument', 'Historical Park', 'Historic Site', 'Preserve', 'Memorial', 'Other Park Designation', 'Grassland', 'Management Unit', 'Marine Sanctuary', 'Wildlife Refuge', 'Wildlife Management Area', 'Fish Hatchery')),
   park_description TEXT,
-  park_phone_number VARCHAR(15),
+  park_phone_number VARCHAR(30),
   park_size DECIMAL (10,2) CHECK (park_size >= 0),
   park_min_elevation INT,
   park_max_elevation INT,

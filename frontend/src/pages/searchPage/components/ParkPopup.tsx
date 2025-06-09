@@ -1,8 +1,8 @@
 // ParkPopup.tsx
 import React, { useState, useEffect } from 'react';
-import '../styles/parkPopup.css';
 import ReviewForm from '../../../components/ReviewForm';
 import type { Park } from '../../../types/park';
+import '../styles/parkPopup.css';
 
 type ParkPopupProps = {
   park: Park;

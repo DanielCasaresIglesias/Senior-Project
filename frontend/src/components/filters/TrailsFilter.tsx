@@ -18,7 +18,7 @@ const TrailsFilter: React.FC<TrailsFilterProps> = ({
       iconSrc="images/filter-icons/base-icons/trails-icon.png"
       selectedIconSrc="images/filter-icons/selected-icons/trails-icon.png"
       iconAlt="Trails Icon"
-      options={['Hiking', 'Mountain Biking', 'Road Cycling', 'Horseback Riding']}
+      options={['Hiking', 'Mountain Biking', 'Wheelchair Accessible', 'Horseback Riding']}
       onChange={onChange}
       initialSelected={initialSelected}
     />

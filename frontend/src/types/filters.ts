@@ -29,4 +29,10 @@ export interface Filters {
   openEndDate?: string;
 
   weatherConditions?: string[];
+
+  // Cost Filters
+  groupSize?: number | null;
+  numCars?: number | null;
+  numMotorcycles?: number | null;
+  includeShuttle?: boolean;
 }

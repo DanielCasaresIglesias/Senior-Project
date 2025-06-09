@@ -1,39 +1,12 @@
 // frontend/src/services/parksService.ts
 
 import { API_URL } from './api';
-
-export interface FiltersType {
-  parkState?: string[];
-  region?: string[];
-  trails?: string[];
-  activities?: string[];
-  facilities?: string[];
-  features?: string[];
-  ratingMin?: number | null;
-
-  entryFeeMin?: number | null;
-  entryFeeMax?: number | null;
-
-  parkingFeeMin?: number | null;
-  parkingFeeMax?: number | null;
-
-  petPolicy?: string | null;
-  accessibility?: string[];   // e.g. ["Wheelchair","Visual"]
-  permits?: string[];         // e.g. ["drone","fishing"]
-
-  distanceAddress?: string;
-  distanceMiles?: number | null;
-
-  openStartDate?: string;  // "2025-07-01"
-  openEndDate?: string;    // "2025-07-10"
-
-  weatherConditions?: string[]; // e.g. ["Rain","Cloudy"]
-}
+import type { Filters } from '../src/types/filters';
 
 /**
  * Build a ?-style query string from filters and fetch /api/parks
  */
-export async function fetchParks(filters: FiltersType) {
+export async function fetchParks(filters: Filters) {
   const qs = new URLSearchParams();
 
   if (filters.parkState && filters.parkState.length) {
@@ -71,6 +44,19 @@ export async function fetchParks(filters: FiltersType) {
   }
   if (filters.parkingFeeMax !== undefined && filters.parkingFeeMax !== null) {
     qs.append('parkingFeeMax', filters.parkingFeeMax.toString());
+  }
+
+  if (filters.groupSize !== undefined && filters.groupSize !== null) {
+    qs.append('groupSize', filters.groupSize.toString());
+  }
+  if (filters.numCars !== undefined && filters.numCars !== null) {
+    qs.append('numCars', filters.numCars.toString());
+  }
+  if (filters.numMotorcycles !== undefined && filters.numMotorcycles !== null) {
+    qs.append('numMotorcycles', filters.numMotorcycles.toString());
+  }
+  if (filters.includeShuttle !== undefined) {
+    qs.append('includeShuttle', filters.includeShuttle.toString());
   }
 
   if (filters.petPolicy) {

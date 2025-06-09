@@ -63,6 +63,23 @@ const SearchPage: React.FC = () => {
       newFilters.parkingFeeMax = parseFloat(params.get('parkingFeeMax')!);
     }
 
+    if (params.has('groupSize')) {
+      // parseInt because it’s a whole number ≥1
+      newFilters.groupSize = parseInt(params.get('groupSize')!, 10);
+    }
+    if (params.has('numCars')) {
+      // parseInt because it’s a whole number ≥1
+      newFilters.numCars = parseInt(params.get('numCars')!, 10);
+    }
+    if (params.has('numMotorcycles')) {
+      // parseInt because it’s a whole number ≥1
+      newFilters.numMotorcycles = parseInt(params.get('numMotorcycles')!, 10);
+    }
+    if (params.has('includeShuttle')) {
+      // checkboxes come through as "true" or "false"
+      newFilters.includeShuttle = params.get('includeShuttle') === 'true';
+    }
+
     if (params.has('petPolicy')) {
       newFilters.petPolicy = params.get('petPolicy')!;
     }
@@ -198,7 +215,9 @@ const SearchPage: React.FC = () => {
     setSelectedPark(park);
     setShowPopup(true);
     if (mapRef.current?.setView) {
-      mapRef.current.setView([park.park_latitude, park.park_longitude], 10);
+      console.log(park.park_latitude)
+      console.log(park.park_longitude)
+      mapRef.current.setView([park.park_longitude, park.park_latitude], 10);
     }
   };
 

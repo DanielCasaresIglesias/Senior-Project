@@ -14,8 +14,9 @@ import PermitsFilter from './filters/PermitsFilter';
 import PetPolicyFilter from './filters/PetPolicyFilter';
 // import DatesFilter from './filters/DatesFilter';
 // import WeatherFilter from './filters/WeatherFilter';
-import ParkingFilter from './filters/ParkingFilter';
-import FeesFilter from './filters/FeesFilter';
+// import ParkingFilter from './filters/ParkingFilter';
+// import FeesFilter from './filters/FeesFilter';
+import CostFilter from './filters/CostFilter';
 import FilterButton from './filters/base-filters/FilterButton';
 import type { Filters } from '../types/filters';
 import './styles/filterBar.css';
@@ -143,37 +144,28 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
       onChange={val => updateField('petPolicy', val)}
       initialSelected={filters.petPolicy ?? null}
     />,
-    // <DatesFilter
-    //   key="dates"
-    //   onChange={({ start, end }) => {
-    //     updateField('openStartDate', start);
-    //     updateField('openEndDate', end);
-    //   }}
-    //   initialStartDate={filters.openStartDate || ''}
-    //   initialEndDate={filters.openEndDate || ''}
-    // />,
-    // <WeatherFilter
-    //   key="weather"
-    //   onChange={val => updateField('weatherConditions', val)}
-    //   initialSelected={filters.weatherConditions || []}
-    // />,
-    <ParkingFilter
-      key="parking"
-      onChange={({ min, max }) => {
-        updateField('parkingFeeMin', min);
-        updateField('parkingFeeMax', max);
-      }}
-      initialMin={filters.parkingFeeMin ?? 0}
-      initialMax={filters.parkingFeeMax ?? 0}
-    />,
-    <FeesFilter
+    <CostFilter
       key="cost"
-      onChange={({ min, max }) => {
-        updateField('entryFeeMin', min);
-        updateField('entryFeeMax', max);
+      label="Cost & Parking"
+      iconSrc="images/filter-icons/base-icons/cost-icon.png"
+      selectedIconSrc="images/filter-icons/selected-icons/cost-icon.png"
+      iconAlt="Cost & Parking"
+      initial={{
+        min: filters.entryFeeMin ?? 0,
+        max: filters.entryFeeMax ?? 0,
+        people: filters.groupSize ?? 1,
+        cars: filters.numCars ?? 0,
+        motorcycles: filters.numMotorcycles ?? 0,
+        includeTransit: filters.includeShuttle ?? false,
       }}
-      initialMin={filters.entryFeeMin ?? 0}
-      initialMax={filters.entryFeeMax ?? 0}
+      onChange={({ min, max, people, cars, motorcycles, includeTransit }) => {
+        updateField('parkingFeeMin', min);
+        updateField('entryFeeMax', max);
+        updateField('groupSize', people);
+        updateField('numCars', cars);
+        updateField('numMotorcycles', motorcycles);
+        updateField('includeShuttle', includeTransit);
+      }}
     />,
   ];
 

@@ -23,4 +23,10 @@ export interface ParksFilterParams {
 
   distanceAddress: string | null;
   distanceMiles: number | null;
+
+  // Cost Filters
+  groupSize?: number | null;
+  numCars?: number | null;
+  numMotorcycles?: number | null;
+  includeShuttle?: boolean;
 }

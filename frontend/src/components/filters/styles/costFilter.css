@@ -1,0 +1,73 @@
+/* CSS: frontend/src/components/filters/styles/costFilter.css */
+
+.cost-filter-popup {
+  width: 15rem;
+  max-height: 30rem;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  z-index: 200;
+  margin-top: 4px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: black;
+  overflow-y: auto;
+}
+
+.cost-filter-popup .title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+}
+
+.cost-filter-popup .row-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.cost-filter-popup .row-inputs input {
+  width: 6rem;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 1rem;
+}
+
+.cost-filter-popup .separator {
+  font-size: 1rem;
+}
+
+.cost-filter-popup input[type="number"] {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.cost-filter-popup .transit-option {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.cost-filter-popup .error {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.cost-filter-popup .buttons {
+  display: flex;
+  justify-content: space-between;
+}
