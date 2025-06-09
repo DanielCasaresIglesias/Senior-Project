@@ -1,3 +1,4 @@
+// frontend/src/components/filters/TrailsFilter.tsx
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 
@@ -17,7 +18,7 @@ const TrailsFilter: React.FC<TrailsFilterProps> = ({
       iconSrc="images/filter-icons/base-icons/trails-icon.png"
       selectedIconSrc="images/filter-icons/selected-icons/trails-icon.png"
       iconAlt="Trails Icon"
-      options={['Hiking', 'Mountain Biking', 'Horseback Riding']}
+      options={['Hiking', 'Mountain Biking', 'Road Cycling', 'Horseback Riding']}
       onChange={onChange}
       initialSelected={initialSelected}
     />

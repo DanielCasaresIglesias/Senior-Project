@@ -1,0 +1,199 @@
+// backend/src/services/parksService.ts
+import { Coordinates, geocodeAddress } from './geocodingService';
+import { ParksFilterParams } from '../types/parkFilters';
+
+/**
+ * Build SQL + values for filtering parks.
+ * Removed date & weather filters. Removed petPolicy.
+ * Includes many-to-many fields as arrays.
+ */
+export function buildParksFilterQuery(
+  params: ParksFilterParams
+): { text: string; values: any[] } {
+  const conditions: string[] = [];
+  const values: any[] = [];
+  let idx = 1;
+
+  // STATES
+  if (params.states.length) {
+    conditions.push(`p.park_state = ANY($${idx}::text[])`);
+    values.push(params.states);
+    idx++;
+  }
+
+  // REGIONS
+  if (params.regions.length) {
+    conditions.push(`p.park_region = ANY($${idx}::text[])`);
+    values.push(params.regions);
+    idx++;
+  }
+
+  // TRAILS filter via EXISTS
+  if (params.trails.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_trail_types ptt
+         JOIN trail_types tt ON ptt.trail_type_id = tt.trail_type_id
+         WHERE ptt.park_id = p.park_id
+           AND tt.trail_type_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.trails);
+    idx++;
+  }
+
+  // ACTIVITIES
+  if (params.activities.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_activities pa
+         JOIN activities a ON pa.activity_id = a.activity_id
+         WHERE pa.park_id = p.park_id
+           AND a.activity_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.activities);
+    idx++;
+  }
+
+  // FACILITIES
+  if (params.facilities.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_facilities pf
+         JOIN facilities f ON pf.facility_id = f.facility_id
+         WHERE pf.park_id = p.park_id
+           AND f.facility_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.facilities);
+    idx++;
+  }
+
+  // FEATURES
+  if (params.features.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_features pfeat
+         JOIN features feat ON pfeat.feature_id = feat.feature_id
+         WHERE pfeat.park_id = p.park_id
+           AND feat.feature_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.features);
+    idx++;
+  }
+
+  // RATING
+  if (params.ratingMin !== null) {
+    conditions.push(`p.park_average_rating >= $${idx}`);
+    values.push(params.ratingMin);
+    idx++;
+  }
+
+  // ENTRY FEE
+  if (params.entryFeeMin !== null) {
+    conditions.push(`p.park_entry_fee >= $${idx}`);
+    values.push(params.entryFeeMin);
+    idx++;
+  }
+  if (params.entryFeeMax !== null) {
+    conditions.push(`p.park_entry_fee <= $${idx}`);
+    values.push(params.entryFeeMax);
+    idx++;
+  }
+
+  // PARKING FEE
+  if (params.parkingFeeMin !== null) {
+    conditions.push(`p.park_parking_fee >= $${idx}`);
+    values.push(params.parkingFeeMin);
+    idx++;
+  }
+  if (params.parkingFeeMax !== null) {
+    conditions.push(`p.park_parking_fee <= $${idx}`);
+    values.push(params.parkingFeeMax);
+    idx++;
+  }
+
+  // ACCESSIBILITY
+  if (params.accessibility.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_accessibility pac
+         JOIN accessibility ac ON pac.accessibility_id = ac.accessibility_id
+         WHERE pac.park_id = p.park_id
+           AND ac.accessibility_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.accessibility);
+    idx++;
+  }
+
+  // PERMITS: drone, fishing, hunting, backcountry
+  if (params.permits.length) {
+    const permitConds: string[] = [];
+    params.permits.forEach((perm: string) => {
+      if (perm === 'drone')   permitConds.push(`p.park_drone_permit <> 'Not Allowed'`);
+      if (perm === 'fishing') permitConds.push(`p.park_fishing_permit <> 'Not Allowed'`);
+      if (perm === 'hunting') permitConds.push(`p.park_hunting_permit <> 'Not Allowed'`);
+      if (perm === 'backcountry') permitConds.push(`p.park_backcountry_permit <> 'Not Allowed'`);
+    });
+    if (permitConds.length) {
+      conditions.push(`(${permitConds.join(' OR ')})`);
+    }
+  }
+
+  // DISTANCE
+  if (params.distanceAddress && params.distanceMiles !== null) {
+    const coords: Coordinates = geocodeAddress(params.distanceAddress);
+    const radius = params.distanceMiles * 1609.34;
+    conditions.push(
+      `ST_DWithin(
+         p.park_location,
+         ST_SetSRID(ST_Point($${idx + 1}, $${idx}), 4326)::geography,
+         $${idx + 2}
+       )`
+    );
+    values.push(coords.latitude, coords.longitude, radius);
+    idx += 3;
+  }
+
+  // FINAL SQL with array_agg sub-selects
+  const text = `
+    SELECT
+      p.*,
+      COALESCE((SELECT array_agg(tt.trail_type_name)
+        FROM park_trail_types ptt
+        JOIN trail_types tt ON ptt.trail_type_id = tt.trail_type_id
+        WHERE ptt.park_id = p.park_id), '{}') AS trail_types,
+      COALESCE((SELECT array_agg(ct.camp_type_name)
+        FROM park_camp_types pct
+        JOIN camp_types ct ON pct.camp_type_id = ct.camp_type_id
+        WHERE pct.park_id = p.park_id), '{}') AS camp_types,
+      COALESCE((SELECT array_agg(a.activity_name)
+        FROM park_activities pa
+        JOIN activities a ON pa.activity_id = a.activity_id
+        WHERE pa.park_id = p.park_id), '{}') AS activities,
+      COALESCE((SELECT array_agg(f.facility_name)
+        FROM park_facilities pf
+        JOIN facilities f ON pf.facility_id = f.facility_id
+        WHERE pf.park_id = p.park_id), '{}') AS facilities,
+      COALESCE((SELECT array_agg(fe.feature_name)
+        FROM park_features pf2
+        JOIN features fe ON pf2.feature_id = fe.feature_id
+        WHERE pf2.park_id = p.park_id), '{}') AS features,
+      COALESCE((SELECT array_agg(ac.accessibility_name)
+        FROM park_accessibility pac
+        JOIN accessibility ac ON pac.accessibility_id = ac.accessibility_id
+        WHERE pac.park_id = p.park_id), '{}') AS accessibility
+    FROM parks p
+    ${conditions.length ? 'WHERE ' + conditions.join('\n  AND ') : ''}
+  `;
+
+  return { text, values };
+}

@@ -1,30 +1,15 @@
 // ParkPopup.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/parkPopup.css';
 import ReviewForm from '../../../components/ReviewForm';
-
-type Park = {
-  name: string;
-  image: string;
-  type: string;
-  state: string;
-  region: string;
-  rating: number;
-  reviews: number;
-  description: string;
-  activities: string[];
-  facilities: string[];
-  features: string[];
-  averageScore?: number;
-};
+import type { Park } from '../../../types/park';
 
 type ParkPopupProps = {
   park: Park;
-  activities: string[];
   onClose: () => void;
 };
 
-const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
+const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
   const [activeTab, setActiveTab] = useState<'Overview' | 'Reviews' | 'More Info'>('Overview');
   const [showReviewPopup, setShowReviewPopup] = useState(false);
 
@@ -36,29 +21,42 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
     setShowReviewPopup(false);
   };
 
+  const activities = park.activities ?? [];
+  const facilities = park.facilities ?? [];
+  const features  = park.features  ?? [];
+  const accessibility  = park.accessibility  ?? [];
+
+  // Log arrays for debugging
+  useEffect(() => {
+    console.log('Activities:', activities);
+    console.log('Facilities:', facilities);
+    console.log('Features:', features);
+    console.log('Accessibility:', accessibility);
+  }, [activities, facilities, features, accessibility]);
+
   return (
     <div className="park-popup">
       <div className="popup-header">
-        <img src={park.image} alt={park.name} className="popup-image" />
+        <img src={park.park_photo_link} alt={park.park_name} className="popup-image" />
         <button className="popup-close" onClick={onClose}>X</button>
       </div>
       <div className="popup-park-info">
         <div className="park-info-header">
-          <div className="park-name">{park.name}</div>
+          <div className="park-name">{park.park_name}</div>
           <div className="park-details">
-            <div className="park-type">{park.type}</div>
-            <div className="park-location">{park.state} / {park.region}</div>
+            <div className="park-type">{park.park_type}</div>
+            <div className="park-location">{park.park_state} / {park.park_region}</div>
           </div>
         </div>
         <div className="park-rating">
           <div className="stars">
             {Array.from({ length: 5 }, (_, index) => (
               <span key={index} className="star">
-                {index < park.rating ? '★' : '☆'}
+                {index < park.park_average_rating ? '★' : '☆'}
               </span>
             ))}
           </div>
-          <div className="review-count">({park.reviews} reviews)</div>
+          <div className="review-count">({park.park_number_of_reviews} reviews)</div>
         </div>
       </div>
       <div className="popup-tabs">
@@ -77,7 +75,7 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
           <div className="overview-section">
             <div className="description-box">
               <h3 className="section-title">Description</h3>
-              <p className="description-text">{park.description}</p>
+              <p className="description-text">{park.park_description}</p>
             </div>
             <div className="overview-buttons">
               <button className="trip-button">Plan a Trip</button>
@@ -94,30 +92,11 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
                 <div className="trail-icon">WA</div>
               </div>
             </div>
-            <div className="activities-section">
-              <h3 className="section-title">Activities</h3>
-              <div className="scrollable-list">
-                {park.activities.map((act, idx) => (
-                  <div key={idx} className="activity-item">{act}</div>
-                ))}
-              </div>
-            </div>
-            <div className="facilities-section">
-              <h3 className="section-title">Facilities</h3>
-              <div className="scrollable-list">
-                {park.facilities.map((fac, idx) => (
-                  <div key={idx} className="facility-item">{fac}</div>
-                ))}
-              </div>
-            </div>
-            <div className="features-section">
-              <h3 className="section-title">Features</h3>
-              <div className="scrollable-list">
-                {park.features.map((feat, idx) => (
-                  <div key={idx} className="feature-item">{feat}</div>
-                ))}
-              </div>
-            </div>
+            {/* Activities / Facilities / Features */}
+            <Section title="Activities" items={activities} />
+            <Section title="Facilities" items={facilities} />
+            <Section title="Features" items={features} />
+            <Section title="Accessibility" items={accessibility} />
           </div>
         )}
         {activeTab === 'Reviews' && (
@@ -126,15 +105,15 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
               <p>Bar graph goes here</p>
             </div>
             <div className="average-review">
-              <div className="average-score">{park.averageScore?.toFixed(1) || '0.0'}</div>
+              <div className="average-score">{park.park_average_rating?.toFixed(1) || '0.0'}</div>
               <div className="review-stars">
                 {Array.from({ length: 5 }, (_, index) => (
                   <span key={index} className="star">
-                    {index < Math.round(park.averageScore || 0) ? '★' : '☆'}
+                    {index < Math.round(park.park_average_rating || 0) ? '★' : '☆'}
                   </span>
                 ))}
               </div>
-              <div className="review-total">{park.reviews} reviews</div>
+              <div className="review-total">{park.park_number_of_reviews} reviews</div>
             </div>
             <button className="leave-review-button" onClick={handleLeaveReview}>
               Leave a Review
@@ -159,3 +138,25 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, activities, onClose }) => {
 };
 
 export default ParkPopup;
+
+
+// Helper sub-component for lists:
+const Section: React.FC<{ title: string; items: string[] }> = ({
+  title,
+  items,
+}) => (
+  <div className={`${title.toLowerCase()}-section`}>
+    <h3 className="section-title">{title}</h3>
+    <div className="scrollable-list">
+      {items.length > 0 ? (
+        items.map((x) => (
+          <div key={x} className={`${title.toLowerCase()}-item`}>
+            {x}
+          </div>
+        ))
+      ) : (
+        <div className="no-items">None listed</div>
+      )}
+    </div>
+  </div>
+);

@@ -2,13 +2,8 @@
 import React, { useState, type ChangeEvent } from "react";
 import ReactDOM from "react-dom";
 import "./styles/reviewForm.css";
+import type { Park } from "../types/park";
 
-interface Park {
-  name: string;
-  type: string;
-  state: string;
-  // add other fields if needed
-}
 
 interface ReviewFormProps {
   park: Park;
@@ -82,9 +77,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ park, activities, onClose }) =>
         {/* HEADER */}
         <div className="header">
           <div className="header-left">
-            <div className="title">{park.name}</div>
+            <div className="title">{park.park_name}</div>
             <div className="more-info">
-              {park.type}, {park.state}
+              {park.park_type}, {park.park_state}
             </div>
           </div>
           <div className="header-right">

@@ -1,116 +1,56 @@
-// FindAPark.tsx
+// frontend/src/pages/homePage/FindAPark.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterBar from '../../../components/FilterBar';
 import SearchButton from '../../../components/SearchButton';
-import type { Filters } from '../../../types/filters';
 import '../styles/findAPark.css';
 
+interface FindAParkProps {}
 
-const FindAPark: React.FC = () => {
-  const [filters, setFilters] = useState<Filters>({
-    distance: null,
-    trails: [],
-    activities: [],
-    facilities: [],
-    features: [],
-    rating: null,
-    parkState: [],
-    region: [],
-    accessibility: [],
-    permits: [],
-    petPolicy: null,
-    dates: null,
-    weather: null,
-    parking: null,
-    cost: null,
-  });
+const FindAPark: React.FC<FindAParkProps> = () => {
+  const [filters, setFilters] = useState({});
   const navigate = useNavigate();
 
-  const handleFiltersChange = (newFilters: Filters): void => {
+  const handleFiltersChange = (newFilters: any) => {
     setFilters(newFilters);
   };
 
-  const handleFilterPopupClose = (updatedFilters: Filters) => {
-    const params = new URLSearchParams();
-    // Convert updatedFilters to params (example omitted)
-    navigate(`/search/results?${params.toString()}`);
-    window.location.reload();
-  };
-
-  const handleSearch = (): void => {
+  const handleSearch = () => {
     const queryParams = new URLSearchParams();
-
-    if (filters.distance) {
-      if (filters.distance.address) {
-        queryParams.append('address', filters.distance.address);
+    // The shape of `filters` matches FiltersType, so we can copy logic from SearchPage:
+    Object.entries(filters).forEach(([key, val]) => {
+      if (val === null || val === undefined) return;
+      if (Array.isArray(val) && val.length) {
+        queryParams.append(key, (val as string[]).join(','));
+      } else if (typeof val === 'object' && val !== null) {
+        // date‐range or fee‐range
+        if ('start' in (val as any) && 'end' in (val as any)) {
+          // Date range
+          queryParams.append('openStartDate', (val as any).start);
+          queryParams.append('openEndDate', (val as any).end);
+        } else if ('min' in (val as any) && 'max' in (val as any)) {
+          // parkingFee or entryFee
+          const prefix = key === 'parking' ? 'parkingFee' : 'entryFee';
+          queryParams.append(prefix + 'Min', (val as any).min.toString());
+          queryParams.append(prefix + 'Max', (val as any).max.toString());
+        }
+      } else {
+        queryParams.append(key, val.toString());
       }
-      if (filters.distance.miles) {
-        queryParams.append('miles', filters.distance.miles);
-      }
-    }
-    if (filters.trails.length) {
-      queryParams.append('trails', filters.trails.join(','));
-    }
-    if (filters.activities.length) {
-      queryParams.append('activities', filters.activities.join(','));
-    }
-    if (filters.facilities.length) {
-      queryParams.append('facilities', filters.facilities.join(','));
-    }
-    if (filters.features.length) {
-      queryParams.append('features', filters.features.join(','));
-    }
-    if (filters.rating !== null) {
-      queryParams.append('rating', filters.rating.toString());
-    }
-    if (filters.parkState.length) {
-      queryParams.append('parkState', filters.parkState.join(','));
-    }
-    if (filters.region.length) {
-      queryParams.append('region', filters.region.join(','));
-    }
-    if (filters.accessibility.length) {
-      queryParams.append('accessibility', filters.accessibility.join(','));
-    }
-    if (filters.permits.length) {
-      queryParams.append('permits', filters.permits.join(','));
-    }
-    if (filters.petPolicy) {
-      queryParams.append('petPolicy', filters.petPolicy);
-    }
-    if (filters.dates) {
-      if (filters.dates.start) {
-        queryParams.append('startDate', filters.dates.start);
-      }
-      if (filters.dates.end) {
-        queryParams.append('endDate', filters.dates.end);
-      }
-    }
-    if (filters.weather) {
-      queryParams.append('weather', filters.weather);
-    }
-    if (filters.parking) {
-      queryParams.append('parking', filters.parking);
-    }
-    if (filters.cost) {
-      queryParams.append('cost', filters.cost);
-    }
-
-    navigate(`/search/results?${queryParams.toString()}`);
+    });
+    navigate(`/search?${queryParams.toString()}`);
   };
 
   return (
     <div className="find-a-park">
-      Find a Park
-      <SearchButton onClick={handleSearch} />
-      <div className="filter-bar-container">
+      <h1>Find a Park</h1>
+      <div className="filter-bar-wrapper">
         <FilterBar
           onFiltersChange={handleFiltersChange}
-          onFilterPopupClose={handleFilterPopupClose}
-          initialFilters={filters}
+          initialFilters={{}}
         />
       </div>
+      <SearchButton onClick={handleSearch} />
     </div>
   );
 };

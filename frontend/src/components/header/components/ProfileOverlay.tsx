@@ -1,33 +1,26 @@
-// ProfileOverlay.tsx
+// frontend/src/components/header/components/ProfileOverlay.tsx
 import React, { useEffect, useRef } from 'react';
 import '../styles/profileOverlay.css';
 
-interface User {
-  username: string;
-  profilePic: string;
-  // add other fields if needed
-}
-
-type ProfileOverlayProps = {
-  user: User;
+interface ProfileOverlayProps {
+  user: { username: string; profilePic: string };
   onClose: () => void;
   onLogout: () => void;
-};
+}
 
-const ProfileOverlay: React.FC<ProfileOverlayProps> = ({ user, onClose, onLogout }) => {
+const ProfileOverlay: React.FC<ProfileOverlayProps> = ({
+  user,
+  onClose,
+  onLogout,
+}) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  // Close overlay when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        overlayRef.current &&
-        !overlayRef.current.contains(event.target as Node)
-      ) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (overlayRef.current && !overlayRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);

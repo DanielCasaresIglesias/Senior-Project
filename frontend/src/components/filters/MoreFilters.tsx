@@ -4,8 +4,8 @@ import RegionFilter from './RegionFilter';
 import AccessibilityFilter from './AccessibilityFilter';
 import PermitsFilter from './PermitsFilter';
 import PetPolicyFilter from './PetPolicyFilter';
-import DatesFilter from './DatesFilter';
-import WeatherFilter from './WeatherFilter';
+// import DatesFilter from './DatesFilter';
+// import WeatherFilter from './WeatherFilter';
 import ParkingFilter from './ParkingFilter';
 import FeesFilter from './FeesFilter';
 import './styles/moreFilters.css';
@@ -69,20 +69,6 @@ const MoreFilters: React.FC<MoreFiltersProps> = ({ filters, updateFilter }) => {
           <PetPolicyFilter
             onChange={(val) => updateFilter('petPolicy', val)}
             initialSelected={filters.petPolicy}
-          />
-
-          <DatesFilter
-            label="Dates"
-            iconSrc="images/filter-icons/base-icons/date-icon.png"
-            selectedIconSrc="images/filter-icons/selected-icons/date-icon.png"
-            iconAlt="Calendar Icon"
-            onChange={(val) => updateFilter('dates', val)}
-            initialSelected={filters.dates ?? { start: '', end: '' }}
-          />
-
-          <WeatherFilter
-            onChange={(val) => updateFilter('weather', val)}
-            initialSelected={filters.weather}
           />
 
           <ParkingFilter

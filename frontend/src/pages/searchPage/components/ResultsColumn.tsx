@@ -25,23 +25,23 @@ const ResultsColumn: React.FC<ResultsColumnProps> = ({ results, onParkSelect, mi
         {results.map((park) => (
           <div
             className="park-result"
-            key={park.id}
+            key={park.park_id}
             onClick={() => onParkSelect(park)}
           >
             <div className="result-image">
-              <img src={park.image} alt={park.name} />
+              <img src={park.park_photo_link} alt={park.park_name} />
             </div>
             <div className="result-info">
-              <h2 className="park-name">{park.name}</h2>
-              <p className="park-type">{park.type}</p>
+              <h2 className="park-name">{park.park_name}</h2>
+              <p className="park-type">{park.park_type}</p>
               <p className="park-location">
-                {park.state} / {park.region}
+                {park.park_state} / {park.park_region}
               </p>
             </div>
             <div className="result-rating">
               {Array.from({ length: 5 }, (_, index) => (
                 <span key={index} className="star">
-                  {index < park.rating ? '★' : '☆'}
+                  {index < park.park_average_rating ? '★' : '☆'}
                 </span>
               ))}
             </div>

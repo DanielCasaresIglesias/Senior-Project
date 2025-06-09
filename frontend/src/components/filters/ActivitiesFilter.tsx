@@ -1,6 +1,6 @@
+// frontend/src/components/filters/ActivitiesFilter.tsx
 import React from 'react';
 import SearchableChecklistFilter from './base-filters/SearchableChecklistFilter';
-
 
 type ActivitiesFilterProps = {
   onChange: (selected: string[]) => void;
@@ -9,7 +9,7 @@ type ActivitiesFilterProps = {
 
 const ActivitiesFilter: React.FC<ActivitiesFilterProps> = ({
   onChange,
-  initialSelected
+  initialSelected,
 }) => {
   return (
     <SearchableChecklistFilter
@@ -18,8 +18,28 @@ const ActivitiesFilter: React.FC<ActivitiesFilterProps> = ({
       selectedIconSrc="images/filter-icons/selected-icons/activities-icon.png"
       iconAlt="Activities Icon"
       options={[
-        'Rock Climbing', 'Surfing', 'Kayaking', 'Hiking', 'Archery', 'Fishing',
-        'Winter Sports', 'Guided Tours', 'Canoeing', 'Skiing', 'Snowboarding'
+        'Hiking',
+        'Backpacking',
+        'Mountain Biking',
+        'Road Cycling',
+        'Equestrian Riding',
+        'Swimming',
+        'Scuba Diving/Snorkeling',
+        'Non-Motorized Boating',
+        'Motorized Boating',
+        'Surfing',
+        'Fishing',
+        'Tent Camping',
+        'RV Camping',
+        'Backcountry Camping',
+        'Guided Tours',
+        'Birdwatching',
+        'Whale Watching',
+        'Snow Sports',
+        'Rock Climbing',
+        'Geocaching',
+        'Sledding/tobogganing',
+        'Hunting',
       ]}
       onChange={onChange}
       initialSelected={initialSelected}

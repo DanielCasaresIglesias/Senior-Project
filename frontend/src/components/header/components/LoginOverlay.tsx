@@ -1,51 +1,50 @@
-// LoginOverlay.tsx
-import React, { useState, useRef, useEffect } from 'react';
+// frontend/src/components/header/components/LoginOverlay.tsx
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/loginOverlay.css';
-import type { LoginData } from '../../../types/loginData';
 
-type LoginOverlayProps = {
+export interface LoginData {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
+export interface LoginOverlayProps {
   onClose: () => void;
   onLogin: (data: LoginData) => void;
   onSignup: () => void;
-};
+}
 
-const LoginOverlay: React.FC<LoginOverlayProps> = ({ onClose, onLogin, onSignup }) => {
+const LoginOverlay: React.FC<LoginOverlayProps> = ({
+  onClose,
+  onLogin,
+  onSignup,
+}) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<LoginData>({
-    username: "",
-    profilePic: "",
-    password: "",
+    username: '',
+    password: '',
     remember: false,
   });
 
-  // Close overlay when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        overlayRef.current &&
-        !overlayRef.current.contains(event.target as Node)
-      ) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (overlayRef.current && !overlayRef.current.contains(e.target as Node)) {
         onClose();
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [onClose]);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(formData);
   };

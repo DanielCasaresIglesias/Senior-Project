@@ -1,4 +1,4 @@
-// SearchButton.tsx
+// frontend/src/components/SearchButton.tsx
 import React from 'react';
 import './styles/searchButton.css';
 

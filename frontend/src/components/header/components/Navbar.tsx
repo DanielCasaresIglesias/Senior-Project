@@ -1,6 +1,5 @@
-// Navbar.tsx
+// frontend/src/components/header/components/Navbar.tsx
 import React from 'react';
-// import '../styles/navbar.css';
 
 const Navbar: React.FC = () => {
   return (

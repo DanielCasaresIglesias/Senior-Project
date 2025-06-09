@@ -1,25 +1,18 @@
-// ParksNearYou.tsx
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ParkCard from "./ParkCard";
-import "../styles/parksNearYou.css";
+// frontend/src/pages/homePage/ParksNearYou.tsx
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ParkCard from './ParkCard';
+import '../styles/parksNearYou.css';
+import type { Park } from '../../../types/park';
 
-type Park = {
-  id: string | number;
-  imageSrc: string;
-  parkName: string;
-  parkType: string;
-  rating: number;
-};
-
-type ParksNearYouProps = {
+interface ParksNearYouProps {
   location: string;
   parks: Park[];
-};
+}
 
 const ParksNearYou: React.FC<ParksNearYouProps> = ({ location, parks }) => {
-  const [currentPage, setCurrentPage] = useState<number>(0);
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth <= 1380);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1380);
   const navigate = useNavigate();
   const parksPerPage = 4;
 
@@ -27,8 +20,8 @@ const ParksNearYou: React.FC<ParksNearYouProps> = ({ location, parks }) => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1380);
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const totalItems = parks.length + 1;
@@ -39,7 +32,6 @@ const ParksNearYou: React.FC<ParksNearYouProps> = ({ location, parks }) => {
       setCurrentPage(currentPage + 1);
     }
   };
-
   const handlePrev = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
@@ -47,7 +39,7 @@ const ParksNearYou: React.FC<ParksNearYouProps> = ({ location, parks }) => {
   };
 
   const startIndex = currentPage * parksPerPage;
-  let currentParks: Park[];
+  let currentParks: Park[] = [];
   let showMore = false;
 
   if (currentPage === totalPages - 1) {
@@ -71,25 +63,37 @@ const ParksNearYou: React.FC<ParksNearYouProps> = ({ location, parks }) => {
         <div className="parks-row">
           {isMobile ? (
             <>
-              {parks.map((park) => (
-                <ParkCard key={park.id} {...park} />
+              {parks.map(park => (
+                <ParkCard
+                  key={park.park_id}
+                  imageSrc={park.park_photo_link != null ? park.park_photo_link : ""}
+                  parkName={park.park_name}
+                  parkType={park.park_type}
+                  rating={park.park_average_rating}
+                />
               ))}
               <div
                 className="park-card show-more"
-                onClick={() => navigate("/search")}
+                onClick={() => navigate('/search')}
               >
                 <span>Show more →</span>
               </div>
             </>
           ) : (
             <>
-              {currentParks.map((park) => (
-                <ParkCard key={park.id} {...park} />
+              {currentParks.map(park => (
+                <ParkCard
+                  key={park.park_id}
+                  imageSrc={park.park_photo_link != null ? park.park_photo_link : ""}
+                  parkName={park.park_name}
+                  parkType={park.park_type}
+                  rating={park.park_average_rating}
+                />
               ))}
               {showMore && (
                 <div
                   className="park-card show-more"
-                  onClick={() => navigate("/search")}
+                  onClick={() => navigate('/search')}
                 >
                   <span>Show more →</span>
                 </div>

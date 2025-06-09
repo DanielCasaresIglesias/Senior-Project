@@ -1,3 +1,4 @@
+// frontend/src/components/filters/StateFilter.tsx
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 

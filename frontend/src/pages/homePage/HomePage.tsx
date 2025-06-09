@@ -1,6 +1,5 @@
-// Home.tsx
+// frontend/src/pages/aboutPage/AboutPage.tsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import FindAPark from './components/FindAPark';
 import ParksNearYou from './components/ParksNearYou';
 import './styles/homePage.css';

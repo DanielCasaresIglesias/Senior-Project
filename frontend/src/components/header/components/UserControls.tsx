@@ -1,13 +1,11 @@
-// UserControls.tsx
+// frontend/src/components/header/components/UserControls.tsx
 import React from 'react';
-import type { User } from '../../../types/user';
-// import './styles/userControls.css';
 
-type UserControlsProps = {
-  user: User | null;
+export interface UserControlsProps {
+  user: { username: string; profilePic: string } | null;
   toggleProfileOverlay: () => void;
   toggleLoginOverlay: () => void;
-};
+}
 
 const UserControls: React.FC<UserControlsProps> = ({
   user,
@@ -20,7 +18,7 @@ const UserControls: React.FC<UserControlsProps> = ({
       <span className="username">{user.username}</span>
     </div>
   ) : (
-    <button onClick={toggleLoginOverlay} className="login-button">
+    <button className="login-button" onClick={toggleLoginOverlay}>
       Login
     </button>
   );

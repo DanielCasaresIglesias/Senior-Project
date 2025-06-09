@@ -1,5 +1,6 @@
-// FilterBar.tsx
-import React, { useState, useEffect, type ReactNode } from 'react';
+// frontend/src/components/FilterBar.tsx
+
+import React, { useState, useEffect } from 'react';
 import DistanceFilter from './filters/DistanceFilter';
 import TrailsFilter from './filters/TrailsFilter';
 import ActivitiesFilter from './filters/ActivitiesFilter';
@@ -11,155 +12,185 @@ import RegionFilter from './filters/RegionFilter';
 import AccessibilityFilter from './filters/AccessibilityFilter';
 import PermitsFilter from './filters/PermitsFilter';
 import PetPolicyFilter from './filters/PetPolicyFilter';
-import DatesFilter from './filters/DatesFilter';
-import WeatherFilter from './filters/WeatherFilter';
+// import DatesFilter from './filters/DatesFilter';
+// import WeatherFilter from './filters/WeatherFilter';
 import ParkingFilter from './filters/ParkingFilter';
 import FeesFilter from './filters/FeesFilter';
 import FilterButton from './filters/base-filters/FilterButton';
-
 import type { Filters } from '../types/filters';
 import './styles/filterBar.css';
 
-type FilterBarProps = {
-  onFiltersChange: (newFilters: Filters) => void;
-  onFilterPopupClose: (updatedFilters: Filters) => void;
+interface FilterBarProps {
+  onFiltersChange: (filters: Filters) => void;
   initialFilters: Filters;
-};
+}
 
-const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange }) => {
-  const [showMore, setShowMore] = useState<boolean>(false);
-  const [filters, setFilters] = useState<Filters>({
-    distance: null,
-    trails: [],
-    activities: [],
-    facilities: [],
-    features: [],
-    rating: null,
-    parkState: [],
-    region: [],
-    accessibility: [],
-    permits: [],
-    petPolicy: null,
-    dates: null,
-    weather: null,
-    parking: null,
-    cost: null,
-  });
-  // maxButtons includes the "More Filters" button on the first row.
-  const [maxButtons, setMaxButtons] = useState<number>(7);
+const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }) => {
+  const [showMore, setShowMore] = useState(false);
 
-  const updateFilter = <K extends keyof Filters>(filterName: K, value: Filters[K]) => {
-    const newFilters = { ...filters, [filterName]: value };
-    setFilters(newFilters);
-    onFiltersChange(newFilters);
+  // ─── Only initialize from initialFilters once ──────────────────────────────────
+  const [filters, setFilters] = useState<Filters>(initialFilters);
+
+  // ─── Notify parent whenever filters change ─────────────────────────────────────
+  useEffect(() => {
+    onFiltersChange(filters);
+  }, [filters]);
+
+  // ─── Helper to update one field in our filters object ─────────────────────────
+  const updateField = <K extends keyof Filters>(field: K, value: Filters[K]) => {
+    setFilters(prev => ({ ...prev, [field]: value }));
   };
 
-  // Define your base filters (first row filters)
-  const baseFilters: ReactNode[] = [
+  //
+  // ── Define “base filters” (six of them), then we’ll slice them ─────────────────
+  //
+
+  const distanceFilterNode = (
     <DistanceFilter
       key="distance"
       label="Distance"
       iconSrc="images/filter-icons/base-icons/distance-icon.png"
       selectedIconSrc="images/filter-icons/selected-icons/distance-icon.png"
       iconAlt="Distance Icon"
-      onChange={(val) => updateFilter('distance', val)}
-      initialAddress={filters.distance?.address || ''}
-      initialMiles={filters.distance?.miles || ''}
-    />,
+      onChange={val => {
+        updateField('distanceAddress', val.address || '');
+        const milesNum = val.miles ? parseFloat(val.miles) : null;
+        updateField('distanceMiles', milesNum);
+      }}
+      initialAddress={filters.distanceAddress || ''}
+      initialMiles={filters.distanceMiles != null ? filters.distanceMiles.toString() : ''}
+    />
+  );
+
+  const trailsFilterNode = (
     <TrailsFilter
       key="trails"
-      onChange={(val) => updateFilter('trails', val)}
-      initialSelected={filters.trails}
-    />,
+      onChange={val => updateField('trails', val)}
+      initialSelected={filters.trails || []}
+    />
+  );
+
+  const activitiesFilterNode = (
     <ActivitiesFilter
       key="activities"
-      onChange={(val) => updateFilter('activities', val)}
-      initialSelected={filters.activities}
-    />,
+      onChange={val => updateField('activities', val)}
+      initialSelected={filters.activities || []}
+    />
+  );
+
+  const facilitiesFilterNode = (
     <FacilitiesFilter
       key="facilities"
-      onChange={(val) => updateFilter('facilities', val)}
-      initialSelected={filters.facilities}
-    />,
+      onChange={val => updateField('facilities', val)}
+      initialSelected={filters.facilities || []}
+    />
+  );
+
+  const featuresFilterNode = (
     <FeaturesFilter
       key="features"
-      onChange={(val) => updateFilter('features', val)}
-      initialSelected={filters.features}
-    />,
+      onChange={val => updateField('features', val)}
+      initialSelected={filters.features || []}
+    />
+  );
+
+  const ratingFilterNode = (
     <RatingFilter
       key="rating"
-      label="Rating"
-      iconSrc="images/filter-icons/base-icons/rating-icon.png"
-      selectedIconSrc="images/filter-icons/selected-icons/rating-icon.png"
-      iconAlt="Rating Icon"
-      onChange={(val) => updateFilter('rating', val)}
-      initialSelected={filters.rating ?? 0}
-    />,
+      onChange={val => updateField('ratingMin', val)}
+      initialSelected={filters.ratingMin ?? null}
+    />
+  );
+
+  // Put all six “base” filters in an array, then we’ll splice it:
+  const baseFilters = [
+    distanceFilterNode,
+    trailsFilterNode,
+    activitiesFilterNode,
+    facilitiesFilterNode,
+    featuresFilterNode,
+    ratingFilterNode,
   ];
 
-  // Define your extra filters (the rest)
-  const extraFilters: ReactNode[] = [
+  //
+  // ─── Define “extra” filters (the ones under “More Filters”) ─────────────────────
+  //
+
+  const extraFilters = [
     <StateFilter
       key="parkState"
-      onChange={(val) => updateFilter('parkState', val)}
-      initialSelected={filters.parkState}
+      onChange={val => updateField('parkState', val)}
+      initialSelected={filters.parkState || []}
     />,
     <RegionFilter
       key="region"
-      onChange={(val) => updateFilter('region', val)}
-      stateSelected={filters.parkState}
-      initialSelected={filters.region}
+      onChange={val => updateField('region', val)}
+      stateSelected={filters.parkState || []}
+      initialSelected={filters.region || []}
     />,
     <AccessibilityFilter
       key="accessibility"
-      onChange={(val) => updateFilter('accessibility', val)}
-      initialSelected={filters.accessibility}
+      onChange={val => updateField('accessibility', val)}
+      initialSelected={filters.accessibility || []}
     />,
     <PermitsFilter
       key="permits"
-      onChange={(val) => updateFilter('permits', val)}
-      initialSelected={filters.permits}
+      onChange={val => updateField('permits', val)}
+      initialSelected={filters.permits || []}
     />,
     <PetPolicyFilter
       key="petPolicy"
-      onChange={(val) => updateFilter('petPolicy', val)}
-      initialSelected={filters.petPolicy ? filters.petPolicy : null}
+      onChange={val => updateField('petPolicy', val)}
+      initialSelected={filters.petPolicy ?? null}
     />,
-    <DatesFilter
-      key="dates"
-      label="Dates"
-      iconSrc="images/filter-icons/base-icons/date-icon.png"
-      selectedIconSrc="images/filter-icons/selected-icons/date-icon.png"
-      iconAlt="Calendar Icon"
-      onChange={(val) => updateFilter('dates', val)}
-      initialSelected={filters.dates ?? { start: '', end: '' }}
-    />,
-    <WeatherFilter
-      key="weather"
-      onChange={(val) => updateFilter('weather', val)}
-      initialSelected={filters.weather}
-    />,
+    // <DatesFilter
+    //   key="dates"
+    //   onChange={({ start, end }) => {
+    //     updateField('openStartDate', start);
+    //     updateField('openEndDate', end);
+    //   }}
+    //   initialStartDate={filters.openStartDate || ''}
+    //   initialEndDate={filters.openEndDate || ''}
+    // />,
+    // <WeatherFilter
+    //   key="weather"
+    //   onChange={val => updateField('weatherConditions', val)}
+    //   initialSelected={filters.weatherConditions || []}
+    // />,
     <ParkingFilter
       key="parking"
-      onChange={(val) => updateFilter('parking', val)}
-      initialSelected={filters.parking}
+      onChange={({ min, max }) => {
+        updateField('parkingFeeMin', min);
+        updateField('parkingFeeMax', max);
+      }}
+      initialMin={filters.parkingFeeMin ?? 0}
+      initialMax={filters.parkingFeeMax ?? 0}
     />,
     <FeesFilter
       key="cost"
-      onChange={(val) => updateFilter('cost', val)}
-      initialSelected={filters.cost}
+      onChange={({ min, max }) => {
+        updateField('entryFeeMin', min);
+        updateField('entryFeeMax', max);
+      }}
+      initialMin={filters.entryFeeMin ?? 0}
+      initialMax={filters.entryFeeMax ?? 0}
     />,
   ];
 
-  // Reserve one slot for the "More Filters" button in the first row.
-  const visibleBaseFilters = baseFilters.slice(0, maxButtons - 1);
-  // Any base filters that didn't fit will be added to the extra filters.
-  const additionalBaseFilters = baseFilters.slice(maxButtons - 1);
+  //
+  // ─── Now compute “visibleBaseFilters” and “extraFilterRows” just like in your original code ──
+  //
 
-  // Combine filters that don't appear in the first row.
-  const extraFiltersCombined: ReactNode[] = [...additionalBaseFilters, ...extraFilters];
+  // Show the first 5 of baseFilters in row 1 (we reserve one slot for “More Filters” button).
+  const visibleBaseFilters = baseFilters.slice(0, 5);
 
-  // Helper: split array into chunks of given size.
+  // Anything in the 6th slot of baseFilters (i.e. ratingFilterNode) should be pushed into “extra” when showMore = true.
+  const additionalBaseFilters = baseFilters.slice(5); // this is [ratingFilterNode]
+
+  // Combine “overflow” (additionalBaseFilters) with the actual extraFilters
+  const extraFilterCombined = [...additionalBaseFilters, ...extraFilters];
+
+  // Helper to chunk an array into subarrays of length `size`
   const chunkArray = <T,>(array: T[], size: number): T[][] => {
     const chunks: T[][] = [];
     for (let i = 0; i < array.length; i += size) {
@@ -168,51 +199,42 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange }) => {
     return chunks;
   };
 
-  // Chunk the extra filters into rows, each with `maxButtons` filters.
-  const extraFilterRows = chunkArray(extraFiltersCombined, maxButtons);
+  // Decide how many buttons to show per row. Here, you previously had a `maxButtons` logic.
+  // If you want to keep that dynamic‐width behavior, you can reintroduce the same useEffect to set maxButtons.
+  //
+  // For simplicity, let's hardcode “5 per row” when expanded:
+  const maxButtons = 5;
 
-  // Listen for window resize to update maxButtons.
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      let buttons = 7;
-      if (width < 1100) {
-        // Every 125px decrease in width reduces available buttons by 1.
-        buttons = 7 - Math.ceil((1100 - width) / 125);
-        if (buttons < 3) buttons = 3;
-      }
-      setMaxButtons(buttons);
-    };
-
-    handleResize(); // initial run
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // “extraFilterRows” will be an array of arrays, each subarray having up to `maxButtons` filters
+  const extraFilterRows = chunkArray(extraFilterCombined, maxButtons);
 
   return (
     <div className="filter-bar-container">
-      {/* First Row */}
+      {/* ─────────── First Row ─────────── */}
       <div className="filter-row">
         {visibleBaseFilters.map((filterNode, idx) => (
-          <React.Fragment key={idx}>{filterNode}</React.Fragment>
+          <React.Fragment key={`base-${idx}`}>{filterNode}</React.Fragment>
         ))}
+
+        {/* “More Filters” button always lives in row 1 */}
         <FilterButton
-          onClick={() => setShowMore((prev) => !prev)}
+          onClick={() => setShowMore(prev => !prev)}
           label={showMore ? 'Show Less' : 'Show More'}
           variant="primary"
           iconSrc="images/filter-icons/base-icons/more-filters-icon.png"
           iconAlt="More Filters"
-          // children= {showMore ? 'Show Less' : 'Show More'}
-        >
-        </FilterButton>
+        />
       </div>
-      {/* Expanded Filters Section */}
+
+      {/* ─────────── Expanded Filters Section (only if showMore=true) ─────────── */}
       {showMore && (
         <div className="expanded-filters visible">
           {extraFilterRows.map((row, rowIndex) => (
-            <div key={rowIndex} className="filter-row">
+            <div key={`extra-row-${rowIndex}`} className="filter-row">
               {row.map((filterNode, idx) => (
-                <React.Fragment key={idx}>{filterNode}</React.Fragment>
+                <React.Fragment key={`extra-${rowIndex}-${idx}`}>
+                  {filterNode}
+                </React.Fragment>
               ))}
             </div>
           ))}

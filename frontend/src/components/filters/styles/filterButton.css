@@ -1,0 +1,70 @@
+/* FilterButton.css */
+.filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8.5rem;
+  height: 2.5rem;
+  padding: 0.4rem;
+  border: 1px solid #000000;
+  border-radius: 0.75rem; /* More rounded corners */
+  font-size: 1rem;
+  cursor: pointer;
+  gap: 0.5rem; /* Space between icon and text */
+  outline: none;
+}
+  
+/* Primary button style */
+.filter-button.primary {
+  background-color: white;
+  color: black;
+}
+
+.filter-button.primary:hover {
+  background-color: #dddddd;
+  color: black;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+.filter-button.primary:active {
+  background-color: #aaaaaa;
+  color: black;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+/* Secondary button style (example) */
+.filter-button.selected {
+  background-color: #638A40;
+  color: #FFFFFF;
+}
+
+.filter-button.selected:hover {
+  background-color: hsl(94, 37%, 36%);
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+.filter-button.selected:active {
+  background-color: hsl(94, 37%, 32%);
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: scale(1.05);
+}
+
+
+/* Icon Styles */
+.button-icon {
+  display: flex;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Text Styles */
+.button-text {
+  flex: 1; /* Allow text to take up remaining space */
+  text-align: left;
+}

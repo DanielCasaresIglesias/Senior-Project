@@ -1,3 +1,4 @@
+// frontend/src/components/filters/FeaturesFilter.tsx
 import React from 'react';
 import SearchableChecklistFilter from './base-filters/SearchableChecklistFilter';
 
@@ -8,7 +9,7 @@ type FeaturesFilterProps = {
 
 const FeaturesFilter: React.FC<FeaturesFilterProps> = ({
   onChange,
-  initialSelected
+  initialSelected,
 }) => {
   return (
     <SearchableChecklistFilter
@@ -17,9 +18,24 @@ const FeaturesFilter: React.FC<FeaturesFilterProps> = ({
       selectedIconSrc="images/filter-icons/selected-icons/features-icon.png"
       iconAlt="Features Icon"
       options={[
-        'Waterfalls', 'Beaches', 'Oldgrowth Forests', 'Cliffs', 'Summits',
-        'Glaciers', 'Geysers', 'Volcanoes', 'Sand Dunes', 'Salt Flats', 'Lakes',
-        'Rivers'
+        'Old-Growth Forests',
+        'Canyons/Gorges',
+        'Rivers',
+        'Lakes/Reservoirs/Ponds',
+        'Beaches',
+        'Sand Dunes',
+        'Wetlands/Marshes',
+        'Meadows/Grasslands',
+        'Deserts',
+        'Waterfalls',
+        'Hot Springs',
+        'Rock Formations',
+        'Caves',
+        'Volcanic Features',
+        'Wildflower Fields',
+        'Wildlife Habitats',
+        'Tidepools',
+        'Cultural/Historical Sites',
       ]}
       onChange={onChange}
       initialSelected={initialSelected}

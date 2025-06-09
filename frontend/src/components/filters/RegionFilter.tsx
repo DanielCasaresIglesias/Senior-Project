@@ -1,3 +1,4 @@
+// frontend/src/components/filters/RegionFilter.tsx
 import React from 'react';
 import SearchableChecklistFilter from './base-filters/SearchableChecklistFilter';
 

@@ -1,3 +1,4 @@
+// frontend/src/components/filters/RatingFilter.tsx
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 import FilterButton from './base-filters/FilterButton';
@@ -7,39 +8,23 @@ import StarIcon from '../StarIcon';
 import './styles/ratingFilter.css';
 
 type RatingFilterProps = {
-  label: string;
-  iconSrc: string;
-  selectedIconSrc: string;
-  iconAlt: string;
-  onChange: (selected: number) => void;
-  initialSelected?: number;
+  onChange: (selected: number | null) => void;
+  initialSelected?: number | null;
 };
 
 const RatingFilter: React.FC<RatingFilterProps> = ({
-  label,
-  iconSrc,
-  selectedIconSrc,
-  iconAlt,
   onChange,
-  initialSelected = 0,
+  initialSelected,
 }) => {
+  const [appliedRating, setAppliedRating] = useState<number>(
+    initialSelected || 0
+  );
+  const [tempRating, setTempRating] = useState<number>(initialSelected || 0);
   const [isOpen, setIsOpen] = useState(false);
-  const [appliedRating, setAppliedRating] = useState<number>(initialSelected);
-  const [tempRating, setTempRating] = useState<number>(initialSelected);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
-  // Rating options: 0 represents "0+" (all ratings), then 2-5.
-  const ratingOptions = [
-    { value: 0, label: '0+' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' }
-  ];
-
-  // When opening the popup, initialize temp rating from the applied rating.
   const togglePopup = () => {
     if (!isOpen) {
       setTempRating(appliedRating);
@@ -47,50 +32,51 @@ const RatingFilter: React.FC<RatingFilterProps> = ({
     setIsOpen(!isOpen);
   };
 
-  // Update temporary rating on star click (does not apply immediately)
-  const handleStarClick = (rating: number) => {
-    setTempRating(rating);
+  const handleStarClick = (rate: number) => {
+    setTempRating(rate);
   };
 
-  // Apply temporary rating: update applied rating and notify parent.
   const applySelection = () => {
     setAppliedRating(tempRating);
     onChange(tempRating);
     setIsOpen(false);
   };
 
-  // Clear the selection: reset temporary and applied rating.
   const clearSelection = () => {
     setTempRating(0);
     setAppliedRating(0);
-    onChange(0);
+    onChange(null);
     setIsOpen(false);
   };
 
-  const isFilterActive = appliedRating > 0; // If applied rating is more than 0, the filter is active.
+  const isActive = appliedRating > 0;
 
   return (
     <div className="filter rating-filter" ref={wrapperRef}>
       <FilterButton
         onClick={togglePopup}
-        variant={isFilterActive ? "selected" : "primary"} // Toggle variant based on active state
-        iconSrc={isFilterActive ? selectedIconSrc : iconSrc} // Use selected icon when active
-        iconAlt={iconAlt}
-        label={label}
+        variant={isActive ? 'selected' : 'primary'}
+        iconSrc={
+          isActive
+            ? 'images/filter-icons/selected-icons/rating-icon.png'
+            : 'images/filter-icons/base-icons/rating-icon.png'
+        }
+        iconAlt="Rating Icon"
+        label="Rating"
       />
       {isOpen && (
         <div className="rating-filter-popup">
-          <p className="title">{label}</p>
+          <p className="title">Rating</p>
           <div className="star-container">
-            {ratingOptions.map((option) => {
+            {[1, 2, 3, 4, 5].map(star => {
               const filled =
-                tempRating === 0 ? (option.value === 0) : (option.value >= tempRating);
+                tempRating === 0 ? star === 0 : star <= tempRating;
               return (
                 <StarIcon
-                  key={option.value}
-                  label={option.label}
-                  filled={filled}
-                  onClick={() => handleStarClick(option.value)}
+                  key={star}
+                  label={star.toString()}
+                  filled={star <= tempRating}
+                  onClick={() => handleStarClick(star)}
                 />
               );
             })}

@@ -1,25 +1,35 @@
+// frontend/src/components/header/Header.tsx
 import React, { useState, useEffect } from 'react';
-import './styles/header.css';
 import ProfileOverlay from './components/ProfileOverlay';
 import LoginOverlay from './components/LoginOverlay';
 import UserControls from './components/UserControls';
 import Navbar from './components/Navbar';
-import type { User } from '../../types/user';
-import type { LoginData } from '../../types/loginData';
+import './styles/header.css';
 
-type HeaderProps = {
-  user: User | null;
-  onLogin: (longData: LoginData) => void;
+export interface LoginData {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
+export interface HeaderProps {
+  user: { username: string; profilePic: string } | null;
+  onLogin: (data: LoginData) => void;
   onLogout: () => void;
   onSignup: () => void;
-};
+}
 
-const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) => {
-  const [showProfileOverlay, setShowProfileOverlay] = useState<boolean>(false);
-  const [showLoginOverlay, setShowLoginOverlay] = useState<boolean>(false);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [accountMenuOpen, setAccountMenuOpen] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 920);
+const Header: React.FC<HeaderProps> = ({
+  user,
+  onLogin,
+  onLogout,
+  onSignup,
+}) => {
+  const [showProfileOverlay, setShowProfileOverlay] = useState(false);
+  const [showLoginOverlay, setShowLoginOverlay] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 920);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,23 +39,20 @@ const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) =>
         setAccountMenuOpen(false);
       }
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleProfileOverlay = () => {
-    setShowProfileOverlay((prev) => !prev);
+    setShowProfileOverlay(!showProfileOverlay);
     setShowLoginOverlay(false);
   };
-
   const toggleLoginOverlay = () => {
-    setShowLoginOverlay((prev) => !prev);
+    setShowLoginOverlay(!showLoginOverlay);
     setShowProfileOverlay(false);
   };
-
   const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
+    setIsMenuOpen(!isMenuOpen);
     if (isMenuOpen) setAccountMenuOpen(false);
   };
 
@@ -88,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) =>
               {user ? (
                 <div className="mobile-account">
                   <button
-                    onClick={() => setAccountMenuOpen((prev) => !prev)}
+                    onClick={() => setAccountMenuOpen(!accountMenuOpen)}
                     className="mobile-account-button"
                   >
                     Account
@@ -98,7 +105,10 @@ const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) =>
                       <a href="/profile" className="mobile-account-option">
                         Profile
                       </a>
-                      <button onClick={onLogout} className="mobile-account-option">
+                      <button
+                        onClick={onLogout}
+                        className="mobile-account-option"
+                      >
                         Logout
                       </button>
                     </div>
@@ -122,8 +132,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogin, onLogout, onSignup }) =>
         />
       )}
 
-      {/* Optional: LoginOverlay (if needed later) */}
-      {showLoginOverlay && !user && (
+      {showLoginOverlay && (
         <LoginOverlay
           onClose={() => setShowLoginOverlay(false)}
           onLogin={onLogin}

@@ -1,3 +1,4 @@
+// frontend/src/components/filters/base-filters/RadioButtonFilter.tsx
 import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
 import FilterButton from './FilterButton';
@@ -8,66 +9,63 @@ import '../styles/radioButtonFilter.css';
 type RadioButtonFilterProps = {
   label: string;
   iconSrc: string;
-  selectedIconSrc: string;
   iconAlt: string;
   options: string[];
   onChange: (selected: string | null) => void;
-  initialSelected?: string | null;
+  initialSelected: string | null;
 };
 
 const RadioButtonFilter: React.FC<RadioButtonFilterProps> = ({
   label,
   iconSrc,
-  selectedIconSrc,
   iconAlt,
   options,
   onChange,
-  initialSelected = null,
+  initialSelected,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // Track the applied selection (last confirmed)
-  const [appliedOption, setAppliedOption] = useState<string | null>(initialSelected);
-  // Track the temporary, currently selected option in the popup
-  const [tempOption, setTempOption] = useState<string | null>(initialSelected);
+  const [appliedSelectedOption, setAppliedSelectedOption] = useState<string | null>(
+    initialSelected
+  );
+  const [tempSelectedOption, setTempSelectedOption] = useState<string | null>(
+    initialSelected
+  );
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
-  // When opening the popup, initialize the temporary selection to what is applied.
   const togglePopup = () => {
     if (!isOpen) {
-      setTempOption(appliedOption);
+      setTempSelectedOption(appliedSelectedOption);
     }
     setIsOpen(!isOpen);
   };
 
-  const handleRadioChange = (option: string) => {
-    setTempOption(option);
+  const handleRadioChange = (opt: string) => {
+    setTempSelectedOption(opt);
   };
 
   const applySelection = () => {
-    setAppliedOption(tempOption);
-    onChange(tempOption);
+    setAppliedSelectedOption(tempSelectedOption);
+    onChange(tempSelectedOption);
     setIsOpen(false);
   };
 
   const clearSelection = () => {
-    setTempOption(null);
-    setAppliedOption(null);
+    setTempSelectedOption(null);
+    setAppliedSelectedOption(null);
     onChange(null);
     setIsOpen(false);
   };
 
-  // The filter is "active" only if an option has been applied
-  const isFilterActive = appliedOption !== null;
+  const isActive = appliedSelectedOption !== null;
 
   return (
     <div className="filter radiolist-filter" ref={wrapperRef}>
       <FilterButton
         onClick={togglePopup}
-        variant={isFilterActive ? "selected" : "primary"}
-        // Show the selected icon only when an option is applied.
-        iconSrc={isFilterActive ? selectedIconSrc : iconSrc}
+        variant={isActive ? 'selected' : 'primary'}
+        iconSrc={iconSrc}
         iconAlt={iconAlt}
         label={label}
       />
@@ -75,15 +73,15 @@ const RadioButtonFilter: React.FC<RadioButtonFilterProps> = ({
         <div className="radiolist-filter-popup">
           <p className="title">{label}</p>
           <div className="options">
-            {options.map((option) => (
-              <label key={option} className="option">
+            {options.map(opt => (
+              <label key={opt} className="option">
                 <input
                   type="radio"
-                  name={label} // same group to ensure only one option can be selected
-                  checked={tempOption === option}
-                  onChange={() => handleRadioChange(option)}
+                  name={label}
+                  checked={tempSelectedOption === opt}
+                  onChange={() => handleRadioChange(opt)}
                 />
-                {option}
+                {opt}
               </label>
             ))}
           </div>

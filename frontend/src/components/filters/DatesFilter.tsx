@@ -1,112 +1,103 @@
-import React, { useState, useRef, useEffect } from 'react';
+// frontend/src/components/filters/DatesFilter.tsx
+import React, { useState, useRef } from 'react';
 import useOutsideAlerter from '../../hooks/useOutsideAlerter';
 import FilterButton from './base-filters/FilterButton';
 import ApplyButton from './buttons/ApplyButton';
 import ClearButton from './buttons/ClearButton';
 import './styles/datesFilter.css';
 
-type DateRange = {
-  start: string;
-  end: string;
-};
-
 type DatesFilterProps = {
-  label: string;
-  iconSrc: string;
-  selectedIconSrc: string;
-  iconAlt: string;
-  onChange: (range: DateRange) => void;
-  initialSelected?: DateRange;
+  onChange: (range: { start: string; end: string }) => void;
+  initialStartDate: string;
+  initialEndDate: string;
 };
 
 const DatesFilter: React.FC<DatesFilterProps> = ({
-  label,
-  iconSrc,
-  selectedIconSrc,
-  iconAlt,
   onChange,
-  initialSelected = { start: '', end: '' },
+  initialStartDate,
+  initialEndDate,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // Track the applied (i.e. confirmed) date range.
-  const [appliedDates, setAppliedDates] = useState<DateRange>(initialSelected);
-  // Track the temporary date selections while the popup is open.
-  const [tempDates, setTempDates] = useState<DateRange>(initialSelected);
+  const [tempStart, setTempStart] = useState(initialStartDate);
+  const [tempEnd, setTempEnd] = useState(initialEndDate);
+  const [appliedStart, setAppliedStart] = useState(initialStartDate);
+  const [appliedEnd, setAppliedEnd] = useState(initialEndDate);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const today = new Date().toISOString().split('T')[0];
 
   useOutsideAlerter(wrapperRef, () => setIsOpen(false));
 
-  // When the popup opens, sync tempDates with the appliedDates.
-  useEffect(() => {
-    if (isOpen) {
-      setTempDates(appliedDates);
-    }
-  }, [isOpen, appliedDates]);
-
   const togglePopup = () => {
+    if (!isOpen) {
+      // initialize from applied
+      setTempStart(appliedStart);
+      setTempEnd(appliedEnd);
+    }
     setIsOpen(!isOpen);
   };
 
-  // Handle date changes. For the start date, if the selected date is after the current end date,
-  // update the end date to match the start date to keep the range valid.
-  const handleDateChange = (type: 'start' | 'end', value: string) => {
+  const handleDateChange = (type: 'start' | 'end', val: string) => {
     if (type === 'start') {
-      setTempDates((prev) => ({
-        start: value,
-        end: prev.end && value > prev.end ? value : prev.end,
-      }));
+      setTempStart(val);
+      if (tempEnd && val > tempEnd) {
+        setTempEnd(val);
+      }
     } else {
-      setTempDates((prev) => ({ ...prev, end: value }));
+      if (tempStart && val < tempStart) {
+        return; // disallow end < start
+      }
+      setTempEnd(val);
     }
   };
 
   const applySelection = () => {
-    setAppliedDates(tempDates);
-    onChange(tempDates);
+    setAppliedStart(tempStart);
+    setAppliedEnd(tempEnd);
+    onChange({ start: tempStart, end: tempEnd });
     setIsOpen(false);
   };
 
   const clearSelection = () => {
-    const cleared: DateRange = { start: '', end: '' };
-    setTempDates(cleared);
-    setAppliedDates(cleared);
-    onChange(cleared);
+    setTempStart('');
+    setTempEnd('');
+    setAppliedStart('');
+    setAppliedEnd('');
+    onChange({ start: '', end: '' });
     setIsOpen(false);
   };
 
-  // The filter is considered active (and uses the "selected" variant) if either date is set.
-  const isFilterActive = appliedDates.start !== '' || appliedDates.end !== '';
+  const isActive = appliedStart !== '' && appliedEnd !== '';
 
   return (
     <div className="filter dates-filter" ref={wrapperRef}>
       <FilterButton
         onClick={togglePopup}
-        variant={isFilterActive ? 'selected' : 'primary'}
-        iconSrc={isFilterActive ? selectedIconSrc : iconSrc}
-        iconAlt={iconAlt}
-        label={label}
-      >
-      </FilterButton>
+        variant={isActive ? 'selected' : 'primary'}
+        iconSrc={
+          isActive
+            ? 'images/filter-icons/selected-icons/date-icon.png'
+            : 'images/filter-icons/base-icons/date-icon.png'
+        }
+        iconAlt="Date Icon"
+        label="Dates"
+      />
       {isOpen && (
         <div className="dates-filter-popup">
-          <p className="title">{label}</p>
+          <p className="title">Dates</p>
           <div className="start-date">
             <label>Start Date:</label>
             <input
               type="date"
-              value={tempDates.start}
-              onChange={(e) => handleDateChange('start', e.target.value)}
-              min={today}
+              value={tempStart}
+              onChange={e => handleDateChange('start', e.target.value)}
             />
           </div>
           <div className="end-date">
             <label>End Date:</label>
             <input
               type="date"
-              value={tempDates.end}
-              onChange={(e) => handleDateChange('end', e.target.value)}
-              min={tempDates.start || today}
+              value={tempEnd}
+              onChange={e => handleDateChange('end', e.target.value)}
+              min={tempStart || undefined}
             />
           </div>
           <div className="buttons">

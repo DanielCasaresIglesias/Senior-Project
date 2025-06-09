@@ -1,14 +1,20 @@
-import React from "react";
+// frontend/src/pages/homePage/ParkCard.tsx
+import React from 'react';
 import '../styles/parkCard.css';
 
-type ParkCardProps = {
+interface ParkCardProps {
   imageSrc: string;
   parkName: string;
   parkType: string;
   rating: number;
-};
+}
 
-const ParkCard: React.FC<ParkCardProps> = ({ imageSrc, parkName, parkType, rating }) => {
+const ParkCard: React.FC<ParkCardProps> = ({
+  imageSrc,
+  parkName,
+  parkType,
+  rating,
+}) => {
   return (
     <div className="park-card">
       <div className="image-container">
@@ -23,7 +29,6 @@ const ParkCard: React.FC<ParkCardProps> = ({ imageSrc, parkName, parkType, ratin
           </span>
         </div>
       </div>
-      
     </div>
   );
 };

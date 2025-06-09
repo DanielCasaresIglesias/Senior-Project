@@ -6,7 +6,7 @@ CREATE TABLE parks (
   park_state VARCHAR(100),
   park_region VARCHAR(100),
   park_level VARCHAR(30) CHECK (park_level IN ('Federal', 'State', 'Regional', 'County', 'City/Municipal', 'Tribal', 'Private with Public Access', 'Uknown/Other')),
-  park_type VARCHAR(30) CHECK (park_type IN ('Park', 'Recreation Area', 'Forest', 'Wilderness Area', 'Seashore', 'Beach', 'Historic Trail', 'Monument', 'Historic Site', 'Preserve', 'Memorial', 'Other Park Designation', 'Grassland', 'Management Unit', 'Marine Sanctuary', 'Wildlife Refuge', 'Wildlife Management Area', 'Fish Hatchery')),
+  park_type VARCHAR(30) CHECK (park_type IN ('Park', 'Recreation Area', 'Forest', 'Wilderness Area', 'Seashore', 'Beach', 'Historic Trail', 'Monument', 'Historical Park', 'Historic Site', 'Preserve', 'Memorial', 'Other Park Designation', 'Grassland', 'Management Unit', 'Marine Sanctuary', 'Wildlife Refuge', 'Wildlife Management Area', 'Fish Hatchery')),
   park_description TEXT,
   park_phone_number VARCHAR(15),
   park_size DECIMAL (10,2) CHECK (park_size >= 0),
@@ -16,13 +16,15 @@ CREATE TABLE parks (
   park_longitude DECIMAL (9,6),
   park_location GEOGRAPHY(Point, 4326),
   park_time_zone VARCHAR (50),
-  park_entry_fee DECIMAL (6,2) CHECK (park_entry_fee >=0),
-  park_parking_fee DECIMAL (6,2) CHECK (park_parking_fee >=0),
+  park_entry_fee DECIMAL (16,13) CHECK (park_entry_fee >=0),
+  park_parking_fee DECIMAL (16,13) CHECK (park_parking_fee >=0),
+  park_other_fee DECIMAL (16,13) CHECK (park_other_fee >=0),
   park_average_rating DECIMAL (3,2) DEFAULT 0 CHECK (park_average_rating >= 0 AND park_average_rating <= 5),
   park_number_of_reviews INT CHECK (park_number_of_reviews >= 0),
   park_drone_permit VARCHAR(30) CHECK (park_drone_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
   park_fishing_permit VARCHAR(30) CHECK (park_fishing_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
-  park_hunting_permit VARCHAR(30) CHECK (park_hunting_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal'))
+  park_hunting_permit VARCHAR(30) CHECK (park_hunting_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
+  park_backcountry_permit VARCHAR(30) CHECK (park_backcountry_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal'))
 );
 
 CREATE TABLE park_open_dates (
@@ -48,17 +50,73 @@ CREATE TABLE park_fire_risk (
   UNIQUE (park_id, fire_risk_date)
 );
 
-CREATE TABLE trails (
-  trail_id SERIAL PRIMARY KEY,
-  trail_name VARCHAR(255)
+CREATE TABLE trail_types (
+  trail_type_id SERIAL PRIMARY KEY,
+  trail_type_name VARCHAR(255)
 );
 
-CREATE TABLE park_trails (
-  park_trail_id SERIAL PRIMARY KEY,
+CREATE TABLE park_trail_types (
+  park_trail_type_id SERIAL PRIMARY KEY,
   park_id INT REFERENCES parks(park_id) ON DELETE CASCADE,
-  trail_id INT REFERENCES trails(trail_id) ON DELETE CASCADE,
-  UNIQUE (park_id, trail_id)
+  trail_type_id INT REFERENCES trail_types(trail_type_id) ON DELETE CASCADE,
+  UNIQUE (park_id, trail_type_id)
 );
+
+INSERT INTO trail_types (trail_type_name)
+VALUES
+  ('Hiking'),
+  ('Mountain Biking'),
+  ('Horseback Riding'),
+  ('Wheelchair Accessible');
+
+CREATE TABLE camp_types (
+  camp_type_id SERIAL PRIMARY KEY,
+  camp_type_name VARCHAR(255)
+);
+
+CREATE TABLE park_camp_types (
+  park_camp_type_id SERIAL PRIMARY KEY,
+  park_id INT REFERENCES parks(park_id) ON DELETE CASCADE,
+  camp_type_id INT REFERENCES camp_types(camp_type_id) ON DELETE CASCADE,
+  UNIQUE (park_id, camp_type_id)
+);
+
+INSERT INTO camp_types (camp_type_name)
+VALUES
+  ('Tent'),
+  ('Backcountry'),
+  ('RV'),
+  ('Cabin');
+
+CREATE TABLE accessibility (
+  accessibility_id SERIAL PRIMARY KEY,
+  accessibility_name VARCHAR(255)
+);
+
+CREATE TABLE park_accessibility (
+  park_accessibility_id SERIAL PRIMARY KEY,
+  park_id INT REFERENCES parks(park_id) ON DELETE CASCADE,
+  accessibility_id INT REFERENCES accessibility(accessibility_id) ON DELETE CASCADE,
+  UNIQUE (park_id, accessibility_id)
+);
+
+INSERT INTO accessibility (accessibility_name) VALUES
+  ('Wheelchair Accessible'),
+  ('ASL Audio Guide'),
+  ('Interpretation Services'),
+  ('Touch Models'),
+  ('Audio Described Brochures'),
+  ('Open-Captioned Videos'),
+  ('Assistive Listening Devices'),
+  ('One-Way Portable Microphones'),
+  ('Soundscapes'),
+  ('Braille'),
+  ('Audio-Described Films'),
+  ('Audio Wayside Signs'),
+  ('Tactile Models'),
+  ('Audio & Large Print Exibits'),
+  ('Audio/Visual Tours'),
+  ('Beach Wheelchairs');
 
 CREATE TABLE activities (
   activity_id SERIAL PRIMARY KEY,
@@ -137,10 +195,10 @@ CREATE INDEX idx_location_gist ON parks USING GIST (park_location);
 CREATE EXTENSION IF NOT EXISTS postgis
 
 INSERT INTO activities (activity_name) VALUES
-  ('Hiking'), ('Backpacking'), ('Moutnain Biking'), ('Road Cycling'), ('Equestiran Riding'), ('Swimming'), ('Non-Motorized Boating'), ('Motorized Boating'), ('Surfing'), ('Scuba Diving/Snorkeling'), ('Fishing'), ('Tent Camping'), ('RV Camping'), ('Backcountry Camping'), ('Guided Tours'), ('Birdwatching'), ('Whale Watching'), ('Snow Sports'), ('Rock Climbing'), ('Geocaching'), ('Sledding/tobogganing'), ('Hunting');
+  ('Hiking'), ('Backpacking'), ('Moutnain Biking'), ('Road Cycling'), ('Equestiran Riding'), ('Swimming'), ('Non-Motorized Boating'), ('Motorized Boating'), ('Surfing'), ('Scuba Diving/Snorkeling'), ('Fishing'), ('Guided Tours'), ('Birdwatching'), ('Whale Watching'), ('Snow Sports'), ('Rock Climbing'), ('Geocaching'), ('Sledding'), ('Hunting');
 
 INSERT INTO features (feature_name) VALUES
-  ('Old-Growth Forests'), ('Canyons/Gorges'), ('Rivers'), ('Lakes/Reservoirs/Ponds'), ('Beaches'), ('Sand Dunes'), ('Wetlands/Marshes'), ('Meadows/Graslands'), ('Deserts'), ('Waterfalls'), ('Hot Springs'), ('Rock Formations'), ('Caves'), ('Volcanic Features'), ('Wildflower Fields'), ('Wildlife Habitats'), ('Tidepools'), ('Cultural/Historical Sites');
+  ('Old-Growth Forest'), ('Canyon'), ('River'), ('Lake/Reservoir'), ('Beach'), ('Sand Dune'), ('Wetland/Marsh'), ('Grasland'), ('Desert'), ('Waterfall'), ('Hot Spring'), ('Rock Formation'), ('Cave'), ('Volcanic Feature'), ('Wildflower Field'), ('Tidepool'), ('Cultural/Historical Site');
 
 INSERT INTO facilities (facility_name) VALUES
-  ('Restrooms'), ('Showers'), ('Potable Water'), ('Visitor Center'), ('Interpretive Exibits/Museum'), ('Gift Shop/Store'), ('Tent Campsites'), ('RV Hook-ups'), ('Group Campsites/Cabins'), ('Picnic Areas'), ('Playgrounds'), ('Boat Launches/Docks'), ('Fishing Piers'), ('Parking Lots'), ('Event Spaces'), ('Educational Facilities'), ('Community Gardens'), ('Wi-Fi Access Points'), ('Bike Racks'), ('Bike Repair Stations'), ('EV Charging Stations'), ('Gas Stations'), ('Ranger Stations'), ('First Aid Stations');
+  ('Restrooms'), ('Showers'), ('Potable Water'), ('Visitor Center'), ('Museum'), ('Gift Shop'), ('RV Hook-up'), ('Picnic Area'), ('Boat Launch/Dock'), ('Fishing Pier'), ('Parking Lot'), ('Event Space'), ('Educational Facility'), ('Wi-Fi Access Point'), ('Bike Rack'), ('Bike Repair Station'), ('EV Charging Station'), ('Gas Station'), ('Ranger Station');

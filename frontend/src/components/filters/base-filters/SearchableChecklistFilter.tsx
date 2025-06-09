@@ -1,3 +1,4 @@
+// frontend/src/components/filters/base-filters/SearchableChecklistFilter.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import useOutsideAlerter from '../../../hooks/useOutsideAlerter';
 import FilterButton from './FilterButton';
@@ -12,7 +13,7 @@ type SearchableChecklistFilterProps = {
   iconAlt: string;
   options: string[];
   onChange: (selected: string[]) => void;
-  initialSelected?: string[];
+  initialSelected: string[];
 };
 
 const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
@@ -22,7 +23,7 @@ const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
   iconAlt,
   options,
   onChange,
-  initialSelected = [],
+  initialSelected,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [tempSelected, setTempSelected] = useState<string[]>(initialSelected);
@@ -37,20 +38,11 @@ const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
       setTempSelected(appliedSelected);
       setSearchTerm('');
     }
-  }, [isOpen, appliedSelected]);
+  }, [isOpen]);
 
-  const togglePopup = () => {
-    if (!isOpen) {
-      setTempSelected(appliedSelected);
-    }
-    setIsOpen(!isOpen);
-  };
-
-  const handleCheckboxChange = (option: string) => {
-    setTempSelected((prev) =>
-      prev.includes(option)
-        ? prev.filter((item) => item !== option)
-        : [...prev, option]
+  const handleCheckboxChange = (opt: string) => {
+    setTempSelected(prev =>
+      prev.includes(opt) ? prev.filter(x => x !== opt) : [...prev, opt]
     );
   };
 
@@ -61,24 +53,24 @@ const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
   };
 
   const clearSelection = () => {
-    setAppliedSelected([]);
     setTempSelected([]);
+    setAppliedSelected([]);
     onChange([]);
     setIsOpen(false);
   };
 
-  const filteredOptions = options.filter((option) =>
-    option.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOptions = options.filter(opt =>
+    opt.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const isFilterActive = appliedSelected.length > 0;
+  const isActive = appliedSelected.length > 0;
 
   return (
     <div className="filter searchable-checklist-filter" ref={wrapperRef}>
       <FilterButton
-        onClick={togglePopup}
-        variant={isFilterActive ? 'selected' : 'primary'}
-        iconSrc={isFilterActive ? selectedIconSrc : iconSrc}
+        onClick={() => setIsOpen(prev => !prev)}
+        variant={isActive ? 'selected' : 'primary'}
+        iconSrc={isActive ? selectedIconSrc : iconSrc}
         iconAlt={iconAlt}
         label={label}
       />
@@ -90,18 +82,18 @@ const SearchableChecklistFilter: React.FC<SearchableChecklistFilterProps> = ({
             className="search-input"
             placeholder="Search..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
           <div className="options">
             {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
-                <label key={option} className="option">
+              filteredOptions.map(opt => (
+                <label key={opt} className="option">
                   <input
                     type="checkbox"
-                    checked={tempSelected.includes(option)}
-                    onChange={() => handleCheckboxChange(option)}
+                    checked={tempSelected.includes(opt)}
+                    onChange={() => handleCheckboxChange(opt)}
                   />
-                  {option}
+                  {opt}
                 </label>
               ))
             ) : (
