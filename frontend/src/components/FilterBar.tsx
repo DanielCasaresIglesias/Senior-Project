@@ -12,10 +12,7 @@ import RegionFilter from './filters/RegionFilter';
 import AccessibilityFilter from './filters/AccessibilityFilter';
 import PermitsFilter from './filters/PermitsFilter';
 import PetPolicyFilter from './filters/PetPolicyFilter';
-// import DatesFilter from './filters/DatesFilter';
-// import WeatherFilter from './filters/WeatherFilter';
-// import ParkingFilter from './filters/ParkingFilter';
-// import FeesFilter from './filters/FeesFilter';
+import CampsFilter from './filters/CampsFilter';
 import CostFilter from './filters/CostFilter';
 import FilterButton from './filters/base-filters/FilterButton';
 import type { Filters } from '../types/filters';
@@ -71,6 +68,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
     />
   );
 
+  const campsFilterNode = (
+    <CampsFilter
+      key="camps"
+      onChange={val => updateField('camps', val)}
+      initialSelected={filters.camps || []}
+    />
+  );
+
   const activitiesFilterNode = (
     <ActivitiesFilter
       key="activities"
@@ -103,10 +108,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
     />
   );
 
-  // Put all six “base” filters in an array, then we’ll splice it:
+  // Put all seven “base” filters in an array, then we’ll splice it:
   const baseFilters = [
     distanceFilterNode,
     trailsFilterNode,
+    campsFilterNode,
     activitiesFilterNode,
     facilitiesFilterNode,
     featuresFilterNode,
@@ -173,11 +179,11 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
   // ─── Now compute “visibleBaseFilters” and “extraFilterRows” just like in your original code ──
   //
 
-  // Show the first 5 of baseFilters in row 1 (we reserve one slot for “More Filters” button).
-  const visibleBaseFilters = baseFilters.slice(0, 5);
+  // Show the first 6 of baseFilters in row 1 (we reserve one slot for “More Filters” button).
+  const visibleBaseFilters = baseFilters.slice(0, 6);
 
-  // Anything in the 6th slot of baseFilters (i.e. ratingFilterNode) should be pushed into “extra” when showMore = true.
-  const additionalBaseFilters = baseFilters.slice(5); // this is [ratingFilterNode]
+  // Anything in the 7th slot of baseFilters (i.e. ratingFilterNode) should be pushed into “extra” when showMore = true.
+  const additionalBaseFilters = baseFilters.slice(6); // this is [ratingFilterNode]
 
   // Combine “overflow” (additionalBaseFilters) with the actual extraFilters
   const extraFilterCombined = [...additionalBaseFilters, ...extraFilters];
@@ -194,8 +200,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
   // Decide how many buttons to show per row. Here, you previously had a `maxButtons` logic.
   // If you want to keep that dynamic‐width behavior, you can reintroduce the same useEffect to set maxButtons.
   //
-  // For simplicity, let's hardcode “5 per row” when expanded:
-  const maxButtons = 5;
+  // For simplicity, let's hardcode “6 per row” when expanded:
+  const maxButtons = 6;
 
   // “extraFilterRows” will be an array of arrays, each subarray having up to `maxButtons` filters
   const extraFilterRows = chunkArray(extraFilterCombined, maxButtons);

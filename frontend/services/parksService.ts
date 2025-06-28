@@ -18,6 +18,9 @@ export async function fetchParks(filters: Filters) {
   if (filters.trails && filters.trails.length) {
     qs.append('trails', filters.trails.join(','));
   }
+  if (filters.camps && filters.camps.length) {
+    qs.append('camps', filters.camps.join(','));
+  }
   if (filters.activities && filters.activities.length) {
     qs.append('activities', filters.activities.join(','));
   }

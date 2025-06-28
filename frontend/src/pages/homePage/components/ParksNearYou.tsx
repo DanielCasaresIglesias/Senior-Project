@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ParkCard from './ParkCard';
 import '../styles/parksNearYou.css';
-import type { Park } from '../../../types/park';
+import type { Park } from '../HomePage';
 
 interface ParksNearYouProps {
   location: string;

@@ -7,6 +7,7 @@ export interface Filters {
   parkState?: string[];
   region?: string[];
   trails?: string[];
+  camps?: string[];
   activities?: string[];
   facilities?: string[];
   features?: string[];

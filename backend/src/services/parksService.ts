@@ -43,6 +43,21 @@ export function buildParksFilterQuery(
     idx++;
   }
 
+  // CAMPS filter via EXISTS
+  if (params.camps.length) {
+    conditions.push(
+      `EXISTS (
+         SELECT 1
+         FROM park_camp_types ptt
+         JOIN camp_types tt ON ptt.camp_type_id = tt.camp_type_id
+         WHERE ptt.park_id = p.park_id
+           AND tt.camp_type_name = ANY($${idx}::text[])
+       )`
+    );
+    values.push(params.camps);
+    idx++;
+  }
+
   // ACTIVITIES
   if (params.activities.length) {
     conditions.push(

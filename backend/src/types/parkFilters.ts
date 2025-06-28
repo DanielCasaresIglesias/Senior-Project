@@ -7,6 +7,7 @@ export interface ParksFilterParams {
   states: string[];
   regions: string[];
   trails: string[];
+  camps: string[];
   activities: string[];
   facilities: string[];
   features: string[];

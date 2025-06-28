@@ -5,6 +5,7 @@ type DistanceRange = { address: string; miles: string };
 export interface Filters {
   distance: DistanceRange | null;
   trails: string[];
+  camps: string[];
   activities: string[];
   facilities: string[];
   features: string[];

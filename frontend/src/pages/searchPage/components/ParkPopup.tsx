@@ -92,6 +92,15 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
                 <div className="trail-icon">WA</div>
               </div>
             </div>
+            <div className="camps-section">
+              <h3 className="section-title">Campsites</h3>
+              <div className="camps-icons">
+                <div className="camps-icon">H</div>
+                <div className="camps-icon">MB</div>
+                <div className="camps-icon">HR</div>
+                <div className="camps-icon">WA</div>
+              </div>
+            </div>
             {/* Activities / Facilities / Features */}
             <Section title="Activities" items={activities} />
             <Section title="Facilities" items={facilities} />

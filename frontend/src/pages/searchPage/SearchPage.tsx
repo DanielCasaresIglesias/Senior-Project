@@ -35,6 +35,9 @@ const SearchPage: React.FC = () => {
     if (params.has('trails')) {
       newFilters.trails = (params.get('trails') as string).split(',');
     }
+    if (params.has('camps')) {
+      newFilters.camps = (params.get('camps') as string).split(',');
+    }
     if (params.has('activities')) {
       newFilters.activities = (params.get('activities') as string).split(',');
     }
@@ -142,6 +145,9 @@ const SearchPage: React.FC = () => {
     }
     if (newFilters.trails && newFilters.trails.length) {
       qs.append('trails', newFilters.trails.join(','));
+    }
+    if (newFilters.camps && newFilters.camps.length) {
+      qs.append('camps', newFilters.camps.join(','));
     }
     if (newFilters.activities && newFilters.activities.length) {
       qs.append('activities', newFilters.activities.join(','));
