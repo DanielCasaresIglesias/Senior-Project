@@ -1,4 +1,4 @@
-// frontend/src/components/filters/CampgroundsFilter.tsx
+// frontend/src/components/filters/CampsFilter.tsx
 import React from 'react';
 import ChecklistFilter from './base-filters/ChecklistFilter';
 

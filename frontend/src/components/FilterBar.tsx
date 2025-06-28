@@ -201,7 +201,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
   // If you want to keep that dynamic‐width behavior, you can reintroduce the same useEffect to set maxButtons.
   //
   // For simplicity, let's hardcode “6 per row” when expanded:
-  const maxButtons = 6;
+  const maxButtons = 7;
 
   // “extraFilterRows” will be an array of arrays, each subarray having up to `maxButtons` filters
   const extraFilterRows = chunkArray(extraFilterCombined, maxButtons);
