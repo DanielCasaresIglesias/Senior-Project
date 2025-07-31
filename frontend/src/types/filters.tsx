@@ -13,7 +13,12 @@ export interface Filters {
   parkState: string[];
   region: string[];
   accessibility: string[];
-  permits: string[];
+  permits?: {
+    drone?: string | null;
+    fishing?: string | null;
+    hunting?: string | null;
+    backcountry?: string | null;
+  };
   petPolicy: string | null;
   dates: DateRange | null;
   weather: string | null;

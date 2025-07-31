@@ -1,0 +1,68 @@
+.multi-section-radiolist-filter-popup {
+    width: 15rem;
+    max-height: 25rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;  /* directly below the button */
+    left: 0;
+    background-color: white;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    z-index: 200;
+    margin-top: 4px;
+    font-size: 1rem;
+    color: black;
+    overflow: hidden;
+}
+
+.multi-section-radiolist-filter-popup .title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0px;
+    background: white;
+    border-bottom: 1px solid #ccc;
+    margin-left: 1.0rem;
+    margin-right: 1.0rem;
+    margin-bottom: 0.5rem;
+}
+
+.multi-section-radiolist-filter-popup .options {
+    overflow-y: auto;
+    padding: 5px;
+    margin-left: 1.0rem;
+    margin-right: 1.0rem;
+}
+
+.multi-section-radiolist-filter-popup .buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    background: white;
+    margin-left: 1.0rem;
+    margin-right: 1.0rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1.0rem;
+    gap: 1rem;
+}
+  
+.multi-section-radiolist-filter-popup .option {
+    display: block;
+    margin: 5px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.multi-section-radiolist-filter-popup .section {
+    margin-bottom: 1rem;
+}
+
+.multi-section-radiolist-filter-popup .section-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0.5rem 0 0.25rem 0;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 2px;
+}

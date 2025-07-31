@@ -70,8 +70,12 @@ export async function fetchParks(filters: Filters) {
     qs.append('accessibility', filters.accessibility.join(','));
   }
 
-  if (filters.permits && filters.permits.length) {
-    qs.append('permits', filters.permits.join(','));
+  if (filters.permits) {
+    Object.entries(filters.permits).forEach(([section, value]) => {
+      if (value !== null && value !== '') {
+        qs.append(`permits[${section}]`, value);
+      }
+    });
   }
 
   if (filters.distanceAddress) {

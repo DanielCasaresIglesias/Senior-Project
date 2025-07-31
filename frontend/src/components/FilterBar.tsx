@@ -143,7 +143,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
     <PermitsFilter
       key="permits"
       onChange={val => updateField('permits', val)}
-      initialSelected={filters.permits || []}
+      initialSelected={filters.permits || {}}
     />,
     <PetPolicyFilter
       key="petPolicy"

@@ -14,7 +14,7 @@ const CampsFilter: React.FC<CampsFilterProps> = ({
 }) => {
   return (
     <ChecklistFilter
-      label="Camps"
+      label="Campsites"
       iconSrc="images/filter-icons/base-icons/camps-icon.png"
       selectedIconSrc="images/filter-icons/selected-icons/camps-icon.png"
       iconAlt="Camps Icon"

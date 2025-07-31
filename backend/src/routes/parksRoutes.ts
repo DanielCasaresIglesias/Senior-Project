@@ -22,7 +22,12 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
       parkingFeeMin: req.query.parkingFeeMin ? parseFloat(req.query.parkingFeeMin as string) : null,
       parkingFeeMax: req.query.parkingFeeMax ? parseFloat(req.query.parkingFeeMax as string) : null,
       accessibility: (req.query.accessibility as string | undefined)?.split(',') || [],
-      permits:     (req.query.permits     as string | undefined)?.split(',') || [],
+      permits: {
+        drone:       req.query['permits[drone]']       as string | null | undefined,
+        fishing:     req.query['permits[fishing]']     as string | null | undefined,
+        hunting:     req.query['permits[hunting]']     as string | null | undefined,
+        backcountry: req.query['permits[backcountry]'] as string | null | undefined,
+      },
       distanceAddress: (req.query.distanceAddress as string) || null,
       distanceMiles:   req.query.distanceMiles   ? parseFloat(req.query.distanceMiles as string) : null,
     };

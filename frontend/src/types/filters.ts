@@ -21,7 +21,13 @@ export interface Filters {
 
   petPolicy?: string | null;
   accessibility?: string[];   // ["Wheelchair","Hearing"]
-  permits?: string[];         // ["drone","fishing","hunting"]
+  permits?: {
+  drone?: string | null;
+  fishing?: string | null;
+  hunting?: string | null;
+  backcountry?: string | null;
+};
+
 
   distanceAddress?: string;
   distanceMiles?: number | null;

@@ -91,8 +91,16 @@ const SearchPage: React.FC = () => {
       newFilters.accessibility = (params.get('accessibility') as string).split(',');
     }
 
-    if (params.has('permits')) {
-      newFilters.permits = (params.get('permits') as string).split(',');
+    const permitsObj: Record<string, string | null> = {};
+    params.forEach((value, key) => {
+      const match = key.match(/^permits\[(.+)\]$/);
+      if (match) {
+        const section = match[1];
+        permitsObj[section] = value;
+      }
+    });
+    if (Object.keys(permitsObj).length > 0) {
+      newFilters.permits = permitsObj;
     }
 
     if (params.has('distanceAddress')) {
@@ -189,9 +197,14 @@ const SearchPage: React.FC = () => {
     if (newFilters.accessibility && newFilters.accessibility.length) {
       qs.append('accessibility', newFilters.accessibility.join(','));
     }
-    if (newFilters.permits && newFilters.permits.length) {
-      qs.append('permits', newFilters.permits.join(','));
+    if (newFilters.permits) {
+      Object.entries(newFilters.permits).forEach(([section, value]) => {
+        if (value !== null && value !== '') {
+          qs.append(`permits[${section}]`, value);
+        }
+      });
     }
+
 
     if (newFilters.distanceAddress) {
       qs.append('distanceAddress', newFilters.distanceAddress);

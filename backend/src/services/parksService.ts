@@ -155,16 +155,32 @@ export function buildParksFilterQuery(
   }
 
   // PERMITS: drone, fishing, hunting, backcountry
-  if (params.permits.length) {
+  if (params.permits) {
     const permitConds: string[] = [];
-    params.permits.forEach((perm: string) => {
-      if (perm === 'drone')   permitConds.push(`p.park_drone_permit <> 'Not Allowed'`);
-      if (perm === 'fishing') permitConds.push(`p.park_fishing_permit <> 'Not Allowed'`);
-      if (perm === 'hunting') permitConds.push(`p.park_hunting_permit <> 'Not Allowed'`);
-      if (perm === 'backcountry') permitConds.push(`p.park_backcountry_permit <> 'Not Allowed'`);
-    });
+
+    if (params.permits.drone) {
+      permitConds.push(`p.park_drone_permit = $${idx}`);
+      values.push(params.permits.drone);
+      idx++;
+    }
+    if (params.permits.fishing) {
+      permitConds.push(`p.park_fishing_permit = $${idx}`);
+      values.push(params.permits.fishing);
+      idx++;
+    }
+    if (params.permits.hunting) {
+      permitConds.push(`p.park_hunting_permit = $${idx}`);
+      values.push(params.permits.hunting);
+      idx++;
+    }
+    if (params.permits.backcountry) {
+      permitConds.push(`p.park_backcountry_permit = $${idx}`);
+      values.push(params.permits.backcountry);
+      idx++;
+    }
+
     if (permitConds.length) {
-      conditions.push(`(${permitConds.join(' OR ')})`);
+      conditions.push(`(${permitConds.join(' AND ')})`);
     }
   }
 

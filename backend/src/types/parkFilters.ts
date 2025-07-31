@@ -20,7 +20,12 @@ export interface ParksFilterParams {
   parkingFeeMax: number | null;
 
   accessibility: string[];
-  permits: string[];
+  permits?: {
+    drone?: string | null;
+    fishing?: string | null;
+    hunting?: string | null;
+    backcountry?: string | null;
+  };
 
   distanceAddress: string | null;
   distanceMiles: number | null;
