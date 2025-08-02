@@ -7,8 +7,7 @@ import ActivitiesFilter from './filters/ActivitiesFilter';
 import FacilitiesFilter from './filters/FacilitiesFilter';
 import FeaturesFilter from './filters/FeaturesFilter';
 import RatingFilter from './filters/RatingFilter';
-import StateFilter from './filters/StateFilter';
-import RegionFilter from './filters/RegionFilter';
+import StateRegionFilter from './filters/StateRegionFilter';
 import AccessibilityFilter from './filters/AccessibilityFilter';
 import PermitsFilter from './filters/PermitsFilter';
 import PetPolicyFilter from './filters/PetPolicyFilter';
@@ -124,16 +123,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
   //
 
   const extraFilters = [
-    <StateFilter
-      key="parkState"
-      onChange={val => updateField('parkState', val)}
-      initialSelected={filters.parkState || []}
-    />,
-    <RegionFilter
-      key="region"
-      onChange={val => updateField('region', val)}
-      stateSelected={filters.parkState || []}
-      initialSelected={filters.region || []}
+    <StateRegionFilter
+      key="stateRegion"
+      initialStates={filters.parkState || []}
+      initialRegions={filters.region || []}
+      onChange={ (states, regions) =>{
+        updateField('region', regions);
+        updateField('parkState', states);
+      }}
     />,
     <AccessibilityFilter
       key="accessibility"
