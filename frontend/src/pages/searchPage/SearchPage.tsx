@@ -8,6 +8,7 @@ import MapContainer from './components/MapContainer';
 import { fetchParks } from '../../../services/parksService';
 import type { Filters } from '../../types/filters';
 import './styles/searchPage.css';
+import L from 'leaflet';
 
 const SearchPage: React.FC = () => {
   const navigate = useNavigate();
@@ -230,14 +231,43 @@ const SearchPage: React.FC = () => {
     navigate(`/search?${qs.toString()}`);
   };
 
+  // Select a park: show popup and zoom map to park’s size
   const handleParkSelect = (park: any) => {
     setSelectedPark(park);
     setShowPopup(true);
-    if (mapRef.current?.setView) {
-      console.log(park.park_latitude)
-      console.log(park.park_longitude)
-      mapRef.current.setView([park.park_longitude, park.park_latitude], 10);
-    }
+
+    const map: L.Map = mapRef.current;
+    if (!map) return;
+
+    // 1) Build center & compute bounds from acreage
+    const center = L.latLng(park.park_latitude, park.park_longitude);
+    const sizeAcres = park.park_size ?? 0;
+    const radiusM = Math.sqrt((sizeAcres * 4046.86) / Math.PI) * 2.5;
+    const bounds = center.toBounds(radiusM);
+
+    // 2) FitBounds → this sets both center & zoom optimally
+    map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16 });
+
+    // 3) Grab the actual zoom after fitBounds
+    const zoomLevel = map.getZoom();
+
+    // 4) Compute pixel offset: half the 30rem sidebar
+    const rootFontSize = parseFloat(
+      getComputedStyle(document.documentElement).fontSize
+    );
+    const overlayHalfPx = (rootFontSize * 60) / 2;
+
+    // 5) Convert the *fitted* center lat/lng into a container point
+    const centerPoint = map.latLngToContainerPoint(center);
+
+    // 6) Shift that point left by half the overlay
+    const shiftedPoint = L.point(centerPoint.x - overlayHalfPx, centerPoint.y);
+
+    // 7) Convert back to a LatLng
+    const shiftedLatLng = map.containerPointToLatLng(shiftedPoint);
+
+    // 8) Finally setView to that shifted center & zoom
+    map.setView(shiftedLatLng, zoomLevel, { animate: true });
   };
 
   const handleMinimize = () => {
