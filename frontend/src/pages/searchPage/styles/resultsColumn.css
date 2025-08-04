@@ -1,54 +1,43 @@
+/* frontend/src/styles/resultsColumn.css */
+
+/* ─── Container ───────────────────────────────────────────────────────────── */
 .results-column {
-  width: 100%;  /* Note: inside the overlay, it should fill the container */
   display: flex;
   flex-direction: column;
+  height: 100%;               /* fill its parent (the search‐page pane) */
   border-right: 1px solid #ccc;
-  overflow-y: auto;
-  transition: transform 0.3s;
 }
 
-.results-column.minimized {
-  transform: translateX(-100%);
-}
-
+/* ─── Header (Sort/View + Search) ────────────────────────────────────────── */
 .results-header {
+  flex: none;                 /* don’t grow or shrink */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
-  gap: 10px;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  z-index: 2;
 }
 
-.left-controls {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.sort-button,
-.view-button,
-.minimize-button {
-  padding: 0.3rem 0.5rem;
-  font-size: 0.8rem;
-}
-
+/* ─── Scrollable List ───────────────────────────────────────────────────── */
 .results-list {
-  flex: 1;
-  overflow-y: auto;
+  flex: 1;                    /* take up all remaining vertical space */
+  overflow-y: auto;           /* scroll only here */
+  background: rgba(255,255,255,0.95);
 }
 
+/* ─── Each Park Row (image + content) ───────────────────────────────────── */
 .park-result {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: auto 1fr;
+  grid-gap: 1rem;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
-  
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  align-items: center;
 }
 
+/* ─── Image ─────────────────────────────────────────────────────────────── */
 .result-image img {
   width: 100px;
   height: 80px;
@@ -56,17 +45,54 @@
   border-radius: 15%;
 }
 
-.result-info .park-name {
-  font-size: 1.2rem;
-  text-decoration: underline;
-  margin: 0.2rem 0;
+/* ─── Content: Top row (title + stars) and bottom row (type/state/region) ─ */
+.result-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-.result-info p {
-  margin: 0.1rem 0;
+/* Top row: title on left, stars on right */
+.top-row {
+  display: flex;
+  align-items: center;
+}
+
+/* Title: clamp font‐size between 0.8rem and 1.2rem, then ellipsis if still too long */
+.park-name {
+  flex: 1;                    /* take up whatever space is left after the stars */
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  font-weight: bold;
+  text-decoration: underline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+/* Stars: never shrink or grow */
+.result-rating {
+  flex: none;
+  margin-left: 0.5rem;
+  white-space: nowrap;
 }
 
 .result-rating .star {
   font-size: 1.2rem;
   color: gold;
+}
+
+/* Bottom row: three lines of text */
+.bottom-row {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.3rem;
+  gap: 0.2rem;
+}
+
+.bottom-row p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
 }

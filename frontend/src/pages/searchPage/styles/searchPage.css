@@ -36,8 +36,7 @@
   bottom: 0;
   width: 30rem;
   z-index: 10;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   display: grid;
   height: 100%;
   grid-template-columns: calc(100% - 60px) 60px;
@@ -53,6 +52,8 @@
   height: 100%;
   width: 100%;
   background: rgba(255, 255, 255, 0.95);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Style for the toggle button – now inside the grid */
