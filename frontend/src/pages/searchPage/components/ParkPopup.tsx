@@ -4,6 +4,25 @@ import ReviewForm from '../../../components/ReviewForm';
 import type { Park } from '../../../types/park';
 import '../styles/parkPopup.css';
 
+// A fixed list of all possible trail types and camp types
+const ALL_TRAIL_TYPES = [
+  'Hiking',
+  'Horseback Riding',
+  'Wheelchair Accessible',
+  'Mountain Biking',
+];
+
+const ALL_CAMP_TYPES = ['Tent', 'Backcountry', 'RV', 'Cabin'];
+
+// Helper: from "Horseback Riding" → "horseback-riding"
+function slugify(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]/g, '');
+}
+
+
 type ParkPopupProps = {
   park: Park;
   onClose: () => void;
@@ -86,21 +105,43 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
             <div className="trails-section">
               <h3 className="section-title">Trails</h3>
               <div className="trails-icons">
-                <div className="trail-icon">H</div>
-                <div className="trail-icon">MB</div>
-                <div className="trail-icon">HR</div>
-                <div className="trail-icon">WA</div>
+                {ALL_TRAIL_TYPES.map(type => {
+                  const slug = slugify(type);
+                  const isActive = (park.trail_types || []).includes(type);
+                  const src = `/images/park-info-icons/${isActive ? 'active' : 'inactive'}/${slug}.png`;
+                  console.log(`Trail type: ${type}, Active: ${isActive}, Src: ${src}`);
+                  return (
+                    <div
+                      key={type}
+                      className={`trail-icon ${isActive ? 'active' : ''}`}
+                      title={type}
+                    >
+                      <img src={src} alt={`${type} icon`} />
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div className="camps-section">
               <h3 className="section-title">Campsites</h3>
               <div className="camps-icons">
-                <div className="camps-icon">H</div>
-                <div className="camps-icon">MB</div>
-                <div className="camps-icon">HR</div>
-                <div className="camps-icon">WA</div>
+                {ALL_CAMP_TYPES.map(type => {
+                  const slug = slugify(type);
+                  const isActive = (park.camp_types || []).includes(type);
+                  const src = `/images/park-info-icons/${isActive ? 'active' : 'inactive'}/${slug}.png`;
+                  return (
+                    <div
+                      key={type}
+                      className={`camps-icon ${isActive ? 'active' : ''}`}
+                      title={type}
+                    >
+                      <img src={src} alt={`${type} icon`} />
+                    </div>
+                  );
+                })}
               </div>
             </div>
+
             {/* Activities / Facilities / Features */}
             <Section title="Activities" items={activities} />
             <Section title="Facilities" items={facilities} />
