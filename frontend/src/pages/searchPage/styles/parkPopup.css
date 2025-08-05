@@ -128,6 +128,17 @@
   border-radius: 4px;
 }
 
+.trail-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;  /* scales the icon down to fit without distortion */
+  display: block;       /* removes inline‐img whitespace issues */
+}
+
+.trail-icon.active {
+  background: #638A40;
+}
+
 .camps-icons,
 .scrollable-list {
   display: flex;
@@ -135,7 +146,7 @@
   overflow-x: auto;
 }
 
-.camp-icon {
+.camps-icon {
   width: 2rem;
   height: 2rem;
   background: #D9D9D9;
@@ -143,6 +154,17 @@
   justify-content: center;
   align-items: center;
   border-radius: 4px;
+}
+
+.camps-icon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;  /* scales the icon down to fit without distortion */
+  display: block;       /* removes inline‐img whitespace issues */
+}
+
+.camps-icon.active {
+  background: #638A40;
 }
 
 .park-popup .scrollable-list {
