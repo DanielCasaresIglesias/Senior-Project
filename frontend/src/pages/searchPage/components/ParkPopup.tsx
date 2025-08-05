@@ -23,6 +23,17 @@ function slugify(name: string) {
 }
 
 
+const levelMap: Record<Park['park_level'], string> = {
+  Federal: 'National',
+  State: 'State',
+  Regional: 'Regional',
+  County: 'County',
+  'City/Municipal': 'City',
+  Tribal: 'Tribal',
+  'Private with Public Access': 'Private',
+  'Uknown/Other': 'Other',
+};
+
 type ParkPopupProps = {
   park: Park;
   onClose: () => void;
@@ -60,22 +71,25 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
         <button className="popup-close" onClick={onClose}>X</button>
       </div>
       <div className="popup-park-info">
-        <div className="park-info-header">
-          <div className="park-name">{park.park_name}</div>
-          <div className="park-details">
-            <div className="park-type">{park.park_type}</div>
-            <div className="park-location">{park.park_state} / {park.park_region}</div>
-          </div>
-        </div>
-        <div className="park-rating">
-          <div className="stars">
-            {Array.from({ length: 5 }, (_, index) => (
-              <span key={index} className="star">
-                {index < park.park_average_rating ? '★' : '☆'}
-              </span>
-            ))}
+        <div className="result-content">
+          <div className="top-row">
+            <h2 className="park-name">{park.park_name}</h2>
+            <div className="result-rating">
+              {Array.from({length:5},(_,i)=>(
+                <span key={i} className="star">
+                  {i < park.park_average_rating ? '★':'☆'}
+                </span>
+              ))}
+            </div>
           </div>
           <div className="review-count">({park.park_number_of_reviews} reviews)</div>
+          <div className="bottom-row">
+            <p className="park-type">
+              {levelMap[park.park_level] || park.park_level} {park.park_type}
+            </p>
+            <p className="park-state">{park.park_state}</p>
+            <p className="park-region">{park.park_region}</p>
+          </div>
         </div>
       </div>
       <div className="popup-tabs">
@@ -104,7 +118,7 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
             </div>
             <div className="trails-section">
               <h3 className="section-title">Trails</h3>
-              <div className="trails-icons">
+              <div className="trail-icons">
                 {ALL_TRAIL_TYPES.map(type => {
                   const slug = slugify(type);
                   const isActive = (park.trail_types || []).includes(type);
@@ -124,7 +138,7 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
             </div>
             <div className="camps-section">
               <h3 className="section-title">Campsites</h3>
-              <div className="camps-icons">
+              <div className="camp-icons">
                 {ALL_CAMP_TYPES.map(type => {
                   const slug = slugify(type);
                   const isActive = (park.camp_types || []).includes(type);
@@ -132,7 +146,7 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
                   return (
                     <div
                       key={type}
-                      className={`camps-icon ${isActive ? 'active' : ''}`}
+                      className={`camp-icon ${isActive ? 'active' : ''}`}
                       title={type}
                     >
                       <img src={src} alt={`${type} icon`} />
