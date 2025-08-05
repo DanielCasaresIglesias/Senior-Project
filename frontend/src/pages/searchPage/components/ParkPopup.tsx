@@ -64,6 +64,13 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
     console.log('Accessibility:', accessibility);
   }, [activities, facilities, features, accessibility]);
 
+
+  // Inside the Reviews section render:
+  const raw = park.park_average_rating;
+  const avgRating = typeof raw === 'number'
+    ? raw
+    : parseFloat(String(raw)) || 0;
+
   return (
     <div className="park-popup">
       <div className="popup-header">
@@ -77,7 +84,7 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
             <div className="result-rating">
               {Array.from({length:5},(_,i)=>(
                 <span key={i} className="star">
-                  {i < park.park_average_rating ? '★':'☆'}
+                  {i < avgRating ? '★':'☆'}
                 </span>
               ))}
             </div>
@@ -169,11 +176,11 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
               <p>Bar graph goes here</p>
             </div>
             <div className="average-review">
-              <div className="average-score">{park.park_average_rating?.toFixed(1) || '0.0'}</div>
+              <div className="average-score">{avgRating.toFixed(1) || '0.0'}</div>
               <div className="review-stars">
                 {Array.from({ length: 5 }, (_, index) => (
                   <span key={index} className="star">
-                    {index < Math.round(park.park_average_rating || 0) ? '★' : '☆'}
+                    {index < Math.round(avgRating || 0) ? '★' : '☆'}
                   </span>
                 ))}
               </div>
