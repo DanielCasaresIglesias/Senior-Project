@@ -1,17 +1,17 @@
+/* ─── Container ───────────────────────────────────────────────────────────── */
 .park-popup {
   width: 20%;
   position: relative;
-  right: 0;
-  /* top: 8rem; Adjust based on your filter bar height */
   bottom: 0;
   background: #fff;
   border-left: 1px solid #ccc;
   overflow-y: auto;
   z-index: 150;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
+/* ─── Header image + close button ─────────────────────────────────────────── */
 .popup-header {
   position: relative;
 }
@@ -26,59 +26,94 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
   background-color: rgba(0, 0, 0, 0.25);
+  border: none;
   color: white;
+  font-size: 1.5rem;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
+  cursor: pointer;
 }
 
+/* ─── Top info area: two rows ─────────────────────────────────────────────── */
 .popup-park-info {
   background: #3B5425;
   color: white;
   padding: 1rem;
-  overflow-y: hidden;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-top: -4px;
+  box-sizing: border-box;
+  margin-top: -4px;             /* removes gap under image */
 }
 
-.park-info-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Use grid to create two rows */
+.popup-park-info .result-content {
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 0.5rem;
+  width: 23rem;
+  box-sizing: border-box;
 }
 
-.park-name {
+/* Row 1: park title */
+.park-title {
   font-size: 2rem;
   font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 23rem;
+  box-sizing: border-box;
 }
 
-.park-details {
-  font-size: 0.8rem;
-}
-
-.park-rating {
+/* Row 2: left info + right rating */
+.info-rating-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  align-items: start;
+  width: 23rem;
+  box-sizing: border-box;
 }
 
-.stars {
-  color: gold;
+/* ─── Left half: park type, state, region ───────────────────────────────── */
+.info-left p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: white;
 }
 
-.review-count {
+/* ─── Right half: stars + review count ───────────────────────────────────── */
+.info-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Stars container */
+.info-right .result-rating {
+  display: flex;
+  gap: 0.25rem;
+  background: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Individual star SVG */
+.star-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  object-fit: contain;
+}
+
+/* Review count beneath */
+.info-right .review-count {
+  margin-top: 0.25rem;
   font-size: 0.8rem;
-  color: lightgray;
+  color: white;
 }
 
+/* ─── Tabs ───────────────────────────────────────────────────────────────── */
 .popup-tabs {
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -98,6 +133,7 @@
   color: white;
 }
 
+/* ─── Tab content sections ───────────────────────────────────────────────── */
 .popup-content {
   padding: 1rem;
 }
@@ -111,14 +147,16 @@
   margin-top: 1rem;
 }
 
-.trail-icons, .camp-icons {
+/* ─── Trails & Camps icons ───────────────────────────────────────────────── */
+.trail-icons,
+.camp-icons {
   display: flex;
-  justify-content: space-between;  /* spread icons evenly across full width */
-  gap: 0;                          /* gaps now handled by justify-content */
-  padding: 0 0.5rem;               /* small side-padding so icons don’t hug edges */
+  justify-content: space-between;
+  padding: 0 0.5rem;
 }
 
-.trail-icon, .camp-icon {
+.trail-icon,
+.camp-icon {
   width: 3rem;
   height: 3rem;
   background: #D9D9D9;
@@ -128,39 +166,37 @@
   border-radius: 4px;
 }
 
-.trail-icon img, .camp-icon img {
+.trail-icon img,
+.camp-icon img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;  /* scales the icon down to fit without distortion */
-  display: block;       /* removes inline‐img whitespace issues */
+  object-fit: contain;
+  display: block;
 }
 
-.trail-icon.active, .camp-icon.active {
+.trail-icon.active,
+.camp-icon.active {
   background: #638A40;
 }
 
+/* ─── Scrollable list sections (Activities, etc.) ────────────────────────── */
 .park-popup .scrollable-list {
-  max-height: none !important;
-  overflow: visible !important;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
   background-color: lightgray;
   border-radius: 0.25rem;
   padding: 0.25rem 0.5rem;
   margin: 0;
-
-  /* turn into two equal columns */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-row-gap: 0.5rem;
-  grid-column-gap: 1rem;
+  overflow: visible;
 }
 
-/* Tighten up the individual items */
 .park-popup .scrollable-list > * {
   margin: 0;
   padding: 0.25rem 0;
 }
 
-/* Optional: ensure empty state still looks okay */
 .park-popup .no-items {
   grid-column: span 2;
   padding: 0.25rem 0;
@@ -174,11 +210,9 @@
   margin: 0;
 }
 
-
-/* e.g. between overview-buttons and trails-section */
+/* ─── Section separators ─────────────────────────────────────────────────── */
 .overview-buttons {
-  /* existing rules… */
-  margin-bottom: 1rem;        /* adds space before next section */
+  margin-bottom: 1rem;
 }
 
 .trails-section,
@@ -187,13 +221,7 @@
 .facilities-section,
 .features-section,
 .accessibility-section {
-  margin-top: 1rem;           /* space above each list section */
+  margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #ccc; /* subtle line */
-}
-
-.popup-park-info .bottom-row p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: lightgray;
+  border-top: 1px solid #ccc;
 }
