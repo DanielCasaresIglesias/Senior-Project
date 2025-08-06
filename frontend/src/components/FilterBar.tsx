@@ -1,6 +1,7 @@
 // frontend/src/components/FilterBar.tsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import useOutsideAlerter from '../hooks/useOutsideAlerter';
 import DistanceFilter from './filters/DistanceFilter';
 import TrailsFilter from './filters/TrailsFilter';
 import ActivitiesFilter from './filters/ActivitiesFilter';
@@ -24,6 +25,10 @@ interface FilterBarProps {
 
 const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }) => {
   const [showMore, setShowMore] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Close the expanded filters panel whenever you click outside of the entire bar
+  useOutsideAlerter(wrapperRef, () => setShowMore(false));
 
   // ─── Only initialize from initialFilters once ──────────────────────────────────
   const [filters, setFilters] = useState<Filters>(initialFilters);
@@ -204,7 +209,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ onFiltersChange, initialFilters }
   const extraFilterRows = chunkArray(extraFilterCombined, maxButtons);
 
   return (
-    <div className="filter-bar-container">
+    <div className="filter-bar-container" ref={wrapperRef}>
       {/* ─────────── First Row ─────────── */}
       <div className="filter-row">
         {visibleBaseFilters.map((filterNode, idx) => (
