@@ -4,6 +4,11 @@ import ReviewForm from '../../../components/ReviewForm';
 import type { Park } from '../../../types/park';
 import '../styles/parkPopup.css';
 
+// Star SVGs
+import EmptyStar from '../../../../public/images/stars/EmptyStar.svg';
+import HalfStar  from '../../../../public/images/stars/HalfStar.svg';
+import FullStar  from '../../../../public/images/stars/FullStar.svg';
+
 // A fixed list of all possible trail types and camp types
 const ALL_TRAIL_TYPES = [
   'Hiking',
@@ -79,23 +84,42 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
       </div>
       <div className="popup-park-info">
         <div className="result-content">
-          <div className="top-row">
-            <h2 className="park-name">{park.park_name}</h2>
-            <div className="result-rating">
-              {Array.from({length:5},(_,i)=>(
-                <span key={i} className="star">
-                  {i < avgRating ? '★':'☆'}
-                </span>
-              ))}
+          {/* Row 1: Title only */}
+          <div className="park-title">{park.park_name}</div>
+
+          {/* Row 2: info on left, rating on right */}
+          <div className="info-rating-row">
+            {/* Left side */}
+            <div className="info-left">
+              <p className="park-type">
+                {levelMap[park.park_level] || park.park_level} {park.park_type}
+              </p>
+              <p className="park-state">{park.park_state}</p>
+              <p className="park-region">{park.park_region}</p>
             </div>
-          </div>
-          <div className="review-count">({park.park_number_of_reviews} reviews)</div>
-          <div className="bottom-row">
-            <p className="park-type">
-              {levelMap[park.park_level] || park.park_level} {park.park_type}
-            </p>
-            <p className="park-state">{park.park_state}</p>
-            <p className="park-region">{park.park_region}</p>
+
+            {/* Right side */}
+            <div className="info-right">
+              <div className="result-rating">
+                {Array.from({ length: 5 }, (_, i) => {
+                  const starValue = avgRating - i;
+                  let src = EmptyStar;
+                  if (starValue >= 1) src = FullStar;
+                  else if (starValue >= 0.5) src = HalfStar;
+                  return (
+                    <img
+                      key={i}
+                      src={src}
+                      className="star-icon"
+                      alt="star"
+                    />
+                  );
+                })}
+              </div>
+              <div className="review-count">
+                ({park.park_number_of_reviews || 0} reviews)
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -178,11 +202,23 @@ const ParkPopup: React.FC<ParkPopupProps> = ({ park, onClose }) => {
             <div className="average-review">
               <div className="average-score">{avgRating.toFixed(1) || '0.0'}</div>
               <div className="review-stars">
-                {Array.from({ length: 5 }, (_, index) => (
-                  <span key={index} className="star">
-                    {index < Math.round(avgRating || 0) ? '★' : '☆'}
-                  </span>
-                ))}
+                {Array.from({ length: 5 }, (_, i) => {
+                  const starValue = avgRating - i;
+                  let src = EmptyStar;
+                  if (starValue >= 1) {
+                    src = FullStar;
+                  } else if (starValue >= 0.5) {
+                    src = HalfStar;
+                  }
+                  return (
+                    <img
+                      key={i}
+                      src={src}
+                      className="star-icon"
+                      alt={starValue >= 1 ? 'full star' : starValue >= 0.5 ? 'half star' : 'empty star'}
+                    />
+                  );
+                })}
               </div>
               <div className="review-total">{park.park_number_of_reviews} reviews</div>
             </div>
