@@ -35,7 +35,7 @@ const ActivitiesFilter: React.FC<ActivitiesFilterProps> = ({
         'Snow Sports',
         'Rock Climbing',
         'Geocaching',
-        'Sledding/tobogganing',
+        'Sledding',
         'Hunting',
       ]}
       onChange={onChange}
