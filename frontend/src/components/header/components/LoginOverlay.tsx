@@ -1,12 +1,8 @@
 // frontend/src/components/header/components/LoginOverlay.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import '../styles/loginOverlay.css';
+import type { LoginData } from '../../../types/loginData';
 
-export interface LoginData {
-  username: string;
-  password: string;
-  remember: boolean;
-}
 
 export interface LoginOverlayProps {
   onClose: () => void;
@@ -22,6 +18,7 @@ const LoginOverlay: React.FC<LoginOverlayProps> = ({
   const overlayRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<LoginData>({
     username: '',
+    profilePic: '',
     password: '',
     remember: false,
   });

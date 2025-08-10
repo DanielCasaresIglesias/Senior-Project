@@ -75,7 +75,7 @@ const RatingFilter: React.FC<RatingFilterProps> = ({
                 <StarIcon
                   key={star}
                   label={star.toString()}
-                  filled={star <= tempRating}
+                  filled={filled}
                   onClick={() => handleStarClick(star)}
                 />
               );

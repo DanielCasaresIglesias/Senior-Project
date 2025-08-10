@@ -1,10 +1,11 @@
 // MapContainer.tsx
-import React, { useEffect, useRef, forwardRef, type MutableRefObject } from 'react';
+import { useEffect, useRef, forwardRef, type RefObject } from 'react';
 import '../styles/mapContainer.css';
 import L, { Map as LeafletMap } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const MapContainer = forwardRef<LeafletMap | null, {}>((props, ref) => {
+  console.log(props);
   const mapInstance = useRef<LeafletMap | null>(null);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const MapContainer = forwardRef<LeafletMap | null, {}>((props, ref) => {
       if (typeof ref === 'function') {
         ref(mapInstance.current);
       } else {
-        (ref as MutableRefObject<LeafletMap | null>).current = mapInstance.current;
+        (ref as RefObject<LeafletMap | null>).current = mapInstance.current;
       }
     }
 

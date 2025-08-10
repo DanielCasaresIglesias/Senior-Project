@@ -5,12 +5,7 @@ import LoginOverlay from './components/LoginOverlay';
 import UserControls from './components/UserControls';
 import Navbar from './components/Navbar';
 import './styles/header.css';
-
-export interface LoginData {
-  username: string;
-  password: string;
-  remember: boolean;
-}
+import type { LoginData } from '../../types/loginData';
 
 export interface HeaderProps {
   user: { username: string; profilePic: string } | null;

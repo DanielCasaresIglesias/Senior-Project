@@ -13,14 +13,18 @@ import './styles/globalStyles.css';
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>({
     username: 'JohnDoe',
-    profilePic: '/images/ProfilePhotoPlaceholder.png'
+    profilePic: '/images/ProfilePhotoPlaceholder.png',
+    password: 'seceret_password',
+    remember: true,
   });
 
   const handleLogin = (loginData: LoginData) => {
     // Replace with real logic
     setUser({
       username: loginData.username,
-      profilePic: loginData.profilePic
+      profilePic: loginData.profilePic,
+      password: loginData.password,
+      remember: loginData.remember,
     });
   };
 

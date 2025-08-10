@@ -1,7 +1,7 @@
 // frontend/src/services/authService.ts
 import { API_URL } from './api';
+import type { LoginData } from '../src/types/loginData'
 
-export interface LoginData { email: string; password: string; }
 export interface SignupData { username: string; email: string; password: string; }
 
 export async function login(data: LoginData) {
