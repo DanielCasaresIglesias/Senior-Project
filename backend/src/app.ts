@@ -21,7 +21,7 @@ app.use(morgan('dev'));
 
 // Mount routes under /api
 app.use('/api/auth', authRoutes);
-app.use('/api/parks', parksRoutes);
+app.use('/parks', parksRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/users', usersRoutes);
 
