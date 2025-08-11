@@ -15,7 +15,7 @@ import errorHandler from './middlewares/errorHandler';
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({ origin: 'https://parks-radar-frontend.onrender.com' }));
 app.use(express.json());
 app.use(morgan('dev'));
 
