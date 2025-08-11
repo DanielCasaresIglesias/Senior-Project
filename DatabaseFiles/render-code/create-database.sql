@@ -1,30 +1,42 @@
 CREATE TABLE parks (
-  park_id SERIAL PRIMARY KEY,
-  park_name VARCHAR(255) NOT NULL,
-  park_photo_link VARCHAR (100),
-  park_address VARCHAR (255),
-  park_state VARCHAR(100),
-  park_region VARCHAR(100),
-  park_level VARCHAR(30) CHECK (park_level IN ('Federal', 'State', 'Regional', 'County', 'City/Municipal', 'Tribal', 'Private with Public Access', 'Uknown/Other')),
-  park_type VARCHAR(30) CHECK (park_type IN ('Park', 'Recreation Area', 'Forest', 'Wilderness Area', 'Seashore', 'Beach', 'Historic Trail', 'Monument', 'Historical Park', 'Historic Site', 'Preserve', 'Memorial', 'Other Park Designation', 'Grassland', 'Management Unit', 'Marine Sanctuary', 'Wildlife Refuge', 'Wildlife Management Area', 'Fish Hatchery')),
-  park_description TEXT,
-  park_phone_number VARCHAR(30),
-  park_size DECIMAL (10,2) CHECK (park_size >= 0),
-  park_min_elevation INT,
-  park_max_elevation INT,
-  park_latitude DECIMAL (9,6),
-  park_longitude DECIMAL (9,6),
-  park_location GEOGRAPHY(Point, 4326),
-  park_time_zone VARCHAR (50),
-  park_entry_fee DECIMAL (16,13) CHECK (park_entry_fee >=0),
-  park_parking_fee DECIMAL (16,13) CHECK (park_parking_fee >=0),
-  park_other_fee DECIMAL (16,13) CHECK (park_other_fee >=0),
-  park_average_rating DECIMAL (3,2) DEFAULT 0 CHECK (park_average_rating >= 0 AND park_average_rating <= 5),
-  park_number_of_reviews INT CHECK (park_number_of_reviews >= 0),
-  park_drone_permit VARCHAR(30) CHECK (park_drone_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
-  park_fishing_permit VARCHAR(30) CHECK (park_fishing_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
-  park_hunting_permit VARCHAR(30) CHECK (park_hunting_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal')),
-  park_backcountry_permit VARCHAR(30) CHECK (park_backcountry_permit IN ('Permit Required', 'Not Allowed', 'No Permit Required', 'Seasonal'))
+    park_id SERIAL PRIMARY KEY,
+    park_name VARCHAR(255) NOT NULL,
+    park_address VARCHAR(255),
+    park_state VARCHAR(100),
+    park_region VARCHAR(100),
+    park_level VARCHAR(30),
+    park_type VARCHAR(30),
+    park_description TEXT,
+    park_phone_number VARCHAR(30),
+    park_size DECIMAL(10,2),
+    park_min_elevation INT,
+    park_max_elevation INT,
+    park_latitude DECIMAL (9,6),
+    park_longitude DECIMAL (9,6),
+    park_location GEOGRAPHY(Point,4326),
+    park_time_zone VARCHAR(50),
+    park_entry_fee DECIMAL(16,13),
+    park_parking_fee DECIMAL(16,13),
+    park_average_rating DECIMAL(3,2) DEFAULT 0,
+    park_number_of_reviews INT,
+    park_drone_permit VARCHAR(30),
+    park_fishing_permit VARCHAR(30),
+    park_hunting_permit VARCHAR(30),
+    park_pet_policy VARCHAR(30),
+    park_backcountry_permit VARCHAR(30),
+    park_other_fee DECIMAL(16,13),
+    park_photo_link VARCHAR(150),
+    park_agency VARCHAR(100),
+    CONSTRAINT parks_park_average_rating_check CHECK (((park_average_rating >= (0)::numeric) AND (park_average_rating <= (5)::numeric))),
+    CONSTRAINT parks_park_drone_permit_check CHECK (((park_drone_permit)::text = ANY ((ARRAY['Permit Required'::VARCHAR, 'Not Allowed'::VARCHAR, 'No Permit Required'::VARCHAR, 'Seasonal'::VARCHAR])::text[]))),
+    CONSTRAINT parks_park_entry_fee_check CHECK ((park_entry_fee >= (0)::numeric)),
+    CONSTRAINT parks_park_fishing_permit_check CHECK (((park_fishing_permit)::text = ANY ((ARRAY['Permit Required'::VARCHAR, 'Not Allowed'::VARCHAR, 'No Permit Required'::VARCHAR, 'Seasonal'::VARCHAR])::text[]))),
+    CONSTRAINT parks_park_hunting_permit_check CHECK (((park_hunting_permit)::text = ANY ((ARRAY['Permit Required'::VARCHAR, 'Not Allowed'::VARCHAR, 'No Permit Required'::VARCHAR, 'Seasonal'::VARCHAR])::text[]))),
+    CONSTRAINT parks_park_level_check CHECK (((park_level)::text = ANY ((ARRAY['Federal'::VARCHAR, 'State'::VARCHAR, 'Regional'::VARCHAR, 'County'::VARCHAR, 'City/Municipal'::VARCHAR, 'Tribal'::VARCHAR, 'Private with Public Access'::VARCHAR, 'Unknown/Other'::VARCHAR])::text[]))),
+    CONSTRAINT parks_park_number_of_reviews_check CHECK ((park_number_of_reviews >= 0)),
+    CONSTRAINT parks_park_parking_fee_check CHECK ((park_parking_fee >= (0)::numeric)),
+    CONSTRAINT parks_park_size_check CHECK ((park_size >= (0)::numeric)),
+    CONSTRAINT parks_park_type_check CHECK (((park_type)::text = ANY ((ARRAY['Park'::VARCHAR, 'Recreation Area'::VARCHAR, 'Forest'::VARCHAR, 'Wilderness Area'::VARCHAR, 'Seashore'::VARCHAR, 'Beach'::VARCHAR, 'Historic Trail'::VARCHAR, 'Monument'::VARCHAR, 'Historic Site'::VARCHAR, 'Preserve'::VARCHAR, 'Memorial'::VARCHAR, 'Other Park Designation'::VARCHAR, 'Grassland'::VARCHAR, 'Management Unit'::VARCHAR, 'Marine Sanctuary'::VARCHAR, 'Wildlife Refuge'::VARCHAR, 'Wildlife Management Area'::VARCHAR, 'Fish Hatchery'::VARCHAR, 'Affiliated Area'::VARCHAR, 'Historical Park'::VARCHAR])::text[])))
 );
 
 CREATE TABLE park_open_dates (
@@ -192,7 +204,7 @@ CREATE INDEX idx_parks_state ON parks (park_state);
 CREATE INDEX idx_reviews_park_id ON reviews (park_id);
 CREATE INDEX idx_location_gist ON parks USING GIST (park_location);
 
-CREATE EXTENSION IF NOT EXISTS postgis
+CREATE EXTENSION IF NOT EXISTS postgis;
 
 INSERT INTO activities (activity_name) VALUES
   ('Hiking'), ('Backpacking'), ('Moutnain Biking'), ('Road Cycling'),
