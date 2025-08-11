@@ -14,8 +14,18 @@ import errorHandler from './middlewares/errorHandler';
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// allow CORS from the frontend origin (set in Render env)
+const corsOrigin = process.env.CORS_ORIGIN || '*';
+app.use(cors({
+  origin: corsOrigin,
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true // set if you need cookies
+}));
+
+// make sure preflight requests work
+app.options('*', cors());
+
 app.use(express.json());
 app.use(morgan('dev'));
 
