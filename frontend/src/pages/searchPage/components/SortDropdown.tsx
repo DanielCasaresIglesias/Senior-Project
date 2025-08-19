@@ -75,6 +75,20 @@ const buildComparator = (
   };
 };
 
+const labelFor = (active?: { field: SortField | null; dir: SortDirection | null }) => {
+  if (!active || !active.field) return 'Default';
+  const f = active.field;
+  const d = active.dir;
+  const arrow = d === 'asc' ? ' ▲' : d === 'desc' ? ' ▼' : '';
+  switch (f) {
+    case 'name': return `Name${arrow}`;
+    case 'rating': return `Average rating${arrow}`;
+    case 'distance': return `Distance${arrow}`;
+    case 'random': return 'Random';
+    default: return 'Default';
+  }
+};
+
 const SortDropdown: React.FC<Props> = ({ results, userLocation, active, onApplySort }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -137,30 +151,43 @@ const SortDropdown: React.FC<Props> = ({ results, userLocation, active, onApplyS
     return active.dir === 'asc' ? '▲' : '▼';
   };
 
+  const displayLabel = labelFor(active);
+
   return (
     <div className="sort-dropdown" ref={ref}>
-      <button className="sort-toggle" onClick={() => setOpen((s) => !s)} aria-expanded={open}>
-        Sort
+      {/* Button now displays current selection (or Default) similar to the View button */}
+      <button
+        className="sort-toggle"
+        onClick={() => setOpen((s) => !s)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        aria-label={`Sort options — current: ${displayLabel}`}
+        title={`Sort: ${displayLabel}`}
+      >
+        Sort: {displayLabel}
       </button>
 
       {open && (
         <ul className="sort-options" role="menu">
           <li role="menuitem" className="sort-option" onClick={() => applySort('name')}>
-            Name <span className="sort-arrow">{arrowFor('name')}</span>
+            <span>Name</span>
+            <span className="sort-arrow">{arrowFor('name')}</span>
           </li>
 
           <li role="menuitem" className="sort-option" onClick={() => applySort('rating')}>
-            Average rating <span className="sort-arrow">{arrowFor('rating')}</span>
+            <span>Average rating</span>
+            <span className="sort-arrow">{arrowFor('rating')}</span>
           </li>
 
           {userLocation && (
             <li role="menuitem" className="sort-option" onClick={() => applySort('distance')}>
-              Distance <span className="sort-arrow">{arrowFor('distance')}</span>
+              <span>Distance</span>
+              <span className="sort-arrow">{arrowFor('distance')}</span>
             </li>
           )}
 
           <li role="menuitem" className="sort-option" onClick={() => applySort('random')}>
-            Random
+            <span>Random</span>
           </li>
         </ul>
       )}

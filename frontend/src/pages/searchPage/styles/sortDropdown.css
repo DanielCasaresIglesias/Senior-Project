@@ -1,16 +1,22 @@
+/* frontend/src/styles/sortDropdown.css */
 .sort-dropdown {
   position: relative;
   display: inline-block;
 }
 
+/* make the toggle a bit wider so labels don't wrap */
 .sort-toggle {
   padding: 6px 10px;
   background: var(--btn-bg, #fff);
   border: 1px solid var(--btn-border, #ccc);
   border-radius: 6px;
   cursor: pointer;
+  min-width: 110px; /* ensure 'Sort: Default' fits */
+  text-align: left;
+  white-space: nowrap;
 }
 
+/* dropdown list */
 .sort-options {
   position: absolute;
   top: calc(100% + 6px);

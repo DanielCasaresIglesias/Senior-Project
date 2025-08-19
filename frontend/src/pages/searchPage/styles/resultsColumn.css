@@ -35,6 +35,12 @@
   border-bottom: 1px solid #ddd;
   cursor: pointer;
   align-items: center;
+  /* make keyboard focus visible for accessibility */
+  outline: none;
+}
+.park-result:focus {
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  border-radius: 6px;
 }
 
 /* ─── Image ─────────────────────────────────────────────────────────────── */
@@ -96,3 +102,67 @@
   font-size: 0.9rem;
   color: #555;
 }
+
+/* -------------------------------------------------------------------------- */
+/* View mode styles (DETAILED vs MINIMAL)                                     */
+/* -------------------------------------------------------------------------- */
+/* These rules make the 'minimal' view compact. Keep the default (detailed)   */
+/* behaviour untouched above; the minimal-specific overrides are below.      */
+/* Add `className="park-result minimal"` to each ParkResult when minimal mode.*/
+
+.park-result.minimal {
+  /* no image column, single column layout to keep each row compact */
+  grid-template-columns: 1fr;
+  grid-gap: 0.5rem;
+  padding: 0.5rem 0.6rem; /* tighter padding for compactness */
+  align-items: center;
+}
+
+/* hide the thumbnail in minimal mode */
+.park-result.minimal .result-image {
+  display: none;
+}
+
+/* make the title smaller and slightly less heavy (use clamp to stay responsive) */
+.park-result.minimal .park-name {
+  font-size: clamp(0.7rem, 1.1vw, 1.0rem);
+  font-weight: 600;
+  text-decoration: none; /* remove underline for minimal compactness */
+}
+
+/* keep type visible but smaller and muted */
+.park-result.minimal .park-type {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.2rem;
+}
+
+/* hide state and region in minimal */
+.park-result.minimal .park-state,
+.park-result.minimal .park-region {
+  display: none;
+}
+
+/* slightly smaller stars for the compact layout */
+.park-result.minimal .result-rating .star {
+  font-size: 1rem;
+}
+
+/* make the bottom-row spacing tighter in minimal */
+.park-result.minimal .bottom-row {
+  gap: 0.15rem;
+  margin-top: 0.25rem;
+}
+
+/* ensure the content area still truncates without wrapping */
+.park-result.minimal .result-content {
+  min-width: 0;
+}
+
+/* If you want extremely compact packing (optional override), uncomment below:
+.park-result.minimal.compact {
+  padding: 0.35rem 0.4rem;
+  grid-gap: 0.35rem;
+}
+*/

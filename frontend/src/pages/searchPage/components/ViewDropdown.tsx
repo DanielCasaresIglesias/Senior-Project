@@ -1,5 +1,6 @@
 // frontend/src/components/ViewDropdown.tsx
 import React, { useEffect, useRef, useState } from 'react';
+import '../styles/viewDropdown.css';
 
 export type ViewMode = 'detailed' | 'minimal';
 
