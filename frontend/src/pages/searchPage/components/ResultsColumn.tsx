@@ -5,6 +5,7 @@ import '../styles/resultsColumn.css';
 import { type Park } from '../../../types/park';
 import ParkResult from './ParkResult';
 import SortDropdown, { type SortField, type SortDirection } from './SortDropdown';
+import ViewDropdown, { type ViewMode } from './ViewDropdown';
 
 type ResultsColumnProps = {
   results: Park[];
@@ -40,6 +41,9 @@ const ResultsColumn: React.FC<ResultsColumnProps> = ({
     setSortedResults(sorted);
   };
 
+  // view mode state: detailed is default
+  const [viewMode, setViewMode] = useState<ViewMode>('detailed');
+
   return (
     <div className={`results-column ${minimized ? 'minimized' : ''}`}>
       <div className="results-header">
@@ -50,7 +54,7 @@ const ResultsColumn: React.FC<ResultsColumnProps> = ({
             active={activeSort}
             onApplySort={handleApplySort}
           />
-          <button className="view-button">View</button>
+          <ViewDropdown active={viewMode} onChange={setViewMode} />
         </div>
         <ExpandableSearch />
       </div>
