@@ -83,6 +83,11 @@
   color: white;
 }
 
+.info-left .park-type {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
 /* ─── Right half: stars + review count ───────────────────────────────────── */
 .info-right {
   display: flex;
