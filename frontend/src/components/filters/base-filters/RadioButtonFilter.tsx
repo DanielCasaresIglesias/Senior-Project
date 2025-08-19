@@ -9,6 +9,7 @@ import '../styles/radioButtonFilter.css';
 type RadioButtonFilterProps = {
   label: string;
   iconSrc: string;
+  selectedIconSrc: string;
   iconAlt: string;
   options: string[];
   onChange: (selected: string | null) => void;
@@ -18,6 +19,7 @@ type RadioButtonFilterProps = {
 const RadioButtonFilter: React.FC<RadioButtonFilterProps> = ({
   label,
   iconSrc,
+  selectedIconSrc,
   iconAlt,
   options,
   onChange,
@@ -65,7 +67,7 @@ const RadioButtonFilter: React.FC<RadioButtonFilterProps> = ({
       <FilterButton
         onClick={togglePopup}
         variant={isActive ? 'selected' : 'primary'}
-        iconSrc={iconSrc}
+        iconSrc={isActive ? selectedIconSrc : iconSrc}
         iconAlt={iconAlt}
         label={label}
       />

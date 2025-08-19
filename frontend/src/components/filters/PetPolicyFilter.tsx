@@ -24,6 +24,7 @@ const PetPolicyFilter: React.FC<PetPolicyFilterProps> = ({
     <RadioButtonFilter
       label="Pet Policy"
       iconSrc="images/filter-icons/base-icons/pet-policy-icon.png"
+      selectedIconSrc="images/filter-icons/selected-icons/pet-policy-icon.png"
       iconAlt="Pet Policy Icon"
       options={options}
       onChange={onChange}
