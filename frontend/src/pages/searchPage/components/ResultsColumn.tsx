@@ -65,6 +65,7 @@ const ResultsColumn: React.FC<ResultsColumnProps> = ({
             key={park.park_id}
             park={park}
             onSelect={onParkSelect}
+            view={viewMode}
           />
         ))}
       </div>
