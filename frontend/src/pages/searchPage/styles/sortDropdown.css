@@ -10,6 +10,7 @@
   background: var(--btn-bg, #fff);
   border: 1px solid var(--btn-border, #ccc);
   border-radius: 6px;
+  font-size: 0.95rem;
   cursor: pointer;
   min-width: 110px; /* ensure 'Sort: Default' fits */
   text-align: left;
