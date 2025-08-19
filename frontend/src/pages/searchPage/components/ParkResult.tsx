@@ -9,12 +9,12 @@ type ParkResultProps = {
 };
 
 const levelMap: Record<Park['park_level'], string> = {
-  Federal: 'National',
-  State: 'State',
-  Regional: 'Regional',
-  County: 'County',
+  'Federal': 'National',
+  'State': 'State',
+  'Regional': 'Regional',
+  'County': 'County',
   'City/Municipal': 'City',
-  Tribal: 'Tribal',
+  'Tribal': 'Tribal',
   'Private with Public Access': 'Private',
   'Uknown/Other': 'Other',
 };
