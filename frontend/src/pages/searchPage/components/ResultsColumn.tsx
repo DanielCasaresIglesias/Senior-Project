@@ -1,5 +1,5 @@
 // frontend/src/components/ResultsColumn.tsx
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import ExpandableSearch from './ExpandableSearch';
 import '../styles/resultsColumn.css';
 import { type Park } from '../../../types/park';
